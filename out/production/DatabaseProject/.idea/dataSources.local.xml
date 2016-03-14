@@ -6,24 +6,5 @@
       <first-sync>true</first-sync>
       <user-name>root</user-name>
     </data-source>
-    <data-source name="MySQL - @localhost" uuid="9d17bd15-61c6-4fd6-b84a-3566f4334efd">
-      <secret-storage>master_key</secret-storage>
-      <user-name>root</user-name>
-      <schema-pattern>imrantemp.*</schema-pattern>
-      <default-schemas>imrantemp.*</default-schemas>
-    </data-source>
-    <data-source name="Oracle - @dbhost.ugrad.cs.ubc.ca" uuid="85d11089-833b-47fc-9607-878dd332912b">
-      <secret-storage>master_key</secret-storage>
-      <user-name>ora_q1n7</user-name>
-      <ssh-properties>
-        <enabled>true</enabled>
-        <proxy-host>remote.ugrad.cs.ubc.ca</proxy-host>
-        <proxy-port>22</proxy-port>
-        <secret-storage>master_key</secret-storage>
-        <user>q1n7</user>
-        <use-password>true</use-password>
-        <password>dfebdfc6dfdadfc2dfcbdf9adf9fdf9bdf98df9bdf9edf8b</password>
-      </ssh-properties>
-    </data-source>
   </component>
 </project>

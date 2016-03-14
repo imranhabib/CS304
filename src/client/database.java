@@ -14,11 +14,12 @@ public class database {
     database connection;
     String username = "Put your local DB username here";
     String password = "Put your local DB password here";
+    int userSqNum;
 
 
 
-    public database(){
-
+    public database(int sqNum){
+        this.userSqNum = sqNum;
     }
 
 
@@ -39,20 +40,19 @@ public class database {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("INSERT into names " + "VALUES(firstName, lastName)");
         } catch (SQLException e){
-            System.out.println("error inserting into DB");
+            System.out.println(e);
         }
     }
 
-    public void selectAllAccountInformation(Connection connection){
+    public player selectAllAccountInformation(Connection connection){
         try{
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT" + " * " +"FROM managementapplication.player " + "WHERE ");
+            ResultSet result = stmt.executeQuery(getUserAccountInformation(userSqNum));
             player user = new player(result);
-            System.out.println("here");
-            user.formatPlayerDetails();
+            return user.formatPlayerDetails();
         } catch (SQLException e){
-            System.out.println("failed " + e);
-
+            System.out.println(e);
+            return null;
         }
 
     }
@@ -64,7 +64,14 @@ public class database {
 
 
 
+    /*
+    SQL queries
+     */
 
+    private String getUserAccountInformation(int squadNumber){
+        String stmt = new String("SELECT * FROM managementapplication.player WHERE SquadNumber=" + squadNumber);
+        return stmt;
+    }
 
 
 

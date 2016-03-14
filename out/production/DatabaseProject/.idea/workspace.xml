@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="77dea532-9944-4cd9-a4a6-cc3185fb803e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/mysql_connector_java_5_1_38_bin.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/client/database.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DatabaseProject/client/managerHome.class" afterPath="$PROJECT_DIR$/out/production/DatabaseProject/client/managerHome.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DatabaseProject/client/playerHome.class" afterPath="$PROJECT_DIR$/out/production/DatabaseProject/client/playerHome.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DatabaseProject/client/splashPage$1.class" afterPath="$PROJECT_DIR$/out/production/DatabaseProject/client/splashPage$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DatabaseProject/client/splashPage$2.class" afterPath="$PROJECT_DIR$/out/production/DatabaseProject/client/splashPage$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DatabaseProject/client/splashPage.class" afterPath="$PROJECT_DIR$/out/production/DatabaseProject/client/splashPage.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DatabaseProject.iml" afterPath="$PROJECT_DIR$/DatabaseProject.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/managerHome.java" afterPath="$PROJECT_DIR$/src/client/managerHome.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/playerHome.java" afterPath="$PROJECT_DIR$/src/client/playerHome.java" />
-    </list>
+    <list default="true" id="77dea532-9944-4cd9-a4a6-cc3185fb803e" name="Default" comment="" />
     <ignored path="DatabaseProject.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -48,14 +36,78 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="database.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="database.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/database.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.087478556">
-              <caret line="9" column="62" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
               <folding>
-                <marker date="1457917731712" expanded="true" signature="1001:1018" placeholder="INSERT into names... " />
-                <marker date="1457917731712" expanded="true" signature="1001:1051" placeholder="INSERT into names... " />
+                <element signature="imports" expanded="true" />
+                <marker date="1457932829835" expanded="true" signature="954:971" placeholder="INSERT into names... " />
+                <marker date="1457932829835" expanded="true" signature="954:1004" placeholder="INSERT into names... " />
+                <marker date="1457932829835" expanded="true" signature="1308:1359" placeholder="SELECT Squad... player" />
+                <marker date="1457932829835" expanded="true" signature="1308:1361" placeholder="SELECT Squad... playermanagementapplication" />
+                <marker date="1457932829835" expanded="true" signature="1308:1370" placeholder="SELECT * FRO... player" />
+                <marker date="1457932829835" expanded="true" signature="1308:1372" placeholder="SELECT * FRO... player" />
+                <marker date="1457932829835" expanded="true" signature="1308:1373" placeholder="SELECT Squad... player" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="player.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Objects/player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="52" column="5" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#406#407#0" expanded="true" />
+                <element signature="e#433#434#0" expanded="true" />
+                <element signature="e#473#474#0" expanded="true" />
+                <element signature="e#505#506#0" expanded="true" />
+                <element signature="e#544#545#0" expanded="true" />
+                <element signature="e#582#583#0" expanded="true" />
+                <element signature="e#1330#1331#0" expanded="true" />
+                <element signature="e#1361#1362#0" expanded="true" />
+                <element signature="e#1409#1410#0" expanded="true" />
+                <element signature="e#1449#1450#0" expanded="true" />
+                <element signature="e#1478#1479#0" expanded="true" />
+                <element signature="e#1506#1507#0" expanded="true" />
+                <element signature="e#1545#1546#0" expanded="true" />
+                <element signature="e#1579#1580#0" expanded="true" />
+                <element signature="e#1610#1611#0" expanded="true" />
+                <element signature="e#1637#1638#0" expanded="true" />
+                <element signature="e#1677#1678#0" expanded="true" />
+                <element signature="e#1709#1710#0" expanded="true" />
+                <element signature="e#1736#1737#0" expanded="true" />
+                <element signature="e#1762#1763#0" expanded="true" />
+                <element signature="e#1797#1798#0" expanded="true" />
+                <element signature="e#1827#1828#0" expanded="true" />
+                <element signature="e#1857#1858#0" expanded="true" />
+                <element signature="e#1886#1887#0" expanded="true" />
+                <element signature="e#1927#1928#0" expanded="true" />
+                <element signature="e#1963#1964#0" expanded="true" />
+                <element signature="e#2001#2002#0" expanded="true" />
+                <element signature="e#2035#2036#0" expanded="true" />
+                <element signature="e#2089#2090#0" expanded="true" />
+                <element signature="e#2135#2136#0" expanded="true" />
+                <element signature="e#2170#2171#0" expanded="true" />
+                <element signature="e#2204#2205#0" expanded="true" />
+                <element signature="e#2255#2256#0" expanded="true" />
+                <element signature="e#2301#2302#0" expanded="true" />
+                <element signature="e#2340#2341#0" expanded="true" />
+                <element signature="e#2375#2376#0" expanded="true" />
+                <element signature="e#2432#2433#0" expanded="true" />
+                <element signature="e#2480#2481#0" expanded="true" />
+                <element signature="e#2510#2511#0" expanded="true" />
+                <element signature="e#2539#2540#0" expanded="true" />
+                <element signature="e#2580#2581#0" expanded="true" />
+                <element signature="e#2616#2617#0" expanded="true" />
+                <element signature="e#2653#2654#0" expanded="true" />
+                <element signature="e#2683#2684#0" expanded="true" />
+                <element signature="e#2732#2733#0" expanded="true" />
+                <element signature="e#2770#2771#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -83,11 +135,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="splashPage.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="splashPage.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/client/splashPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="68" column="31" selection-start-line="68" selection-start-column="31" selection-end-line="68" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.4028436">
+              <caret line="34" column="49" selection-start-line="34" selection-start-column="49" selection-end-line="34" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -99,18 +151,19 @@
         <entry file="file://$PROJECT_DIR$/src/client/playerHome.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="92" column="10" selection-start-line="92" selection-start-column="10" selection-end-line="92" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="console.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/85d11089-833b-47fc-9607-878dd332912b/console.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+              <caret line="166" column="32" selection-start-line="166" selection-start-column="32" selection-end-line="166" selection-end-column="32" />
+              <folding>
+                <element signature="e#3263#3275#0" expanded="true" />
+                <element signature="e#3581#3589#0" expanded="true" />
+                <element signature="e#5337#5916#0" expanded="true" />
+                <element signature="e#5915#5916#0" expanded="true" />
+                <element signature="e#6122#6123#0" expanded="true" />
+                <element signature="e#6161#6162#0" expanded="true" />
+                <element signature="e#6201#6202#0" expanded="true" />
+                <element signature="e#6240#6241#0" expanded="true" />
+                <element signature="e#6273#6274#0" expanded="true" />
+                <element signature="e#6312#6313#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -139,6 +192,8 @@
         <option value="$PROJECT_DIR$/src/client/splashPage.java" />
         <option value="$PROJECT_DIR$/src/client/managerHome.java" />
         <option value="$PROJECT_DIR$/src/client/playerHome.java" />
+        <option value="$PROJECT_DIR$/src/client/dataModels.java" />
+        <option value="$PROJECT_DIR$/src/Objects/player.java" />
         <option value="$PROJECT_DIR$/src/client/database.java" />
       </list>
     </option>
@@ -240,6 +295,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Objects" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -769,12 +828,12 @@
       <workItem from="1457652622069" duration="4565000" />
       <workItem from="1457737860657" duration="64000" />
       <workItem from="1457916620723" duration="1960000" />
-      <workItem from="1457919385960" duration="660000" />
+      <workItem from="1457919385960" duration="12775000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15797000" />
+    <option name="totallyTimeSpent" value="27912000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -782,15 +841,16 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26350245" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21406959" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18003026" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14901665" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.024205748" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -802,7 +862,6 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -837,8 +896,14 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1457917731712" expanded="true" signature="1001:1018" placeholder="INSERT into names... " />
-            <marker date="1457917731712" expanded="true" signature="1001:1051" placeholder="INSERT into names... " />
+            <element signature="imports" expanded="true" />
+            <marker date="1457932829835" expanded="true" signature="954:971" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="954:1004" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="1308:1359" placeholder="SELECT Squad... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1361" placeholder="SELECT Squad... playermanagementapplication" />
+            <marker date="1457932829835" expanded="true" signature="1308:1370" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1372" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1373" placeholder="SELECT Squad... player" />
           </folding>
         </state>
       </provider>
@@ -856,8 +921,14 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
           <folding>
-            <marker date="1457917731712" expanded="true" signature="1001:1018" placeholder="INSERT into names... " />
-            <marker date="1457917731712" expanded="true" signature="1001:1051" placeholder="INSERT into names... " />
+            <element signature="imports" expanded="true" />
+            <marker date="1457932829835" expanded="true" signature="954:971" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="954:1004" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="1308:1359" placeholder="SELECT Squad... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1361" placeholder="SELECT Squad... playermanagementapplication" />
+            <marker date="1457932829835" expanded="true" signature="1308:1370" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1372" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1373" placeholder="SELECT Squad... player" />
           </folding>
         </state>
       </provider>
@@ -903,8 +974,14 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
           <folding>
-            <marker date="1457917731712" expanded="true" signature="1001:1018" placeholder="INSERT into names... " />
-            <marker date="1457917731712" expanded="true" signature="1001:1051" placeholder="INSERT into names... " />
+            <element signature="imports" expanded="true" />
+            <marker date="1457932829835" expanded="true" signature="954:971" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="954:1004" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="1308:1359" placeholder="SELECT Squad... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1361" placeholder="SELECT Squad... playermanagementapplication" />
+            <marker date="1457932829835" expanded="true" signature="1308:1370" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1372" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1373" placeholder="SELECT Squad... player" />
           </folding>
         </state>
       </provider>
@@ -970,8 +1047,14 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1457917731712" expanded="true" signature="1001:1018" placeholder="INSERT into names... " />
-            <marker date="1457917731712" expanded="true" signature="1001:1051" placeholder="INSERT into names... " />
+            <element signature="imports" expanded="true" />
+            <marker date="1457932829835" expanded="true" signature="954:971" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="954:1004" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="1308:1359" placeholder="SELECT Squad... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1361" placeholder="SELECT Squad... playermanagementapplication" />
+            <marker date="1457932829835" expanded="true" signature="1308:1370" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1372" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1373" placeholder="SELECT Squad... player" />
           </folding>
         </state>
       </provider>
@@ -995,7 +1078,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="76" column="36" selection-start-line="76" selection-start-column="36" selection-end-line="76" selection-end-column="36" />
-          <folding />
+          <folding>
+            <element signature="e#3263#3275#0" expanded="true" />
+            <element signature="e#3581#3589#0" expanded="true" />
+            <element signature="e#5337#5916#0" expanded="true" />
+            <element signature="e#5915#5916#0" expanded="true" />
+            <element signature="e#6122#6123#0" expanded="true" />
+            <element signature="e#6161#6162#0" expanded="true" />
+            <element signature="e#6201#6202#0" expanded="true" />
+            <element signature="e#6240#6241#0" expanded="true" />
+            <element signature="e#6273#6274#0" expanded="true" />
+            <element signature="e#6312#6313#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1031,7 +1125,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
-          <folding />
+          <folding>
+            <element signature="e#3263#3275#0" expanded="true" />
+            <element signature="e#3581#3589#0" expanded="true" />
+            <element signature="e#5337#5916#0" expanded="true" />
+            <element signature="e#5915#5916#0" expanded="true" />
+            <element signature="e#6122#6123#0" expanded="true" />
+            <element signature="e#6161#6162#0" expanded="true" />
+            <element signature="e#6201#6202#0" expanded="true" />
+            <element signature="e#6240#6241#0" expanded="true" />
+            <element signature="e#6273#6274#0" expanded="true" />
+            <element signature="e#6312#6313#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1067,7 +1172,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
-          <folding />
+          <folding>
+            <element signature="e#3263#3275#0" expanded="true" />
+            <element signature="e#3581#3589#0" expanded="true" />
+            <element signature="e#5337#5916#0" expanded="true" />
+            <element signature="e#5915#5916#0" expanded="true" />
+            <element signature="e#6122#6123#0" expanded="true" />
+            <element signature="e#6161#6162#0" expanded="true" />
+            <element signature="e#6201#6202#0" expanded="true" />
+            <element signature="e#6240#6241#0" expanded="true" />
+            <element signature="e#6273#6274#0" expanded="true" />
+            <element signature="e#6312#6313#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1103,7 +1219,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
-          <folding />
+          <folding>
+            <element signature="e#3263#3275#0" expanded="true" />
+            <element signature="e#3581#3589#0" expanded="true" />
+            <element signature="e#5337#5916#0" expanded="true" />
+            <element signature="e#5915#5916#0" expanded="true" />
+            <element signature="e#6122#6123#0" expanded="true" />
+            <element signature="e#6161#6162#0" expanded="true" />
+            <element signature="e#6201#6202#0" expanded="true" />
+            <element signature="e#6240#6241#0" expanded="true" />
+            <element signature="e#6273#6274#0" expanded="true" />
+            <element signature="e#6312#6313#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1139,7 +1266,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
-          <folding />
+          <folding>
+            <element signature="e#3263#3275#0" expanded="true" />
+            <element signature="e#3581#3589#0" expanded="true" />
+            <element signature="e#5337#5916#0" expanded="true" />
+            <element signature="e#5915#5916#0" expanded="true" />
+            <element signature="e#6122#6123#0" expanded="true" />
+            <element signature="e#6161#6162#0" expanded="true" />
+            <element signature="e#6201#6202#0" expanded="true" />
+            <element signature="e#6240#6241#0" expanded="true" />
+            <element signature="e#6273#6274#0" expanded="true" />
+            <element signature="e#6312#6313#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1196,13 +1334,112 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/85d11089-833b-47fc-9607-878dd332912b/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/production/DatabaseProject/client/splashPage.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#5315#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Objects/player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="52" column="5" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#406#407#0" expanded="true" />
+            <element signature="e#433#434#0" expanded="true" />
+            <element signature="e#473#474#0" expanded="true" />
+            <element signature="e#505#506#0" expanded="true" />
+            <element signature="e#544#545#0" expanded="true" />
+            <element signature="e#582#583#0" expanded="true" />
+            <element signature="e#1330#1331#0" expanded="true" />
+            <element signature="e#1361#1362#0" expanded="true" />
+            <element signature="e#1409#1410#0" expanded="true" />
+            <element signature="e#1449#1450#0" expanded="true" />
+            <element signature="e#1478#1479#0" expanded="true" />
+            <element signature="e#1506#1507#0" expanded="true" />
+            <element signature="e#1545#1546#0" expanded="true" />
+            <element signature="e#1579#1580#0" expanded="true" />
+            <element signature="e#1610#1611#0" expanded="true" />
+            <element signature="e#1637#1638#0" expanded="true" />
+            <element signature="e#1677#1678#0" expanded="true" />
+            <element signature="e#1709#1710#0" expanded="true" />
+            <element signature="e#1736#1737#0" expanded="true" />
+            <element signature="e#1762#1763#0" expanded="true" />
+            <element signature="e#1797#1798#0" expanded="true" />
+            <element signature="e#1827#1828#0" expanded="true" />
+            <element signature="e#1857#1858#0" expanded="true" />
+            <element signature="e#1886#1887#0" expanded="true" />
+            <element signature="e#1927#1928#0" expanded="true" />
+            <element signature="e#1963#1964#0" expanded="true" />
+            <element signature="e#2001#2002#0" expanded="true" />
+            <element signature="e#2035#2036#0" expanded="true" />
+            <element signature="e#2089#2090#0" expanded="true" />
+            <element signature="e#2135#2136#0" expanded="true" />
+            <element signature="e#2170#2171#0" expanded="true" />
+            <element signature="e#2204#2205#0" expanded="true" />
+            <element signature="e#2255#2256#0" expanded="true" />
+            <element signature="e#2301#2302#0" expanded="true" />
+            <element signature="e#2340#2341#0" expanded="true" />
+            <element signature="e#2375#2376#0" expanded="true" />
+            <element signature="e#2432#2433#0" expanded="true" />
+            <element signature="e#2480#2481#0" expanded="true" />
+            <element signature="e#2510#2511#0" expanded="true" />
+            <element signature="e#2539#2540#0" expanded="true" />
+            <element signature="e#2580#2581#0" expanded="true" />
+            <element signature="e#2616#2617#0" expanded="true" />
+            <element signature="e#2653#2654#0" expanded="true" />
+            <element signature="e#2683#2684#0" expanded="true" />
+            <element signature="e#2732#2733#0" expanded="true" />
+            <element signature="e#2770#2771#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/playerHome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="166" column="32" selection-start-line="166" selection-start-column="32" selection-end-line="166" selection-end-column="32" />
+          <folding>
+            <element signature="e#3263#3275#0" expanded="true" />
+            <element signature="e#3581#3589#0" expanded="true" />
+            <element signature="e#5337#5916#0" expanded="true" />
+            <element signature="e#5915#5916#0" expanded="true" />
+            <element signature="e#6122#6123#0" expanded="true" />
+            <element signature="e#6161#6162#0" expanded="true" />
+            <element signature="e#6201#6202#0" expanded="true" />
+            <element signature="e#6240#6241#0" expanded="true" />
+            <element signature="e#6273#6274#0" expanded="true" />
+            <element signature="e#6312#6313#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/client/database.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.087478556">
-          <caret line="9" column="62" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
           <folding>
-            <marker date="1457917731712" expanded="true" signature="1001:1018" placeholder="INSERT into names... " />
-            <marker date="1457917731712" expanded="true" signature="1001:1051" placeholder="INSERT into names... " />
+            <element signature="imports" expanded="true" />
+            <marker date="1457932829835" expanded="true" signature="954:971" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="954:1004" placeholder="INSERT into names... " />
+            <marker date="1457932829835" expanded="true" signature="1308:1359" placeholder="SELECT Squad... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1361" placeholder="SELECT Squad... playermanagementapplication" />
+            <marker date="1457932829835" expanded="true" signature="1308:1370" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1372" placeholder="SELECT * FRO... player" />
+            <marker date="1457932829835" expanded="true" signature="1308:1373" placeholder="SELECT Squad... player" />
           </folding>
         </state>
       </provider>
@@ -1219,27 +1456,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/splashPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="68" column="31" selection-start-line="68" selection-start-column="31" selection-end-line="68" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.4028436">
+          <caret line="34" column="49" selection-start-line="34" selection-start-column="49" selection-end-line="34" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/playerHome.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="92" column="10" selection-start-line="92" selection-start-column="10" selection-end-line="92" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/85d11089-833b-47fc-9607-878dd332912b/console.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>

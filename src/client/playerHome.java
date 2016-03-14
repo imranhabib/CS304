@@ -1,13 +1,18 @@
 package client;
 
+import Objects.player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -36,6 +41,7 @@ public class playerHome {
     database db;
     Connection dbConnect;
     BorderPane root;
+    int sqNum = 10;
 
 
     public playerHome(){
@@ -44,7 +50,7 @@ public class playerHome {
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         Scene playerScene = new Scene(createBorderPane(), primaryScreenBounds.getMinX(), primaryScreenBounds.getMinY());
         playerStage.setScene(playerScene);
-        db = getDatabase();
+        db = getDatabase(sqNum);
         playerStage.show();
 
     }
@@ -102,8 +108,8 @@ public class playerHome {
 
 
 
-    public database getDatabase(){
-        db = new database();
+    public database getDatabase(int sqNum){
+        db = new database(sqNum);
         dbConnect = db.createDBConnection();
         return db;
     }
@@ -203,9 +209,8 @@ public class playerHome {
 
 
     public void accountAction(){
-
-        db.selectAllAccountInformation(dbConnect);
-        root.setCenter(createUserAccount());
+       player user = db.selectAllAccountInformation(dbConnect);
+        root.setCenter(createUserAccount(user));
     }
     public void searchAction(){
         System.out.println("2");
@@ -219,13 +224,88 @@ public class playerHome {
 
 
 
-    public BorderPane createUserAccount(){
+    public BorderPane createUserAccount(player user){
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(20, 10, 0, 10));
 
         //Title
-        TextField title = new TextField("Account");
+        TextField title = new TextField("Account: " + user.getName());
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
         account.setTop(title);
+        //Body
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label userName = new Label("Account Holder: ");
+        form.setHalignment(userName, HPos.RIGHT);
+        TextField name = new TextField(user.getName());
+        name.setEditable(false);
+
+        Label userSqNum = new Label("Squad Number: ");
+        form.setHalignment(userSqNum, HPos.RIGHT);
+        TextField sqNum = new TextField(Integer.toString(user.getSquadNumber()));
+        sqNum.setEditable(false);
+
+        Label userAge = new Label("Age: ");
+        form.setHalignment(userAge, HPos.RIGHT);
+        TextField age = new TextField(Integer.toString(user.getAge()) + " Yrs");
+        age.setEditable(false);
+
+        Label userPos = new Label("Position: ");
+        form.setHalignment(userPos, HPos.RIGHT);
+        TextField pos = new TextField(user.getPosition());
+        pos.setEditable(false);
+
+        Label userPrice = new Label("Price: ");
+        form.setHalignment(userPrice, HPos.RIGHT);
+        TextField price = new TextField(Integer.toString(user.getPrice()) + " $");
+        price.setEditable(false);
+
+        Label userSalary = new Label("Salary: " );
+        form.setHalignment(userSalary, HPos.RIGHT);
+        TextField sal = new TextField(Integer.toString(user.getSalary()) + " $/Yr");
+        sal.setEditable(false);
+
+        Label userNationality = new Label("Nationality: ");
+        form.setHalignment(userNationality, HPos.RIGHT);
+        TextField nation = new TextField(user.getNationality());
+        nation.setEditable(false);
+
+
+        Label userAvailability = new Label("Available: ");
+        form.setHalignment(userAvailability, HPos.RIGHT);
+        TextField avail = new TextField();
+        if(user.isAvailability()){
+             avail.setText("Yes!");
+        } else {
+            avail.setText("No");
+        }
+
+
+        avail.setEditable(false);
+
+        Label userRating = new Label("Rating: ");
+        form.setHalignment(userRating, HPos.RIGHT);
+        TextField rate = new TextField(Integer.toString(user.getRating()) + " Pts");
+        rate.setEditable(false);
+
+        form.add(userName, 0, 0); form.add(name, 1, 0);
+        form.add(userSqNum, 3, 0); form.add(sqNum, 4, 0);
+        form.add(userAge, 0, 2); form.add(age, 1, 2);
+        form.add(userPos, 3, 2); form.add(pos, 4, 2);
+        form.add(userPrice, 0, 4); form.add(price, 1, 4);
+        form.add(userSalary, 3, 4); form.add(sal, 4, 4);
+        form.add(userNationality, 0, 6); form.add(nation, 1, 6);
+        form.add(userAvailability, 3, 6); form.add(avail, 4, 6);
+        form.add(userRating, 0, 8); form.add(rate, 1, 8);
+
+        account.setCenter(form);
+
 
         return account;
     }
