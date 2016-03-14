@@ -2,6 +2,8 @@ package client;
 
 
 import java.sql.*;
+
+import Objects.contract;
 import Objects.player;
 
 /**
@@ -44,6 +46,20 @@ public class database {
         }
     }
 
+    public contract selectUserContractInformationBySquadNumber(Connection connection){
+        try{
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(getUserContractInformationBySquadNumber(userSqNum));
+            contract userContract = new contract(result);
+            return userContract.formatContractDetails();
+        } catch (SQLException e){
+            System.out.println(e);
+            return null;
+        }
+
+    }
+
+
     public player selectAllAccountInformation(Connection connection){
         try{
             Statement stmt = connection.createStatement();
@@ -56,7 +72,6 @@ public class database {
         }
 
     }
-
 
 
 
@@ -73,7 +88,16 @@ public class database {
         return stmt;
     }
 
+    private String getUserContractInformationBySquadNumber(int squadNumber){
+        String stmt = new String("SELECT * FROM managementapplication.contract WHERE SquadNumber=" + squadNumber);
+        return stmt;
+    }
 
+
+    private String getUserContractInformationByContractNumber(int contractNumber){
+        String stmt = new String("SELECT * FROM managementapplication.contract WHERE SquadNumber=" + contractNumber);
+        return stmt;
+    }
 
 
 

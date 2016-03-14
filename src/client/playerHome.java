@@ -1,5 +1,6 @@
 package client;
 
+import Objects.contract;
 import Objects.player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,11 +34,12 @@ public class playerHome {
 
     public String playerTitle = "Player Portal";
     public String playerInformation = "Welcome to the Player Management Application. Click menu to get started";
-    public String accountInfo = "Select to view your account information";
+    public String accountInfo = "Select to view your personal information";
+    public String contractInfo = "Select to view your contract information";
     public String searchInfo = "Select to begin a basic search";
     public String advancedSearchInfo = "Select to begin an advanced search";
     public String accountChangeHistory = "Select to view recent account changes";
-    public String[] menuItems = {"Account Information","Search Information","Advanced Search Information","Account Change History"};
+    public String[] menuItems = {"Personal Information", "Contract Information", "Search","Advanced Search","Account Change History"};
     database db;
     Connection dbConnect;
     BorderPane root;
@@ -81,13 +83,7 @@ public class playerHome {
 
         return root;
 
-
-
     }
-
-
-
-
 
     public GridPane createInnerWindow(){
         GridPane layout = new GridPane();
@@ -156,20 +152,26 @@ public class playerHome {
             root.getChildren().addAll(rootTitle, menuButton);
         }
         if(title.equals(menuItems[1])){
-            rootTitle.setText(searchInfo);
+            rootTitle.setText(contractInfo);
             menuButton = createMenuButtons(menuItems[1]);
             root.getChildren().addAll(rootTitle, menuButton);
         }
 
         if(title.equals(menuItems[2])){
-            rootTitle.setText(advancedSearchInfo);
+            rootTitle.setText(searchInfo);
             menuButton = createMenuButtons(menuItems[2]);
             root.getChildren().addAll(rootTitle, menuButton);
         }
 
         if(title.equals(menuItems[3])){
-            rootTitle.setText(accountChangeHistory);
+            rootTitle.setText(advancedSearchInfo);
             menuButton = createMenuButtons(menuItems[3]);
+            root.getChildren().addAll(rootTitle, menuButton);
+        }
+
+        if(title.equals(menuItems[4])){
+            rootTitle.setText(accountChangeHistory);
+            menuButton = createMenuButtons(menuItems[4]);
             root.getChildren().addAll(rootTitle, menuButton);
         }
 
@@ -191,12 +193,15 @@ public class playerHome {
                      accountAction();
                 }
                 if(actionTitle.equals(menuItems[1])) {
-                    searchAction();
+                    contractAction();
                 }
                 if(actionTitle.equals(menuItems[2])) {
-                    advancedSearchAction();
+                    searchAction();
                 }
                 if(actionTitle.equals(menuItems[3])) {
+                   advancedSearchAction();
+                }
+                if(actionTitle.equals(menuItems[4])) {
                     changesAction();
                 }
 
@@ -214,6 +219,10 @@ public class playerHome {
     }
     public void searchAction(){
         System.out.println("2");
+    }
+    public void contractAction(){
+       contract userContract = db.selectUserContractInformationBySquadNumber(dbConnect);
+        root.setCenter(createUserContract(userContract));
     }
     public void advancedSearchAction(){
         System.out.println("3");
@@ -310,6 +319,68 @@ public class playerHome {
         return account;
     }
 
+
+
+    public BorderPane createUserContract(contract user){
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+
+        //Title
+        TextField title = new TextField("Contractual Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+        account.setTop(title);
+        //Body
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label userCon = new Label("Contract Number: ");
+        form.setHalignment(userCon, HPos.RIGHT);
+        TextField con = new TextField(Integer.toString(user.getContractNum()));
+        con.setEditable(false);
+
+
+        Label userSqNum = new Label("Squad Number: ");
+        form.setHalignment(userSqNum, HPos.RIGHT);
+        TextField sqNum = new TextField(Integer.toString(user.getSquadNumber()));
+        sqNum.setEditable(false);
+
+        Label userDur = new Label("Duration: ");
+        form.setHalignment(userDur, HPos.RIGHT);
+        TextField dur = new TextField(Integer.toString(user.getDuration()) + " Mnths");
+        dur.setEditable(false);
+
+        Label userRem = new Label("Length Remaining: ");
+        form.setHalignment(userRem, HPos.RIGHT);
+        TextField rem = new TextField(Integer.toString(user.getLenRemain()) + " Mnths");
+        rem.setEditable(false);
+
+        Label userLoanOp = new Label("Loan Available?: ");
+        form.setHalignment(userLoanOp, HPos.RIGHT);
+        TextField avail = new TextField();
+        if(user.isLoanOption()){
+            avail.setText("Yes!");
+        } else {
+            avail.setText("No");
+        }
+        avail.setEditable(false);
+
+
+        form.add(userCon, 0, 0); form.add(con, 1, 0);
+        form.add(userSqNum, 3, 0); form.add(sqNum, 4, 0);
+        form.add(userDur, 0, 2); form.add(dur, 1, 2);
+        form.add(userRem, 3, 2); form.add(rem, 4, 2);
+        form.add(userLoanOp, 0, 4); form.add(avail, 1, 4);
+
+        account.setCenter(form);
+
+
+        return account;
+    }
 
 
 
