@@ -1,5 +1,6 @@
 package client;
 
+import java.sql.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TitledPane;

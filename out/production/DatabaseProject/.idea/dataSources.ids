@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - MySQLIH@localhost" uuid="a8052aad-4931-49e0-8559-75ffe05c2aee">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source name="MySQL - @localhost" uuid="9d17bd15-61c6-4fd6-b84a-3566f4334efd">
+    <database-info product="MySQL" version="5.7.11-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.4">
+      <schema id="1" name="imrantemp"/>
+      <table id="2" parent="1" name="names"/>
+      <column id="3" parent="2" name="firstName">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="4" parent="2" name="lastName">
+        <data-type>varchar(255)</data-type>
+      </column>
+    </database-model>
+  </data-source>
+  <data-source name="Oracle - @dbhost.ugrad.cs.ubc.ca" uuid="85d11089-833b-47fc-9607-878dd332912b">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+</component>
