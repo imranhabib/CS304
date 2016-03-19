@@ -11,11 +11,12 @@ import Objects.player;
  */
 public class database {
 
-    String dbName = "Put your local db URL here";
+    String dbName = "jdbc:mysql://localhost:3306?useSSL=false";
     Connection dbConnect;
     database connection;
     String username = "Put your local DB username here";
     String password = "Put your local DB password here";
+
     int userSqNum;
 
 

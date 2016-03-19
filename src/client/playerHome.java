@@ -3,25 +3,23 @@ package client;
 import Objects.contract;
 import Objects.player;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.sql.Array;
 import java.sql.Connection;
@@ -32,7 +30,10 @@ import java.util.ArrayList;
  */
 public class playerHome {
 
+    public String loginTitle = "Please enter your squad number below to gain access to the portal";
     public String playerTitle = "Player Portal";
+    public String loginTitle2 = "Portal Access";
+    public String submitBox = "Squad Number";
     public String playerInformation = "Welcome to the Player Management Application. Click menu to get started";
     public String accountInfo = "Select to view your personal information";
     public String contractInfo = "Select to view your contract information";
@@ -40,6 +41,11 @@ public class playerHome {
     public String advancedSearchInfo = "Select to begin an advanced search";
     public String accountChangeHistory = "Select to view recent account changes";
     public String[] menuItems = {"Personal Information", "Contract Information", "Search","Advanced Search","Account Change History"};
+    private Font fontSmall = Font.font("Calibri Light", FontWeight.THIN, 20);
+    private Font fontSuperSmall = Font.font("Calibri Light", FontWeight.THIN, 10);
+    private Font fontLarge = Font.font("Calibri Light", FontWeight.THIN, 30);
+    private Font fontLargeBold = Font.font("Calibri Light", FontWeight.BOLD, 30);
+
     database db;
     Connection dbConnect;
     BorderPane root;
@@ -48,11 +54,16 @@ public class playerHome {
 
     public playerHome(){
         Stage playerStage = new Stage();
-
+        playerStage.setTitle("Player Portal");
+        playerStage.initStyle(StageStyle.DECORATED);
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-        Scene playerScene = new Scene(createBorderPane(), primaryScreenBounds.getMinX(), primaryScreenBounds.getMinY());
+
+        // first make the user type in the number
+       // Scene loginScene = new Scene(userLogin(), primaryScreenBounds.getMinX(),primaryScreenBounds.getMinY());
+       Scene playerScene = new Scene(createBorderPane(), primaryScreenBounds.getMinX(), primaryScreenBounds.getMinY());
         playerStage.setScene(playerScene);
         db = getDatabase(sqNum);
+      //  playerStage.setScene(loginScene);
         playerStage.show();
 
     }
@@ -61,11 +72,11 @@ public class playerHome {
     public BorderPane createBorderPane(){
         root = new BorderPane();
         TextField tpain = new TextField();
-        tpain.setFont(Font.font("Calibri Light", FontWeight.THIN, 30));
+        tpain.setFont(fontLarge);
         tpain.setText(playerTitle);
         tpain.setEditable(false);
         TextField playerInfo = new TextField(playerInformation);
-        playerInfo.setFont(Font.font("Calibri Light", FontWeight.THIN, 20));
+        playerInfo.setFont(fontSmall);
 
 
 
@@ -84,6 +95,85 @@ public class playerHome {
         return root;
 
     }
+
+
+
+    public BorderPane userLogin(){
+        root = new BorderPane();
+        TitledPane tpain = new TitledPane();
+        tpain.setFont(fontLarge);
+        tpain.setText(loginTitle2);
+        tpain.setPadding(new Insets(10, 10, 10 , 10));
+        root.setPadding(new Insets(15, 10, 10, 15));
+        Text title = new Text(loginTitle);
+        tpain.setContent(title);
+        tpain.setFont(fontSmall);
+        TextField playerInfo = new TextField(playerInformation);
+        playerInfo.setFont(fontSmall);
+
+
+
+        root.setTop(tpain);
+
+        //Set middle part of window
+        GridPane layout = new GridPane();
+        layout.setHgap(10);
+        layout.setVgap(10);
+        layout.setPadding(new Insets(20, 10, 0, 10));
+
+        ColumnConstraints leftColumn = new ColumnConstraints();
+        leftColumn.setPercentWidth(100);
+        layout.getColumnConstraints().addAll(leftColumn);
+
+
+
+
+
+        Label loginLabel = new Label(loginTitle);
+        loginLabel.setFont(fontSmall);
+        final TextField input = new TextField();
+        input.setFont(fontSmall);
+
+        final Button submitButton = new Button("Submit");
+
+        submitButton.setFont(fontSmall);
+        submitButton.setTooltip(new Tooltip("Click to submit squad number"));
+
+
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //checkButtonInput(input.getText());
+            }
+        });
+
+
+
+
+
+        Label vertLabel = new Label(submitBox);
+        vertLabel.setFont(fontSmall);
+
+
+        VBox stackBox = new VBox();
+        stackBox.setSpacing(5);
+        stackBox.setPadding(new Insets(50, 10, 10, 10));
+
+        stackBox.getChildren().addAll(vertLabel, input, submitButton);
+
+        layout.setGridLinesVisible(true);
+        layout.getChildren().add(stackBox);
+
+        root.setCenter(layout);
+
+
+
+
+
+        return root;
+
+    }
+
 
     public GridPane createInnerWindow(){
         GridPane layout = new GridPane();
@@ -382,7 +472,12 @@ public class playerHome {
         return account;
     }
 
-
+//    public boolean checkButtonInput(String input){
+//        boolean isValid;
+//        if(NumberUtils input)
+//    }
+//
+//
 
 
 
