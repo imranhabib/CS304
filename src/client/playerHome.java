@@ -71,11 +71,10 @@ public class playerHome {
         root = new BorderPane();
 
         // first make the user type in the number
-        mainScene = new Scene(root, primaryScreenBounds.getMinX(),primaryScreenBounds.getMinY());
+        mainScene = new Scene(root, 1000,1000);
         userLogin();
         playerStage.setScene(mainScene);
         playerStage.show();
-
     }
 
 

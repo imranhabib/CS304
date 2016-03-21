@@ -3,6 +3,7 @@ package client;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import Objects.contract;
 import Objects.player;
@@ -17,8 +18,9 @@ public class database {
     Connection dbConnect;
     database connection;
     String username = "root";
-    String password = "*";
+    String password = "whatsername";
     int userSqNum;
+    int userSIN;
 
 
 
@@ -31,6 +33,8 @@ public class database {
         try {
             System.out.println(dbName);
             Connection connect = DriverManager.getConnection(dbName, username, password);
+
+            System.out.println("reached");
             return connect;
         } catch (Exception e) {
             System.out.println(e);
@@ -97,7 +101,7 @@ public class database {
                 result.next();
             }
 
-        return leagues;
+            return leagues;
 
         } catch (SQLException e){
             System.out.println(e);
@@ -122,15 +126,28 @@ public class database {
     }
 
 
+    public boolean checkIfManagerSINExists(Connection connection){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(checkIfManagerSINIsValid(userSIN));
+            result.first();
+            //Need print line below dont delete
+            System.out.println(result.getString("Name"));
+            return true;
+        } catch (SQLException e){
+            System.out.println(e);
+            return false;
+        }
 
-    public void breakDBConnection(){}
-
+    }
 
 
     /*
     SQL queries
      */
 
+
+    // PLAYER QUERIES
     private String getUserAccountInformation(int squadNumber){
         String stmt = new String("SELECT * FROM managementapplication.player WHERE SquadNumber=" + squadNumber);
         return stmt;
@@ -160,6 +177,18 @@ public class database {
 
 
 
+
+
+    // MANAGER QUERIES
+    private String checkIfManagerSINIsValid(int SIN){
+        String stmt = new String("SELECT * FROM managementapplication.manager WHERE SIN=" + SIN);
+        return stmt;
+    }
+
+    private String getManagerInformation(int SIN){
+        String stmt = new String("SELECT * FROM managementapplication.manager WHERE SIN=" + SIN);
+        return stmt;
+    }
 
 
 

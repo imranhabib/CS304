@@ -141,7 +141,6 @@ public class splashPage extends Application {
             }
         });
 
-
         managerButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
