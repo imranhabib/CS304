@@ -14,9 +14,8 @@ public class database {
     String dbName = "jdbc:mysql://localhost:3306?useSSL=false";
     Connection dbConnect;
     database connection;
-    String username = "Put your local DB username here";
-    String password = "Put your local DB password here";
-
+    String username = "root";
+    String password = "*";
     int userSqNum;
 
 
@@ -74,6 +73,20 @@ public class database {
 
     }
 
+    public boolean checkIfSquadNumberExists(Connection connection){
+        try{
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(checkIfSquadNumberIsValid(userSqNum));
+            result.first();
+            System.out.println(result.getInt("SquadNumber"));
+            return true;
+        } catch (SQLException e){
+            System.out.println(e);
+            return false;
+        }
+
+    }
+
 
 
     public void breakDBConnection(){}
@@ -98,6 +111,12 @@ public class database {
     private String getUserContractInformationByContractNumber(int contractNumber){
         String stmt = new String("SELECT * FROM managementapplication.contract WHERE SquadNumber=" + contractNumber);
         return stmt;
+    }
+
+    private String checkIfSquadNumberIsValid(int squadNumber){
+        String stmt = new String("SELECT * FROM managementapplication.player WHERE SquadNumber=" + squadNumber) ;
+        return stmt;
+
     }
 
 

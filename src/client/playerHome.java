@@ -2,6 +2,7 @@ package client;
 
 import Objects.contract;
 import Objects.player;
+import com.sun.media.jfxmedia.events.PlayerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -14,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -45,39 +47,39 @@ public class playerHome {
     private Font fontSuperSmall = Font.font("Calibri Light", FontWeight.THIN, 10);
     private Font fontLarge = Font.font("Calibri Light", FontWeight.THIN, 30);
     private Font fontLargeBold = Font.font("Calibri Light", FontWeight.BOLD, 30);
+    public BorderPane root;
 
+
+    public int userSquadNumber;
     database db;
     Connection dbConnect;
-    BorderPane root;
-    int sqNum = 10;
+     Scene mainScene;
+    Stage playerStage;
+    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
 
     public playerHome(){
-        Stage playerStage = new Stage();
+        playerStage = new Stage();
         playerStage.setTitle("Player Portal");
         playerStage.initStyle(StageStyle.DECORATED);
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        root = new BorderPane();
 
         // first make the user type in the number
-       // Scene loginScene = new Scene(userLogin(), primaryScreenBounds.getMinX(),primaryScreenBounds.getMinY());
-       Scene playerScene = new Scene(createBorderPane(), primaryScreenBounds.getMinX(), primaryScreenBounds.getMinY());
-        playerStage.setScene(playerScene);
-        db = getDatabase(sqNum);
-      //  playerStage.setScene(loginScene);
+        mainScene = new Scene(root, primaryScreenBounds.getMinX(),primaryScreenBounds.getMinY());
+        userLogin();
+        playerStage.setScene(mainScene);
         playerStage.show();
 
     }
 
 
-    public BorderPane createBorderPane(){
-        root = new BorderPane();
-        TextField tpain = new TextField();
+    public void createBorderPane(){
+        final TextField tpain = new TextField();
         tpain.setFont(fontLarge);
         tpain.setText(playerTitle);
         tpain.setEditable(false);
         TextField playerInfo = new TextField(playerInformation);
         playerInfo.setFont(fontSmall);
-
 
 
         root.setTop(tpain);
@@ -86,21 +88,17 @@ public class playerHome {
         GridPane layout = createInnerWindow();
         root.setCenter(layout);
 
-
         //Set left part of window
         root.setLeft(leftWindow());
 
-
-
-        return root;
 
     }
 
 
 
-    public BorderPane userLogin(){
-        root = new BorderPane();
-        TitledPane tpain = new TitledPane();
+    public void userLogin(){
+        //root = new BorderPane();
+        final TitledPane tpain = new TitledPane();
         tpain.setFont(fontLarge);
         tpain.setText(loginTitle2);
         tpain.setPadding(new Insets(10, 10, 10 , 10));
@@ -110,8 +108,6 @@ public class playerHome {
         tpain.setFont(fontSmall);
         TextField playerInfo = new TextField(playerInformation);
         playerInfo.setFont(fontSmall);
-
-
 
         root.setTop(tpain);
 
@@ -124,9 +120,6 @@ public class playerHome {
         ColumnConstraints leftColumn = new ColumnConstraints();
         leftColumn.setPercentWidth(100);
         layout.getColumnConstraints().addAll(leftColumn);
-
-
-
 
 
         Label loginLabel = new Label(loginTitle);
@@ -143,12 +136,31 @@ public class playerHome {
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //checkButtonInput(input.getText());
+                String msg = "'" + input.getText() + "'";
+                Label errorLabel = new Label(msg  + " is not a valid input. Please input a number.");
+                errorLabel.setFont(fontLarge);
+                errorLabel.setTextFill(Color.web("red"));
+                root.setBottom(errorLabel);
+                if(checkButtonInput(input.getText())){
+                   errorLabel.setVisible(false);
+                    userSquadNumber = Integer.parseInt(input.getText());
+                    System.out.println(userSquadNumber);
+                    db = getDatabase(userSquadNumber);
+                    boolean valid = checkSquadNumberValid(db);
+
+                    if(valid) {
+                        createBorderPane();
+                    } else {
+                        errorLabel.setText("Squad Number: " + msg + " does not exist");
+                        errorLabel.setVisible(true);
+                    }
+               } else {
+                  errorLabel.setVisible(true);
+
+               }
+
             }
         });
-
-
-
 
 
         Label vertLabel = new Label(submitBox);
@@ -161,16 +173,10 @@ public class playerHome {
 
         stackBox.getChildren().addAll(vertLabel, input, submitButton);
 
-        layout.setGridLinesVisible(true);
+        layout.setGridLinesVisible(false);
         layout.getChildren().add(stackBox);
 
         root.setCenter(layout);
-
-
-
-
-
-        return root;
 
     }
 
@@ -188,10 +194,8 @@ public class playerHome {
         rightColumn.setPercentWidth(50);
         layout.getColumnConstraints().addAll(leftColumn, rightColumn);
 
-
         return layout;
     }
-
 
 
     public database getDatabase(int sqNum){
@@ -213,9 +217,7 @@ public class playerHome {
             leftSide.getChildren().add(menuList.get(i));
         }
 
-
         ArrayList<Button> menuButtonList = new ArrayList<Button>();
-
 
         return leftSide;
     }
@@ -472,12 +474,30 @@ public class playerHome {
         return account;
     }
 
-//    public boolean checkButtonInput(String input){
-//        boolean isValid;
-//        if(NumberUtils input)
-//    }
-//
-//
+    public boolean checkButtonInput(String input){
+        boolean isValid;
+        try {
+            Integer.parseInt(input, 10);
+            isValid = true;
+        } catch (NumberFormatException x){
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    public boolean checkSquadNumberValid(database db){
+        boolean sqdNumberValid;
+        if(db.checkIfSquadNumberExists(dbConnect)){
+            sqdNumberValid = true;
+            return sqdNumberValid;
+        } else {
+            sqdNumberValid = false;
+            return sqdNumberValid;
+        }
+    }
+
+
+
 
 
 
