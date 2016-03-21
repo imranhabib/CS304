@@ -10,14 +10,14 @@ public class contract {
 
 
     contract userContract;
-    ResultSet details;
+    private ResultSet details;
 
     //Contract attributes
-    int lenRemain;
-    int duration;
-    boolean loanOption;
-    int squadNumber;
-    int contractNum;
+    private int lenRemain;
+    private int duration;
+    private boolean loanOption;
+    private int squadNumber;
+    private int contractNum;
 
     public contract(int lenRemain, int duration, boolean loanOption, int contractNum, int squadNumber){
         this.lenRemain = lenRemain;

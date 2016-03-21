@@ -11,16 +11,16 @@ public class player {
     player user;
 
     //Player attributes
-    String position;
-    int price;
-    String name;
-    int age;
-    int salary;
-    String nationality;
-    int squadNumber;
-    boolean availability;
-    int rating;
-    ResultSet details;
+    private String position;
+    private int price;
+    private String name;
+    private int age;
+    private int salary;
+    private String nationality;
+    private int squadNumber;
+    private boolean availability;
+    private int rating;
+    private ResultSet details;
 
 
     public player getUser() {
@@ -136,14 +136,6 @@ public class player {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public ResultSet getDetails() {
-        return details;
-    }
-
-    public void setDetails(ResultSet details) {
-        this.details = details;
     }
 
 

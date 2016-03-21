@@ -105,7 +105,6 @@ public class splashPage extends Application {
         managerInstructions.setFont(Font.font("Calibri Light", FontWeight.THIN, 20));
         managerInstructions.setEditable(false);
         managerInstructions.setDisable(true);
-       // managerInstructions.setBackground(Region.Color.GOLD);
 
 
         final Button playerButton = new Button("Enter");

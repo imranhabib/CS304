@@ -2,9 +2,11 @@ package client;
 
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import Objects.contract;
 import Objects.player;
+import Objects.league;
 
 /**
  * Created by Imran on 2016-02-25.
@@ -47,7 +49,7 @@ public class database {
     }
 
     public contract selectUserContractInformationBySquadNumber(Connection connection){
-        try{
+        try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getUserContractInformationBySquadNumber(userSqNum));
             contract userContract = new contract(result);
@@ -61,7 +63,7 @@ public class database {
 
 
     public player selectAllAccountInformation(Connection connection){
-        try{
+        try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getUserAccountInformation(userSqNum));
             player user = new player(result);
@@ -73,11 +75,45 @@ public class database {
 
     }
 
+
+    public ArrayList<league> getAllLeagues(Connection connection){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(getAllLeagueInformation());
+            result.first();
+            ArrayList<league> leagues = new ArrayList<league>();
+            int rowNums = 0;
+            while (result.next()) {
+                ++rowNums;
+            }
+            if (rowNums == 0) {
+                //handle this case later
+                System.out.println("No records found");
+            }
+            result.first();
+            for(int i = 0; i < rowNums; i++){
+                leagues.add(new league(result.getInt("Number of Teams"),result.getString("Country"), result.getString("Country"),
+                        result.getString("Sponsor")));
+                System.out.println(result.getString("Country"));
+                result.next();
+
+            }
+
+        return leagues;
+
+        } catch (SQLException e){
+            System.out.println(e);
+            return null;
+        }
+
+    }
+
     public boolean checkIfSquadNumberExists(Connection connection){
-        try{
+        try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(checkIfSquadNumberIsValid(userSqNum));
             result.first();
+            //Need print line below dont delete
             System.out.println(result.getInt("SquadNumber"));
             return true;
         } catch (SQLException e){
@@ -118,6 +154,12 @@ public class database {
         return stmt;
 
     }
+
+    private String getAllLeagueInformation(){
+        String stmt = new String("SELECT * FROM managementapplication.league");
+        return stmt;
+    }
+
 
 
 
