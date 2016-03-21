@@ -82,21 +82,19 @@ public class database {
             ResultSet result = stmt.executeQuery(getAllLeagueInformation());
             result.first();
             ArrayList<league> leagues = new ArrayList<league>();
-            int rowNums = 0;
+            int rows = 0;
             while (result.next()) {
-                ++rowNums;
+                ++rows;
             }
-            if (rowNums == 0) {
+            if (rows == 0) {
                 //handle this case later
                 System.out.println("No records found");
             }
             result.first();
-            for(int i = 0; i < rowNums; i++){
-                leagues.add(new league(result.getInt("Number of Teams"),result.getString("Country"), result.getString("Country"),
+            for(int i = 0; i < rows + 1; i++){
+                leagues.add(new league(result.getInt("Teams"),result.getString("Country"), result.getString("Country"),
                         result.getString("Sponsor")));
-                System.out.println(result.getString("Country"));
                 result.next();
-
             }
 
         return leagues;

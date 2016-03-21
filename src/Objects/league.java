@@ -30,19 +30,6 @@ public class league {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     public String getName() {
         return name;
     }

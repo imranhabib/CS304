@@ -1,8 +1,10 @@
 package client;
 
 import Objects.contract;
+import Objects.league;
 import Objects.player;
 import com.sun.media.jfxmedia.events.PlayerStateEvent;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -10,6 +12,7 @@ import javafx.event.EventType;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 import java.sql.Array;
 import java.sql.Connection;
@@ -48,6 +52,8 @@ public class playerHome {
     private Font fontLarge = Font.font("Calibri Light", FontWeight.THIN, 30);
     private Font fontLargeBold = Font.font("Calibri Light", FontWeight.BOLD, 30);
     public BorderPane root;
+    public int numberOfTeams;
+    public Pagination page;
 
 
     public int userSquadNumber;
@@ -310,7 +316,13 @@ public class playerHome {
         root.setCenter(createUserAccount(user));
     }
     public void searchAction(){
-        System.out.println("2");
+        ArrayList<league> l = db.getAllLeagues(dbConnect);
+        numberOfTeams = l.size();
+        for(int i = 0; i < l.size(); i++){
+            System.out.println(l.get(i).getCountry());
+        }
+
+        root.setCenter(createLeaguePages(l));
     }
     public void contractAction(){
        contract userContract = db.selectUserContractInformationBySquadNumber(dbConnect);
@@ -498,6 +510,86 @@ public class playerHome {
 
 
 
+    public BorderPane createLeaguePages(final ArrayList<league> l){
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+
+        page = new Pagination(numberOfTeams);
+
+        page.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer index) {
+                ArrayList<BorderPane> panes = new ArrayList<BorderPane>();
+//                for(int i = 0; i < l.size(); i++) {
+//                    panes.add(leagueInfoPage(l.get(i)));
+//                }
+//                //return panes;
+                return null;
+            }
+        });
+
+        account.setCenter(page);
+
+
+
+
+        return account;
+
+
+
+
+    }
+
+    public BorderPane leagueInfoPage(league l){
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+
+        //Title
+        TextField title = new TextField("League Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+        account.setTop(title);
+        //Body
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label leagueName = new Label("Name: ");
+        form.setHalignment(leagueName, HPos.RIGHT);
+        TextField lname = new TextField(l.getName());
+        lname.setEditable(false);
+
+
+        Label leagueCountry = new Label("Country: ");
+        form.setHalignment(leagueCountry, HPos.RIGHT);
+        TextField lcountry = new TextField(l.getCountry());
+        lcountry.setEditable(false);
+
+        Label leagueSponsor = new Label("Sponsor: ");
+        form.setHalignment(leagueSponsor, HPos.RIGHT);
+        TextField lSpon = new TextField(l.getSponsor());
+        lSpon.setEditable(false);
+
+        Label leagueTeams = new Label("Teams in League: ");
+        form.setHalignment(leagueTeams, HPos.RIGHT);
+        TextField lTeams = new TextField(Integer.toString(l.getNumberOfTeams()));
+        lTeams.setEditable(false);
+
+
+        form.add(leagueName, 0, 0); form.add(lname, 1, 0);
+        form.add(leagueCountry, 3, 0); form.add(lcountry, 4, 0);
+        form.add(leagueSponsor, 0, 2); form.add(lSpon, 1, 2);
+        form.add(leagueTeams, 3, 2); form.add(lTeams, 4, 2);
+
+        account.setCenter(form);
+
+
+        return account;
+
+    }
 
 
 
@@ -524,8 +616,23 @@ public class playerHome {
 
 
 
-
-
+//    private class pagination extends Application {
+//        private Pagination page;
+//
+//
+//
+//
+//        @Override
+//        public void start(final Stage stage) throws Exception {
+//            page = new Pagination(numberOfTeams, 0);
+//            page.setPageFactory(new Callback<Integer, Node>() {
+//                @Override
+//                public Node call(Integer pageIndex) {
+//                    return createPage(pageIndex);
+//                }
+//            });
+//    }
+//
 
 
 
