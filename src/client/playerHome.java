@@ -46,7 +46,14 @@ public class playerHome {
     public String searchInfo = "Select to begin a basic search";
     public String advancedSearchInfo = "Select to begin an advanced search";
     public String accountChangeHistory = "Select to view recent account changes";
+    public String myTeam = "Select to view your team information";
+    public String allTeams = "Select to view all teams information";
+    public String allPlayers = "Select to view all player information";
+    public String allGoverningBodies = "Select to view information for all governing bodies";
+    public String allLeagues = "Select to view all leagues";
+    public String allManagers = "Select to view all managers";
     public String[] menuItems = {"Personal Information", "Contract Information", "Search","Advanced Search","Account Change History"};
+    public String[] searchItems = {"My Team", "All Teams", "All Players", "All Governing Bodies", "All Leagues", "All Managers"};
     private Font fontSmall = Font.font("Calibri Light", FontWeight.THIN, 20);
     private Font fontSuperSmall = Font.font("Calibri Light", FontWeight.THIN, 10);
     private Font fontLarge = Font.font("Calibri Light", FontWeight.THIN, 30);
@@ -229,10 +236,36 @@ public class playerHome {
     }
 
 
+    public VBox leftWindowForSearch(){
+        VBox leftSide = new VBox();
+        leftSide.setSpacing(10);
+        leftSide.setPadding(new Insets(10));
+
+
+        ArrayList<TitledPane> searchList = new ArrayList<TitledPane>();
+        for(int i = 0; i < searchItems.length; i++){
+            searchList.add(createSearchPane(searchItems[i]));
+            leftSide.setMargin(searchList.get(i), new Insets(0, 0, 0, 8));
+            leftSide.getChildren().add(searchList.get(i));
+        }
+
+
+
+
+        return leftSide;
+    }
+
+
+
+
+
+
     public TitledPane createTPane(String title){
         VBox root = new VBox();
         root.setSpacing(10);
         root.setPadding(new Insets(10));
+
+
 
         TitledPane pane = new TitledPane();
         pane.setFont(Font.font("Calibri Light", FontWeight.THIN, 20));
@@ -279,10 +312,128 @@ public class playerHome {
     }
 
 
+
+    public TitledPane createSearchPane(String title){
+        VBox root = new VBox();
+        root.setSpacing(10);
+        root.setPadding(new Insets(10));
+
+
+
+        TitledPane pane = new TitledPane();
+        pane.setFont(Font.font("Calibri Light", FontWeight.THIN, 15));
+        pane.setText(title);
+
+        TextField rootTitle = new TextField();
+        rootTitle.setFont(Font.font("Calibri Light", FontWeight.THIN, 10));
+        rootTitle.setEditable(false);
+
+        Button menuButton;
+
+        if(title.equals(searchItems[0])){
+            rootTitle.setText(myTeam);
+            menuButton = createSearchButtons(searchItems[0]);
+            root.getChildren().addAll(rootTitle, menuButton);
+        }
+        if(title.equals(searchItems[1])){
+            rootTitle.setText(allTeams);
+            menuButton = createSearchButtons(searchItems[1]);
+            root.getChildren().addAll(rootTitle, menuButton);
+        }
+
+        if(title.equals(searchItems[2])){
+            rootTitle.setText(allPlayers);
+            menuButton = createSearchButtons(searchItems[2]);
+            root.getChildren().addAll(rootTitle, menuButton);
+        }
+
+        if(title.equals(searchItems[3])){
+            rootTitle.setText(allGoverningBodies);
+            menuButton = createSearchButtons(searchItems[3]);
+            root.getChildren().addAll(rootTitle, menuButton);
+        }
+
+        if(title.equals(searchItems[4])){
+            rootTitle.setText(allLeagues);
+            menuButton = createSearchButtons(searchItems[4]);
+            root.getChildren().addAll(rootTitle, menuButton);
+        }
+
+        if(title.equals(searchItems[5])){
+            rootTitle.setText(allManagers);
+            menuButton = createSearchButtons(searchItems[5]);
+            root.getChildren().addAll(rootTitle, menuButton);
+        }
+
+        pane.setContent(root);
+        pane.setExpanded(false);
+        return pane;
+    }
+
+
+    public Button createSearchButtons(String title){
+        final String actionTitle = title;
+        final Button searchButton = new Button(title);
+        searchButton.setFont(Font.font("Calibri Light", FontWeight.THIN, 15));
+        searchButton.setStyle("-fx-focus-color: transparent; -fx-background-color: cadetblue");
+
+        searchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(actionTitle.equals(searchItems[0])) {
+                    myTeamAction();
+                }
+                if(actionTitle.equals(searchItems[1])) {
+                    allTeamsAction();
+                }
+                if(actionTitle.equals(searchItems[2])) {
+                    allPlayersAction();
+                }
+                if(actionTitle.equals(searchItems[3])) {
+                    allGoverningBodiesAction();
+                }
+                if(actionTitle.equals(searchItems[4])) {
+                    allLeaguesAction();
+                }
+                if(actionTitle.equals(searchItems[5])) {
+                    allManagersAction();
+                }
+
+            }
+        });
+
+        return searchButton;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Button createMenuButtons(String title){
         final String actionTitle = title;
         final Button menuButton = new Button(title);
-        menuButton.setFont(Font.font("Calibri Light", FontWeight.THIN, 20));
+        menuButton.setFont(Font.font("Calibri Light", FontWeight.THIN, 15));
+        menuButton.setStyle("-fx-focus-color: transparent; -fx-background-color: cadetblue");
 
         menuButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -316,13 +467,10 @@ public class playerHome {
         root.setCenter(createUserAccount(user));
     }
     public void searchAction(){
-        ArrayList<league> l = db.getAllLeagues(dbConnect);
-        numberOfTeams = l.size();
-        for(int i = 0; i < l.size(); i++){
-            System.out.println(l.get(i).getCountry());
-        }
-
-        root.setCenter(createLeaguePages(l));
+        BorderPane borders = new BorderPane();
+        borders.setPadding(new Insets(20, 10, 0, 10));
+        borders.setLeft(leftWindowForSearch());
+        root.setCenter(borders);
     }
     public void contractAction(){
        contract userContract = db.selectUserContractInformationBySquadNumber(dbConnect);
@@ -334,6 +482,42 @@ public class playerHome {
     public void changesAction(){
         System.out.println("4");
     }
+
+
+
+
+    public void myTeamAction(){}
+    public void allTeamsAction(){}
+    public void allLeaguesAction(){
+        ArrayList<league> l = db.getAllLeagues(dbConnect);
+        numberOfTeams = l.size();
+        for(int i = 0; i < l.size(); i++){
+            System.out.println(l.get(i).getCountry());
+        }
+
+        root.setCenter(createLeaguePages(l));
+    }
+    public void allGoverningBodiesAction(){}
+    public void allPlayersAction(){}
+    public void allManagersAction(){}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -513,34 +697,23 @@ public class playerHome {
     public BorderPane createLeaguePages(final ArrayList<league> l){
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(20, 10, 0, 10));
-
         page = new Pagination(numberOfTeams);
-
+        page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
         page.setPageFactory(new Callback<Integer, Node>() {
             @Override
             public Node call(Integer index) {
-                ArrayList<BorderPane> panes = new ArrayList<BorderPane>();
-//                for(int i = 0; i < l.size(); i++) {
-//                    panes.add(leagueInfoPage(l.get(i)));
-//                }
-//                //return panes;
-                return null;
+                System.out.println(index);
+               return leagueInfoPage(l, index);
             }
         });
 
         account.setCenter(page);
-
-
-
-
         return account;
-
-
-
 
     }
 
-    public BorderPane leagueInfoPage(league l){
+    public BorderPane leagueInfoPage(ArrayList<league> l, int index){
+
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(20, 10, 0, 10));
 
@@ -559,23 +732,24 @@ public class playerHome {
 
         Label leagueName = new Label("Name: ");
         form.setHalignment(leagueName, HPos.RIGHT);
-        TextField lname = new TextField(l.getName());
+        TextField lname = new TextField(l.get(index).getName());
+        System.out.println("this is name " + l.get(index).getName());
         lname.setEditable(false);
 
 
         Label leagueCountry = new Label("Country: ");
         form.setHalignment(leagueCountry, HPos.RIGHT);
-        TextField lcountry = new TextField(l.getCountry());
+        TextField lcountry = new TextField(l.get(index).getCountry());
         lcountry.setEditable(false);
 
         Label leagueSponsor = new Label("Sponsor: ");
         form.setHalignment(leagueSponsor, HPos.RIGHT);
-        TextField lSpon = new TextField(l.getSponsor());
+        TextField lSpon = new TextField(l.get(index).getSponsor());
         lSpon.setEditable(false);
 
         Label leagueTeams = new Label("Teams in League: ");
         form.setHalignment(leagueTeams, HPos.RIGHT);
-        TextField lTeams = new TextField(Integer.toString(l.getNumberOfTeams()));
+        TextField lTeams = new TextField(Integer.toString(l.get(index).getNumberOfTeams()));
         lTeams.setEditable(false);
 
 
@@ -590,56 +764,6 @@ public class playerHome {
         return account;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    private class pagination extends Application {
-//        private Pagination page;
-//
-//
-//
-//
-//        @Override
-//        public void start(final Stage stage) throws Exception {
-//            page = new Pagination(numberOfTeams, 0);
-//            page.setPageFactory(new Callback<Integer, Node>() {
-//                @Override
-//                public Node call(Integer pageIndex) {
-//                    return createPage(pageIndex);
-//                }
-//            });
-//    }
-//
-
-
-
-
-
-
-
 
 
 }

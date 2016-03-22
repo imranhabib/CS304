@@ -17,7 +17,7 @@ public class database {
     Connection dbConnect;
     database connection;
     String username = "root";
-    String password = "*";
+    String password = "Alpha051214.";
     int userSqNum;
 
 
@@ -92,8 +92,8 @@ public class database {
             }
             result.first();
             for(int i = 0; i < rows + 1; i++){
-                leagues.add(new league(result.getInt("Teams"),result.getString("Country"), result.getString("Country"),
-                        result.getString("Sponsor")));
+                leagues.add(new league(result.getInt("Teams"),result.getString("Country"), result.getString("Sponsor"),
+                        result.getString("Name")));
                 result.next();
             }
 
