@@ -1,5 +1,6 @@
 package client;
 
+import Objects.GBody;
 import Objects.contract;
 import Objects.league;
 import Objects.player;
@@ -60,6 +61,7 @@ public class playerHome {
     private Font fontLargeBold = Font.font("Calibri Light", FontWeight.BOLD, 30);
     public BorderPane root;
     public int numberOfTeams;
+    public int numberOfGBodies;
     public Pagination page;
 
 
@@ -412,22 +414,6 @@ public class playerHome {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public Button createMenuButtons(String title){
         final String actionTitle = title;
         final Button menuButton = new Button(title);
@@ -490,13 +476,12 @@ public class playerHome {
     public void allLeaguesAction(){
         ArrayList<league> l = db.getAllLeagues(dbConnect);
         numberOfTeams = l.size();
-        for(int i = 0; i < l.size(); i++){
-            System.out.println(l.get(i).getCountry());
-        }
-
         root.setCenter(createLeaguePages(l));
     }
-    public void allGoverningBodiesAction(){}
+    public void allGoverningBodiesAction(){
+        ArrayList<GBody> g = db.getAllGBodies(dbConnect);
+        numberOfGBodies = g.size();
+        root.setCenter(createGbodyPages(g));}
     public void allPlayersAction(){}
     public void allManagersAction(){}
 
@@ -763,6 +748,82 @@ public class playerHome {
         return account;
 
     }
+
+
+    public BorderPane createGbodyPages(final ArrayList<GBody> g){
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+        page = new Pagination(numberOfGBodies);
+        page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+        page.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer index) {
+                System.out.println(index);
+                return gbodyInfoPage(g, index);
+            }
+        });
+
+        account.setCenter(page);
+        return account;
+
+    }
+    public BorderPane gbodyInfoPage(ArrayList<GBody> g, int index){
+
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+
+        //Title
+        TextField title = new TextField("Governing Body Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+        account.setTop(title);
+        //Body
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label gBodyName = new Label("Name: ");
+        form.setHalignment(gBodyName, HPos.RIGHT);
+        TextField gname = new TextField(g.get(index).getName());
+        gname.setEditable(false);
+
+
+        Label gBodyHQ= new Label("HQ: ");
+        form.setHalignment(gBodyHQ, HPos.RIGHT);
+        TextField gHQ = new TextField(g.get(index).getHQ());
+        gHQ.setEditable(false);
+
+        Label gBodyPresident = new Label("President: ");
+        form.setHalignment(gBodyPresident, HPos.RIGHT);
+        TextField gPres = new TextField(g.get(index).getPresident());
+        gPres.setEditable(false);
+
+
+
+        form.add(gBodyName, 0, 0); form.add(gname, 1, 0);
+        form.add(gBodyHQ, 3, 0); form.add(gHQ, 4, 0);
+        form.add(gBodyPresident, 0, 2); form.add(gPres, 1, 2);
+
+        account.setCenter(form);
+
+
+        return account;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

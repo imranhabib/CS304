@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import Objects.GBody;
 import Objects.contract;
 import Objects.player;
 import Objects.league;
@@ -110,6 +111,41 @@ public class database {
 
     }
 
+
+
+    public ArrayList<GBody> getAllGBodies(Connection connection){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(getAllGBodyInformation());
+            result.first();
+            ArrayList<GBody> gbodies = new ArrayList<GBody>();
+            int rows = 0;
+            while (result.next()) {
+                ++rows;
+            }
+            if (rows == 0) {
+                //handle this case later
+                System.out.println("No records found");
+            }
+            result.first();
+            for(int i = 0; i < rows + 1; i++){
+                gbodies.add(new GBody(result.getInt("Revenue"),result.getString("Name"), result.getString("President"),
+                        result.getString("HQ")));
+                result.next();
+            }
+
+            return gbodies;
+
+        } catch (SQLException e){
+            System.out.println(e);
+            return null;
+        }
+
+    }
+
+
+
+
     public boolean checkIfSquadNumberExists(Connection connection){
         try {
             Statement stmt = connection.createStatement();
@@ -175,7 +211,10 @@ public class database {
         return stmt;
     }
 
-
+    private String getAllGBodyInformation(){
+        String stmt = new String("SELECT * FROM managementapplication.governingbody");
+        return stmt;
+    }
 
 
 
