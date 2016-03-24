@@ -5,10 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import Objects.GBody;
-import Objects.contract;
-import Objects.player;
-import Objects.league;
+import Objects.*;
 
 /**
  * Created by Imran on 2016-02-25.
@@ -19,7 +16,7 @@ public class database {
     Connection dbConnect;
     database connection;
     String username = "root";
-    String password = "Alpha051214.";
+    String password = "whatsername";
     int userSqNum;
     int userSIN;
 
@@ -113,6 +110,38 @@ public class database {
 
 
 
+    public ArrayList<team> getAllTeams(Connection connection){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(getAllTeamInformation());
+            result.first();
+            ArrayList<team> teams = new ArrayList<team>();
+            int rows = 0;
+            while (result.next()) {
+                ++rows;
+            }
+            if (rows == 0) {
+                //handle this case later
+                System.out.println("No records found");
+            }
+            result.first();
+            for(int i = 0; i < rows + 1; i++){
+                teams.add(new team(result.getInt("Team ID"),result.getString("TM Slogan"), result.getInt("Budget"),
+                        result.getString("Name")));
+                result.next();
+            }
+
+            return teams;
+
+        } catch (SQLException e){
+            System.out.println(e);
+            return null;
+        }
+
+    }
+
+
+
     public ArrayList<GBody> getAllGBodies(Connection connection){
         try {
             Statement stmt = connection.createStatement();
@@ -142,6 +171,15 @@ public class database {
         }
 
     }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -215,6 +253,12 @@ public class database {
         String stmt = new String("SELECT * FROM managementapplication.governingbody");
         return stmt;
     }
+
+    private String getAllTeamInformation(){
+        String stmt = new String("SELECT * FROM managementapplication.team");
+        return stmt;
+    }
+
 
 
 

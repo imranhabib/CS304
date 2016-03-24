@@ -1,9 +1,6 @@
 package client;
 
-import Objects.GBody;
-import Objects.contract;
-import Objects.league;
-import Objects.player;
+import Objects.*;
 import com.sun.media.jfxmedia.events.PlayerStateEvent;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -62,6 +59,7 @@ public class playerHome {
     public BorderPane root;
     public int numberOfTeams;
     public int numberOfGBodies;
+    public int numberOfLeagues;
     public Pagination page;
 
 
@@ -80,7 +78,7 @@ public class playerHome {
         root = new BorderPane();
 
         // first make the user type in the number
-        mainScene = new Scene(root, 1000,1000);
+        mainScene = new Scene(root, 600,600);
         userLogin();
         playerStage.setScene(mainScene);
         playerStage.show();
@@ -472,10 +470,14 @@ public class playerHome {
 
 
     public void myTeamAction(){}
-    public void allTeamsAction(){}
+    public void allTeamsAction(){
+        ArrayList<team> t = db.getAllTeams(dbConnect);
+        numberOfTeams = t.size();
+        root.setCenter(createTeamPages(t));
+    }
     public void allLeaguesAction(){
         ArrayList<league> l = db.getAllLeagues(dbConnect);
-        numberOfTeams = l.size();
+        numberOfLeagues = l.size();
         root.setCenter(createLeaguePages(l));
     }
     public void allGoverningBodiesAction(){
@@ -681,7 +683,7 @@ public class playerHome {
     public BorderPane createLeaguePages(final ArrayList<league> l){
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(20, 10, 0, 10));
-        page = new Pagination(numberOfTeams);
+        page = new Pagination(numberOfLeagues);
         page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
         page.setPageFactory(new Callback<Integer, Node>() {
             @Override
@@ -741,6 +743,72 @@ public class playerHome {
         form.add(leagueCountry, 3, 0); form.add(lcountry, 4, 0);
         form.add(leagueSponsor, 0, 2); form.add(lSpon, 1, 2);
         form.add(leagueTeams, 3, 2); form.add(lTeams, 4, 2);
+
+        account.setCenter(form);
+
+
+        return account;
+
+    }
+
+
+    public BorderPane createTeamPages(final ArrayList<team> t){
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+        page = new Pagination(numberOfTeams);
+        page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+        page.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer index) {
+                return teamInfoPage(t, index);
+            }
+        });
+
+        account.setCenter(page);
+        return account;
+
+    }
+
+
+    public BorderPane teamInfoPage(ArrayList<team> t, int index){
+
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+
+        //Title
+        TextField title = new TextField("Team Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+        account.setTop(title);
+        //Body
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label teamName = new Label("Name: ");
+        form.setHalignment(teamName, HPos.RIGHT);
+        TextField tname = new TextField(t.get(index).getName());
+        tname.setEditable(false);
+
+
+        Label teamSlogan= new Label("Slogan: ");
+        form.setHalignment(teamSlogan, HPos.RIGHT);
+        TextField tSlo = new TextField(t.get(index).getTMSlogan());
+        tSlo.setEditable(false);
+
+        Label teamLeague = new Label("League goes here l8r: ");
+        form.setHalignment(teamLeague, HPos.RIGHT);
+        TextField tLeague = new TextField(Integer.toString(t.get(index).getTeamId()));
+        tLeague.setEditable(false);
+
+
+
+        form.add(teamName, 0, 0); form.add(tname, 1, 0);
+        form.add(teamSlogan, 3, 0); form.add(tSlo, 4, 0);
+        form.add(teamLeague, 0, 2); form.add(tLeague, 1, 2);
 
         account.setCenter(form);
 
@@ -813,8 +881,6 @@ public class playerHome {
         return account;
 
     }
-
-
 
 
 
