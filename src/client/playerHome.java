@@ -3,6 +3,8 @@ package client;
 import Objects.*;
 import com.sun.media.jfxmedia.events.PlayerStateEvent;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -587,6 +589,26 @@ public class playerHome {
         form.add(userAvailability, 3, 6); form.add(avail, 4, 6);
         form.add(userRating, 0, 8); form.add(rate, 1, 8);
 
+
+
+
+        final Button userInfoChange = new Button("Update Information");
+        userInfoChange.setFont(fontSmall);
+        userInfoChange.setTooltip(new Tooltip("Click to change your personal information"));
+
+        final player tempPlayer = user;
+        userInfoChange.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+               root.setCenter(launchUserInfoUpdatePage(tempPlayer));
+            }
+        });
+
+
+        account.setBottom(userInfoChange);
+
+
+
         account.setCenter(form);
 
 
@@ -884,7 +906,71 @@ public class playerHome {
 
 
 
+    public BorderPane launchUserInfoUpdatePage(player user){
+        BorderPane updatePage = new BorderPane();
+        updatePage.setPadding(new Insets(20, 10, 0, 10));
 
+        //Title
+        TextField title = new TextField("Update Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+
+        updatePage.setTop(title);
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label userName = new Label("Name: ");
+        form.setHalignment(userName, HPos.RIGHT);
+        TextField uname = new TextField();
+        uname.setEditable(true);
+        Label oldName = new Label("Current Name: " + user.getName());
+
+        ObservableList<String> options =
+                FXCollections.observableArrayList(
+                        "Yes",
+                        "No"
+                );
+        final ComboBox available = new ComboBox(options);
+
+
+        Label userAvail= new Label("Available: ");
+        form.setHalignment(userAvail, HPos.RIGHT);
+        Label oldAvail = new Label();
+
+
+        if(user.isAvailability()){
+            oldAvail.setText("Current Availability: Yes");
+        } else {
+            oldAvail.setText("Current Availability: No");
+        }
+
+        Button confirmButton = new Button("Submit Changes");
+
+        confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //Put calls to update database here
+            }
+        });
+
+
+        form.add(userName, 0, 0); form.add(uname, 1, 0);
+        form.add(oldName, 1, 1);
+        form.add(userAvail, 0, 3); form.add(available, 1, 3);
+        form.add(oldAvail, 1,4);
+
+        updatePage.setCenter(form);
+        updatePage.setBottom(confirmButton);
+
+
+        return updatePage;
+
+
+    }
 
 
 
