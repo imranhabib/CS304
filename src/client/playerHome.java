@@ -925,7 +925,7 @@ public class playerHome {
 
         Label userName = new Label("Name: ");
         form.setHalignment(userName, HPos.RIGHT);
-        TextField uname = new TextField();
+        final TextField uname = new TextField();
         uname.setEditable(true);
         Label oldName = new Label("Current Name: " + user.getName());
 
@@ -948,12 +948,33 @@ public class playerHome {
             oldAvail.setText("Current Availability: No");
         }
 
+        VBox bottomBox = new VBox();
+        bottomBox.setSpacing(5);
+        bottomBox.setPadding(new Insets(50, 10, 10, 10));
+
+        final Label errorLabel = new Label("Not a valid input. Please input a name.");
+        errorLabel.setFont(fontSmall);
+        errorLabel.setTextFill(Color.web("red"));
+        errorLabel.setVisible(false);
+
         Button confirmButton = new Button("Submit Changes");
+        confirmButton.setFont(fontSmall);
+
+
+        bottomBox.getChildren().addAll(errorLabel, confirmButton);
+
 
         confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //Put calls to update database here
+                if(nameChangeIsValid(uname.getText())){
+                    errorLabel.setVisible(false);
+                    //make call to db to change name
+                } else{
+                    errorLabel.setVisible(true);
+                }
+
+                //make call to db to change avail if avail changes
             }
         });
 
@@ -964,12 +985,25 @@ public class playerHome {
         form.add(oldAvail, 1,4);
 
         updatePage.setCenter(form);
-        updatePage.setBottom(confirmButton);
+        updatePage.setBottom(bottomBox);
 
 
         return updatePage;
 
 
+    }
+
+
+
+    public boolean nameChangeIsValid(String input){
+        try {
+            System.out.println(input);
+            Integer.parseInt(input);
+            return false;
+        } catch (NumberFormatException e){
+            System.out.println("here");
+            return true;
+        }
     }
 
 
