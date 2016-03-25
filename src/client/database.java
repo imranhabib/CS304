@@ -215,6 +215,29 @@ public class database {
 
     }
 
+    public void changePlayerName(Connection connection, String name){
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(updatePlayerName(name));
+        } catch(SQLException e){
+
+        }
+    }
+
+
+    public void changePlayerAvailability(Connection connection, int availability){
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(updatePlayerAvailability(availability));
+        } catch(SQLException e){
+
+        }
+    }
+
+
+
+
+
 
     /*
     SQL queries
@@ -258,6 +281,22 @@ public class database {
         String stmt = new String("SELECT * FROM managementapplication.team");
         return stmt;
     }
+
+
+    private String updatePlayerName(String name){
+        String stmt = new String("UPDATE managementapplication.player SET Name='" + name + "' " + "WHERE SquadNumber=" + userSqNum);
+        return stmt;
+    }
+
+
+    private String updatePlayerAvailability(int availability){
+        String stmt = new String("UPDATE managementapplication.player SET Availability='" + availability + "' " + "WHERE SquadNumber=" + userSqNum);
+        return stmt;
+    }
+
+
+
+
 
 
 

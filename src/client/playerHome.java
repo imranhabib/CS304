@@ -447,6 +447,10 @@ public class playerHome {
 
 
 
+    /*
+    Methods that call database
+     */
+
     public void accountAction(){
        player user = db.selectAllAccountInformation(dbConnect);
         root.setCenter(createUserAccount(user));
@@ -470,7 +474,6 @@ public class playerHome {
 
 
 
-
     public void myTeamAction(){}
     public void allTeamsAction(){
         ArrayList<team> t = db.getAllTeams(dbConnect);
@@ -488,6 +491,21 @@ public class playerHome {
         root.setCenter(createGbodyPages(g));}
     public void allPlayersAction(){}
     public void allManagersAction(){}
+
+    public void updatePlayerName(String name){
+        db.changePlayerName(dbConnect, name);
+    }
+
+    public void updatePlayerAvailability(Object avail){
+        int availability;
+        if (avail.equals("Yes")){
+            availability = 1;
+        } else {
+            availability = 0;
+        }
+        db.changePlayerAvailability(dbConnect, availability);
+    }
+
 
 
 
@@ -906,7 +924,7 @@ public class playerHome {
 
 
 
-    public BorderPane launchUserInfoUpdatePage(player user){
+    public BorderPane launchUserInfoUpdatePage(final player user){
         BorderPane updatePage = new BorderPane();
         updatePage.setPadding(new Insets(20, 10, 0, 10));
 
@@ -944,8 +962,10 @@ public class playerHome {
 
         if(user.isAvailability()){
             oldAvail.setText("Current Availability: Yes");
+            available.setValue("Yes");
         } else {
             oldAvail.setText("Current Availability: No");
+            available.setValue("No");
         }
 
         VBox bottomBox = new VBox();
@@ -967,14 +987,26 @@ public class playerHome {
         confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(nameChangeIsValid(uname.getText())){
+                boolean isAvailChanged = false;
+                if(uname.getText().isEmpty()){
+                    uname.setText(user.getName());
+                }
+                if(!available.getValue().equals(user.isAvailability())){
+                    isAvailChanged = true;
+                }
+                if(nameChangeIsValid(uname.getText()) && isAvailChanged) {
                     errorLabel.setVisible(false);
-                    //make call to db to change name
+                    updatePlayerName(uname.getText());
+                    updatePlayerAvailability(available.getValue());
+                    accountAction();
+                } else if (nameChangeIsValid(uname.getText()) && !isAvailChanged){
+                    errorLabel.setVisible(false);
+                    updatePlayerName(uname.getText());
+                    accountAction();
                 } else{
                     errorLabel.setVisible(true);
                 }
 
-                //make call to db to change avail if avail changes
             }
         });
 
@@ -996,17 +1028,14 @@ public class playerHome {
 
 
     public boolean nameChangeIsValid(String input){
+
         try {
-            System.out.println(input);
             Integer.parseInt(input);
             return false;
         } catch (NumberFormatException e){
-            System.out.println("here");
             return true;
         }
     }
-
-
 
 
 
