@@ -62,6 +62,7 @@ public class playerHome {
     public int numberOfTeams;
     public int numberOfGBodies;
     public int numberOfLeagues;
+    public int numberOfManagers;
     public Pagination page;
 
 
@@ -80,7 +81,7 @@ public class playerHome {
         root = new BorderPane();
 
         // first make the user type in the number
-        mainScene = new Scene(root, 600,600);
+        mainScene = new Scene(root, 800,600);
         userLogin();
         playerStage.setScene(mainScene);
         playerStage.show();
@@ -111,7 +112,6 @@ public class playerHome {
 
 
     public void userLogin(){
-        //root = new BorderPane();
         final TitledPane tpain = new TitledPane();
         tpain.setFont(fontLarge);
         tpain.setText(loginTitle2);
@@ -466,8 +466,28 @@ public class playerHome {
         root.setCenter(createUserContract(userContract));
     }
     public void advancedSearchAction(){
-        System.out.println("3");
+        advancedSearch advanSearch = new advancedSearch();
+        BorderPane shell = advanSearch.createAdvanShell();
+
+
+        root.setCenter(shell);
+
+
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
     public void changesAction(){
         System.out.println("4");
     }
@@ -490,7 +510,12 @@ public class playerHome {
         numberOfGBodies = g.size();
         root.setCenter(createGbodyPages(g));}
     public void allPlayersAction(){}
-    public void allManagersAction(){}
+    public void allManagersAction(){
+        ArrayList<manager> m = db.getAllManagers(dbConnect);
+        numberOfManagers = m.size();
+        root.setCenter(createManagerPages(m));
+
+    }
 
     public void updatePlayerName(String name){
         db.changePlayerName(dbConnect, name);
@@ -875,6 +900,10 @@ public class playerHome {
         return account;
 
     }
+
+
+
+
     public BorderPane gbodyInfoPage(ArrayList<GBody> g, int index){
 
         BorderPane account = new BorderPane();
@@ -921,6 +950,73 @@ public class playerHome {
         return account;
 
     }
+
+
+
+    public BorderPane createManagerPages(final ArrayList<manager> m){
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+        page = new Pagination(numberOfManagers);
+        page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+        page.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer index) {
+                System.out.println(index);
+                return managerInfoPage(m, index);
+            }
+        });
+
+        account.setCenter(page);
+        return account;
+
+    }
+
+
+
+    public BorderPane managerInfoPage(ArrayList<manager> m, int index){
+
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+
+        //Title
+        TextField title = new TextField("Manager Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+        account.setTop(title);
+        //Body
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label managerName = new Label("Name: ");
+        form.setHalignment(managerName, HPos.RIGHT);
+        TextField mname = new TextField(m.get(index).getName());
+        mname.setEditable(false);
+
+
+        Label managerTeam= new Label("Team: ");
+        form.setHalignment(managerTeam, HPos.RIGHT);
+        TextField mTeam = new TextField(m.get(index).getName());
+        mTeam.setEditable(false);
+
+
+        form.add(managerName, 0, 0); form.add(mname, 1, 0);
+        form.add(managerTeam, 3, 0); form.add(mTeam, 4, 0);
+
+        account.setCenter(form);
+
+
+        return account;
+
+    }
+
+
+
+
+
 
 
 
