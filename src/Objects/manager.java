@@ -43,8 +43,6 @@ public class manager {
         return formattedUser;
     }
 
-
-
     public String getName() {
         return name;
     }

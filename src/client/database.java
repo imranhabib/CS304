@@ -24,7 +24,9 @@ public class database {
 
     public database(int sqNum){
         this.userSqNum = sqNum;
+        userSIN = sqNum;
     }
+
 
 
     public Connection createDBConnection(){
@@ -77,6 +79,18 @@ public class database {
 
     }
 
+    public manager selectAllManagerAccountInformation(Connection connection){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(getManagerInformation(userSIN));
+            manager user = new manager(result);
+            return user.formatManagerDetails();
+        } catch (SQLException e){
+            System.out.println(e);
+            return null;
+        }
+
+    }
 
     public ArrayList<league> getAllLeagues(Connection connection){
         try {
@@ -206,7 +220,7 @@ public class database {
             ResultSet result = stmt.executeQuery(checkIfManagerSINIsValid(userSIN));
             result.first();
             //Need print line below dont delete
-            System.out.println(result.getString("Name"));
+            System.out.println(result.getString("SIN"));
             return true;
         } catch (SQLException e){
             System.out.println(e);
