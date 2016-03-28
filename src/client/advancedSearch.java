@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -167,8 +168,11 @@ public class advancedSearch {
 
         account.setTop(title);
         //Body
+
+
         return account;
     }
+
     public BorderPane handleManagerSearch(){
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(20, 10, 0, 10));

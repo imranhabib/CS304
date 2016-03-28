@@ -2,14 +2,12 @@ package client;
 
 
 import java.sql.*;
+import java.time.Duration;
 import java.util.ArrayList;
 
 
 import Objects.*;
 
-/**
- * Created by Imran on 2016-02-25.
- */
 public class database {
 
     String dbName = "jdbc:mysql://localhost:3306?useSSL=false";
@@ -21,14 +19,13 @@ public class database {
     int userSIN;
 
 
-
-    public database(int sqNum){
+    public database(int sqNum) {
         this.userSqNum = sqNum;
         userSIN = sqNum;
     }
 
 
-    public Connection createDBConnection(){
+    public Connection createDBConnection() {
         try {
             System.out.println(dbName);
             Connection connect = DriverManager.getConnection(dbName, username, password);
@@ -40,22 +37,22 @@ public class database {
         }
     }
 
-    public void insert (Connection connection, String firstName, String lastName){
+    public void insert(Connection connection, String firstName, String lastName) {
         try {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("INSERT into names " + "VALUES(firstName, lastName)");
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
         }
     }
 
-    public contract selectUserContractInformationBySquadNumber(Connection connection){
+    public contract selectUserContractInformationBySquadNumber(Connection connection) {
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getUserContractInformationBySquadNumber(userSqNum));
             contract userContract = new contract(result);
             return userContract.formatContractDetails();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
             return null;
         }
@@ -63,33 +60,33 @@ public class database {
     }
 
 
-    public player selectAllAccountInformation(Connection connection){
+    public player selectAllAccountInformation(Connection connection) {
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getUserAccountInformation(userSqNum));
             player user = new player(result);
             return user.formatPlayerDetails();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
             return null;
         }
 
     }
 
-    public manager selectAllManagerAccountInformation(Connection connection){
+    public manager selectAllManagerAccountInformation(Connection connection) {
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getManagerInformation(userSIN));
             manager user = new manager(result);
             return user.formatManagerDetails();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
             return null;
         }
 
     }
 
-    public ArrayList<league> getAllLeagues(Connection connection){
+    public ArrayList<league> getAllLeagues(Connection connection) {
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getAllLeagueInformation());
@@ -104,15 +101,15 @@ public class database {
                 System.out.println("No records found");
             }
             result.first();
-            for(int i = 0; i < rows + 1; i++){
-                leagues.add(new league(result.getInt("Teams"),result.getString("Country"), result.getString("Sponsor"),
+            for (int i = 0; i < rows + 1; i++) {
+                leagues.add(new league(result.getInt("Teams"), result.getString("Country"), result.getString("Sponsor"),
                         result.getString("Name")));
                 result.next();
             }
 
             return leagues;
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
             return null;
         }
@@ -120,8 +117,7 @@ public class database {
     }
 
 
-
-    public ArrayList<team> getAllTeams(Connection connection){
+    public ArrayList<team> getAllTeams(Connection connection) {
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getAllTeamInformation());
@@ -136,15 +132,15 @@ public class database {
                 System.out.println("No records found");
             }
             result.first();
-            for(int i = 0; i < rows + 1; i++){
-                teams.add(new team(result.getInt("Team ID"),result.getString("TM Slogan"), result.getInt("Budget"),
+            for (int i = 0; i < rows + 1; i++) {
+                teams.add(new team(result.getInt("Team ID"), result.getString("TM Slogan"), result.getInt("Budget"),
                         result.getString("Name")));
                 result.next();
             }
 
             return teams;
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
             return null;
         }
@@ -152,8 +148,7 @@ public class database {
     }
 
 
-
-    public ArrayList<GBody> getAllGBodies(Connection connection){
+    public ArrayList<GBody> getAllGBodies(Connection connection) {
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getAllGBodyInformation());
@@ -168,15 +163,15 @@ public class database {
                 System.out.println("No records found");
             }
             result.first();
-            for(int i = 0; i < rows + 1; i++){
-                gbodies.add(new GBody(result.getInt("Revenue"),result.getString("Name"), result.getString("President"),
+            for (int i = 0; i < rows + 1; i++) {
+                gbodies.add(new GBody(result.getInt("Revenue"), result.getString("Name"), result.getString("President"),
                         result.getString("HQ")));
                 result.next();
             }
 
             return gbodies;
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
             return null;
         }
@@ -184,7 +179,7 @@ public class database {
     }
 
 
-    public ArrayList<manager> getAllManagers(Connection connection){
+    public ArrayList<manager> getAllManagers(Connection connection) {
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getAllManagerInformation());
@@ -199,14 +194,14 @@ public class database {
                 System.out.println("No records found");
             }
             result.first();
-            for(int i = 0; i < rows + 1; i++){
+            for (int i = 0; i < rows + 1; i++) {
                 managers.add(new manager(result.getString("Name")));
                 result.next();
             }
 
             return managers;
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
             return null;
         }
@@ -214,15 +209,7 @@ public class database {
     }
 
 
-
-
-
-
-
-
-
-
-    public boolean checkIfSquadNumberExists(Connection connection){
+    public boolean checkIfSquadNumberExists(Connection connection) {
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(checkIfSquadNumberIsValid(userSqNum));
@@ -230,7 +217,7 @@ public class database {
             //Need print line below dont delete
             System.out.println(result.getInt("SquadNumber"));
             return true;
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
             return false;
         }
@@ -238,7 +225,7 @@ public class database {
     }
 
 
-    public boolean checkIfManagerSINExists(Connection connection){
+    public boolean checkIfManagerSINExists(Connection connection) {
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(checkIfManagerSINIsValid(userSIN));
@@ -246,28 +233,28 @@ public class database {
             //Need print line below dont delete
             System.out.println(result.getString("SIN"));
             return true;
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
             return false;
         }
 
     }
 
-    public void changePlayerName(Connection connection, String name){
+    public void changePlayerName(Connection connection, String name) {
         try {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(updatePlayerName(name));
-        } catch(SQLException e){
+        } catch (SQLException e) {
 
         }
     }
 
 
-    public void changePlayerAvailability(Connection connection, int availability){
+    public void changePlayerAvailability(Connection connection, int availability) {
         try {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(updatePlayerAvailability(availability));
-        } catch(SQLException e){
+        } catch (SQLException e) {
 
         }
     }
@@ -283,77 +270,471 @@ public class database {
 
 
     // PLAYER QUERIES
-    private String getUserAccountInformation(int squadNumber){
+    private String getUserAccountInformation(int squadNumber) {
         String stmt = new String("SELECT * FROM managementapplication.player WHERE SquadNumber=" + squadNumber);
         return stmt;
     }
 
-    private String getUserContractInformationBySquadNumber(int squadNumber){
+    private String getUserContractInformationBySquadNumber(int squadNumber) {
         String stmt = new String("SELECT * FROM managementapplication.contract WHERE SquadNumber=" + squadNumber);
         return stmt;
     }
 
 
-    private String getUserContractInformationByContractNumber(int contractNumber){
+    private String getUserContractInformationByContractNumber(int contractNumber) {
         String stmt = new String("SELECT * FROM managementapplication.contract WHERE SquadNumber=" + contractNumber);
         return stmt;
     }
 
-    private String checkIfSquadNumberIsValid(int squadNumber){
-        String stmt = new String("SELECT * FROM managementapplication.player WHERE SquadNumber=" + squadNumber) ;
+    private String checkIfSquadNumberIsValid(int squadNumber) {
+        String stmt = new String("SELECT * FROM managementapplication.player WHERE SquadNumber=" + squadNumber);
         return stmt;
 
     }
 
-    private String getAllLeagueInformation(){
+    private String getAllLeagueInformation() {
         String stmt = new String("SELECT * FROM managementapplication.league");
         return stmt;
     }
 
-    private String getAllGBodyInformation(){
+    private String getAllGBodyInformation() {
         String stmt = new String("SELECT * FROM managementapplication.governingbody");
         return stmt;
     }
 
-    private String getAllTeamInformation(){
+    private String getAllTeamInformation() {
         String stmt = new String("SELECT * FROM managementapplication.team");
         return stmt;
     }
 
 
-    private String getAllManagerInformation(){
+    private String getAllManagerInformation() {
         String stmt = new String("SELECT * FROM managementapplication.manager");
         return stmt;
     }
 
-    private String updatePlayerName(String name){
+    private String updatePlayerName(String name) {
         String stmt = new String("UPDATE managementapplication.player SET Name='" + name + "' " + "WHERE SquadNumber=" + userSqNum);
         return stmt;
     }
 
 
-    private String updatePlayerAvailability(int availability){
+    private String updatePlayerAvailability(int availability) {
         String stmt = new String("UPDATE managementapplication.player SET Availability='" + availability + "' " + "WHERE SquadNumber=" + userSqNum);
         return stmt;
     }
 
 
-
-
-
-
-
-
     // MANAGER QUERIES
-    private String checkIfManagerSINIsValid(int SIN){
+    private String checkIfManagerSINIsValid(int SIN) {
         String stmt = new String("SELECT * FROM managementapplication.manager WHERE SIN=" + SIN);
         return stmt;
     }
 
-    private String getManagerInformation(int SIN){
+    private String getManagerInformation(int SIN) {
         String stmt = new String("SELECT * FROM managementapplication.manager WHERE SIN=" + SIN);
         return stmt;
     }
+
+
+// ADVANCED SEARCH QUERIES
+
+    public String AdvancedSearchPlayer(String position, int price, String name, int age, int salary, String nationality,
+                                       int squadNumber, int availability, int rating) {
+
+        int and = 0;
+        String addAnd = "";
+
+        String SQLPlayerSearch = "SELECT * FROM managementapplication.player WHERE ";
+
+        if (position != "") {
+            SQLPlayerSearch = SQLPlayerSearch + "position = " + "'" + position + "'";
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (price != 0) {
+            SQLPlayerSearch = SQLPlayerSearch + addAnd + " price = " + price;
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (name != "") {
+            SQLPlayerSearch = SQLPlayerSearch + addAnd + " name = " + "'" + name + "'";
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (age != 0) {
+            SQLPlayerSearch = SQLPlayerSearch + addAnd + " age = " + age;
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (salary != 0) {
+            SQLPlayerSearch = SQLPlayerSearch + addAnd + " salary = " + salary;
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (nationality != "") {
+            SQLPlayerSearch = SQLPlayerSearch + addAnd + " nationality = " + "'" + nationality + "'";
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (squadNumber != 0) {
+            SQLPlayerSearch = SQLPlayerSearch + addAnd + " squadNumber = " + squadNumber;
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (availability != 2) {
+            SQLPlayerSearch = SQLPlayerSearch + addAnd + " availability = " + availability;
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (rating != 0) {
+            SQLPlayerSearch = SQLPlayerSearch + addAnd + " rating = " + rating;
+        }
+
+        String stmt = new String(SQLPlayerSearch);
+        System.out.println(stmt);
+        return stmt;
+
+    }
+
+
+    public String AdvancedSearchContract(int lenRemain, int duration, int loanOption, int squadNumber) {
+
+        int and = 0;
+        String addAnd = "";
+
+        String SQLContractSearch = "SELECT * FROM managementapplication.contract WHERE ";
+
+        if (lenRemain != 0) {
+            SQLContractSearch = SQLContractSearch + " LengthRemaining = " + lenRemain;
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (duration != 0) {
+            SQLContractSearch = SQLContractSearch + addAnd + " Duration = " + duration;
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (loanOption != 0) {
+            SQLContractSearch = SQLContractSearch + addAnd + " LoanOptions = " + loanOption;
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (squadNumber != 0) {
+            SQLContractSearch = SQLContractSearch + addAnd + " SquadNumber = " + squadNumber;
+        }
+
+        String stmt = new String(SQLContractSearch);
+        System.out.println(stmt);
+        return stmt;
+    }
+
+
+    public String AdvancedSearchManager(String name, int JobSecurity){
+
+        int and = 0;
+        String addAnd = "";
+
+        String SQLManagerSearch = "SELECT * FROM managementapplication.manager WHERE ";
+
+        if(name != ""){
+            SQLManagerSearch = SQLManagerSearch + " Name = " + "'" + name + "'";
+            and = 1;
+        }
+        if(and == 1){
+            addAnd = " AND ";
+        }
+        if(JobSecurity != 0){
+            SQLManagerSearch = SQLManagerSearch + addAnd + " JobSecurity = " + JobSecurity;
+        }
+
+        String stmt = new String(SQLManagerSearch);
+        System.out.println(stmt);
+        return stmt;
+    }
+
+
+    public String AdvancedSearchGBody(String name, String president, String HQ){
+
+        int and = 0;
+        String addAnd = "";
+
+        String SQLGBodySearch = "SELECT * FROM managementapplication.governingbody WHERE ";
+
+        if(name != ""){
+            SQLGBodySearch = SQLGBodySearch + " Name = " + "'" + name + "'";
+            and = 1;
+        }
+        if(and == 1 ){
+            addAnd = " AND ";
+        }
+        if(president != ""){
+            SQLGBodySearch = SQLGBodySearch + addAnd + " President = " + "'" + president + "'";
+            and = 1;
+        }
+        if(and == 1 ){
+            addAnd = " AND ";
+        }
+        if(HQ != ""){
+            SQLGBodySearch = SQLGBodySearch + addAnd + " HQ = " + "'" + HQ + "'";
+        }
+
+        String stmt = new String(SQLGBodySearch);
+        System.out.println(stmt);
+        return stmt;
+
+    }
+
+
+    public String AdvancedSearchLeague(int numberOfTeams, String country, String sponsor, String name){
+
+        int and = 0;
+        String addAnd = "";
+
+        String SQLLeagueSearch = "SELECT * FROM managementapplication.league WHERE ";
+
+
+        if(numberOfTeams != 0){
+            SQLLeagueSearch = SQLLeagueSearch + " Teams = " + numberOfTeams;
+            and = 1;
+        }
+        if(and == 1 ){
+            addAnd = " AND ";
+        }
+        if(country != ""){
+            SQLLeagueSearch = SQLLeagueSearch + addAnd + " Country = " + "'" + country + "'";
+            and = 1;
+        }
+        if(and == 1 ){
+            addAnd = " AND ";
+        }
+        if(sponsor != ""){
+            SQLLeagueSearch = SQLLeagueSearch + addAnd + " Sponsor = " + "'" + sponsor + "'";
+        }
+        if(and == 1 ){
+            addAnd = " AND ";
+        }
+        if(name != ""){
+            SQLLeagueSearch = SQLLeagueSearch + addAnd + " Name = " + "'" + name + "'";
+        }
+
+        String stmt = new String(SQLLeagueSearch);
+        System.out.println(stmt);
+        return stmt;
+
+    }
+
+
+    public String AdvancedSearchTeam(int teamId, String TMSlogan, String name){
+
+        int and = 0;
+        String addAnd = "";
+
+        String SQLTeamSearch = "SELECT * FROM managementapplication.team WHERE ";
+
+
+        if(teamId != 0){
+            SQLTeamSearch = SQLTeamSearch + " TeamID = " + teamId;
+            and = 1;
+        }
+        if(and == 1 ){
+            addAnd = " AND ";
+        }
+        if(TMSlogan != ""){
+            SQLTeamSearch = SQLTeamSearch + addAnd + " TMSlogan = " + "'" + TMSlogan + "'";
+            and = 1;
+        }
+        if(and == 1 ){
+            addAnd = " AND ";
+        }
+        if(name != ""){
+            SQLTeamSearch = SQLTeamSearch + addAnd + " Name = " + "'" + name + "'";
+        }
+
+        String stmt = new String(SQLTeamSearch);
+        System.out.println(stmt);
+        return stmt;
+    }
+
+
+    public String AdvancedPlayerContractJoin(String position, int price, String playername, int age, int salary, String nationality,
+                                        int playersquadNumber, int availability, int rating, int lenRemain, int duration,
+                                        int loanOption, int contractsquadNumber) {
+
+        int and = 0;
+        String addAnd = "";
+
+        String SQLPlayerContractJoin = "SELECT * FROM managementapplication.player JOIN managementapplication.contract ON contract.SquadNumber = player.SquadNumber WHERE ";
+
+
+        if (position != "") {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + "player.position = " + "'" + position + "'";
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (price != 0) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.price = " + price;
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (playername != "") {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.name = " + "'" + playername + "'";
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (age != 0) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.age = " + age;
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (salary != 0) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.salary = " + salary;
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (nationality != "") {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.nationality = " + "'" + nationality + "'";
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (playersquadNumber != 0) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.squadNumber = " + playersquadNumber;
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (availability != 2) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.availability = " + availability;
+            and = 1;
+
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (rating != 0) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.rating = " + rating;
+            and = 1;
+        }
+
+        if (lenRemain != 0) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " contract.LengthRemaining = " + lenRemain;
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (duration != 0) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " contract.Duration = " + duration;
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (loanOption != 0) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " contract.LoanOptions = " + loanOption;
+            and = 1;
+        }
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if (contractsquadNumber != 0) {
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " contract.SquadNumber = " + contractsquadNumber;
+        }
+
+        String stmt = new String (SQLPlayerContractJoin);
+        System.out.println(stmt);
+        return stmt;
+    }
+
+
+    public String AdvancedManagerTeamJoin(String managerName, int JobSecurity, int managerTeamId, int teamId, String TMSlogan, String teamName){
+
+        int and = 0;
+        String addAnd = "";
+
+        String SQLManagerTeamJoin = "SELECT * FROM managementapplication.manager JOIN managementapplication.team ON manager.managerTeamId = team.teamId WHERE ";
+
+        if(managerName != ""){
+            SQLManagerTeamJoin = SQLManagerTeamJoin + " Name = " + "'" + managerName + "'";
+            and = 1;
+        }
+        if(and == 1){
+            addAnd = " AND ";
+        }
+        if(JobSecurity != 0){
+            SQLManagerTeamJoin = SQLManagerTeamJoin + addAnd + " JobSecurity = " + JobSecurity;
+        }
+
+        if (and == 1) {
+            addAnd = " AND ";
+        }
+        if(teamId != 0){
+            SQLManagerTeamJoin = SQLManagerTeamJoin + addAnd + " TeamID = " + teamId;
+            and = 1;
+        }
+        if(and == 1 ){
+            addAnd = " AND ";
+        }
+        if(TMSlogan != ""){
+            SQLManagerTeamJoin = SQLManagerTeamJoin + addAnd + " TMSlogan = " + "'" + TMSlogan + "'";
+            and = 1;
+        }
+        if(and == 1 ){
+            addAnd = " AND ";
+        }
+        if(teamName != ""){
+            SQLManagerTeamJoin = SQLManagerTeamJoin + addAnd + " Name = " + "'" + teamName + "'";
+        }
+        String stmt = new String(SQLManagerTeamJoin);
+        System.out.println(stmt);
+        return stmt;
+
+    }
+
 
 
 

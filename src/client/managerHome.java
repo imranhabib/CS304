@@ -20,9 +20,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
-/**
- * Created by Imran on 2016-02-17.
- */
 public class managerHome {
 
     public String managerTitle = "Manager Portal";
@@ -313,7 +310,6 @@ public class managerHome {
         VBox root = new VBox();
         root.setSpacing(10);
         root.setPadding(new Insets(10));
-
 
 
         TitledPane pane = new TitledPane();
