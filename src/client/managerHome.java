@@ -443,10 +443,13 @@ public class managerHome {
         root.setCenter(borders);
     }
 
-    public void advancedSearchAction() {
-        System.out.println("3");
-    }
+    public void advancedSearchAction(){
+        advancedSearch advanSearch = new advancedSearch();
+        BorderPane shell = advanSearch.createAdvanShell();
 
+        root.setCenter(shell);
+
+    }
     public void myTeamAction(){}
 
     public void allTeamsAction(){
@@ -714,5 +717,8 @@ public class managerHome {
         return account;
 
     }
+
+
+
 
 }
