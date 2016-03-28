@@ -35,7 +35,7 @@ public class managerHome {
     public String searchInfo = "Select to begin a basic search";
     public String advancedSearchInfo = "Select to begin an advanced search";
     public String accountChangeHistory = "Select to view recent account changes";
-    public String[] menuItems = {"Personal Information", "Contract Information", "Search", "Advanced Search", "Account Change History"};
+    public String[] menuItems = {"Personal Information", "Search", "Advanced Search", "Account Change History"};
     public String[] searchItems = {"My Team", "All Teams", "All Players", "All Governing Bodies", "All Leagues", "All Managers"};
     public String myTeam = "Select to view your team information";
     public String allTeams = "Select to view all teams information";
@@ -70,7 +70,7 @@ public class managerHome {
         root = new BorderPane();
 
         // first make the user type in the number
-        mainScene = new Scene(root, 1000, 1000);
+        mainScene = new Scene(root, 800, 600);
         userLogin();
         managerStage.setScene(mainScene);
         managerStage.show();
@@ -286,21 +286,21 @@ public class managerHome {
             root.getChildren().addAll(rootTitle, menuButton);
         }
 
-        if (title.equals(menuItems[2])) {
+        if (title.equals(menuItems[1])) {
             rootTitle.setText(searchInfo);
+            menuButton = createMenuButtons(menuItems[1]);
+            root.getChildren().addAll(rootTitle, menuButton);
+        }
+
+        if (title.equals(menuItems[2])) {
+            rootTitle.setText(advancedSearchInfo);
             menuButton = createMenuButtons(menuItems[2]);
             root.getChildren().addAll(rootTitle, menuButton);
         }
 
         if (title.equals(menuItems[3])) {
-            rootTitle.setText(advancedSearchInfo);
-            menuButton = createMenuButtons(menuItems[3]);
-            root.getChildren().addAll(rootTitle, menuButton);
-        }
-
-        if (title.equals(menuItems[4])) {
             rootTitle.setText(accountChangeHistory);
-            menuButton = createMenuButtons(menuItems[4]);
+            menuButton = createMenuButtons(menuItems[3]);
             root.getChildren().addAll(rootTitle, menuButton);
         }
 
@@ -413,11 +413,14 @@ public class managerHome {
                 if (actionTitle.equals(menuItems[0])) {
                     accountAction();
                 }
-                if (actionTitle.equals(menuItems[2])) {
+                if (actionTitle.equals(menuItems[1])) {
                     searchAction();
                 }
-                if (actionTitle.equals(menuItems[3])) {
+                if (actionTitle.equals(menuItems[2])) {
                     advancedSearchAction();
+                }
+                if (actionTitle.equals(menuItems[3])) {
+                    changesAction();
                 }
 
 
@@ -469,6 +472,10 @@ public class managerHome {
 
     public void allPlayersAction(){}
     public void allManagersAction(){}
+
+    public void changesAction(){
+        System.out.println("4");
+    }
 
 
     public BorderPane createUserAccount(manager user){
