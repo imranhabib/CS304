@@ -81,7 +81,7 @@ public class playerHome {
         root = new BorderPane();
 
         // first make the user type in the number
-        mainScene = new Scene(root, 800,800);
+        mainScene = new Scene(root, 800,600);
         userLogin();
         playerStage.setScene(mainScene);
         playerStage.show();
@@ -112,7 +112,6 @@ public class playerHome {
 
 
     public void userLogin(){
-        //root = new BorderPane();
         final TitledPane tpain = new TitledPane();
         tpain.setFont(fontLarge);
         tpain.setText(loginTitle2);

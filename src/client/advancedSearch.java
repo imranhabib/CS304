@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -70,6 +71,11 @@ public class advancedSearch {
         TextField title = new TextField("Advanced Search");
         title.setEditable(false);
         title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+        title.setStyle("-fx-background-color: blanchedalmond");
+
+
+
 
         titlePane.setTop(title);
         shell.setCenter(titlePane);
@@ -157,6 +163,7 @@ public class advancedSearch {
         TextField title = new TextField("Advanced Player Search");
         title.setEditable(false);
         title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+        title.setStyle("-fx-background-color: blanchedalmond");
 
         account.setTop(title);
         //Body
@@ -170,6 +177,7 @@ public class advancedSearch {
         TextField title = new TextField("Advanced Manager Search");
         title.setEditable(false);
         title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+        title.setStyle("-fx-background-color: blanchedalmond");
 
         account.setTop(title);
         //Body
@@ -183,6 +191,7 @@ public class advancedSearch {
         TextField title = new TextField("Advanced League Search");
         title.setEditable(false);
         title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+        title.setStyle("-fx-background-color: blanchedalmond");
 
         account.setTop(title);
         //Body
@@ -196,6 +205,7 @@ public class advancedSearch {
         TextField title = new TextField("Advanced Contract Search");
         title.setEditable(false);
         title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+        title.setStyle("-fx-background-color: blanchedalmond");
 
         account.setTop(title);
         //Body
@@ -209,6 +219,7 @@ public class advancedSearch {
         TextField title = new TextField("Advanced Team Search");
         title.setEditable(false);
         title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+        title.setStyle("-fx-background-color: blanchedalmond");
 
         account.setTop(title);
         //Body
@@ -222,6 +233,7 @@ public class advancedSearch {
         TextField title = new TextField("Advanced Government Body Search");
         title.setEditable(false);
         title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+        title.setStyle("-fx-background-color: blanchedalmond");
 
         account.setTop(title);
         //Body
