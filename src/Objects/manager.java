@@ -34,13 +34,9 @@ public class manager {
 
     }
 
-    public manager formatManagerDetails() throws SQLException {
-        ResultSet information = details;
-        information.first();
+    public manager(String name){
+        this.name = name;
 
-        manager formattedUser = new manager(information.getString("name"), information.getInt("SIN"), information.getInt("JobSecurity"));
-
-        return formattedUser;
     }
 
 

@@ -3,7 +3,7 @@ package client;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
+
 
 import Objects.*;
 
@@ -31,8 +31,6 @@ public class database {
         try {
             System.out.println(dbName);
             Connection connect = DriverManager.getConnection(dbName, username, password);
-
-            System.out.println("reached");
             return connect;
         } catch (Exception e) {
             System.out.println(e);
@@ -173,7 +171,34 @@ public class database {
     }
 
 
+    public ArrayList<manager> getAllManagers(Connection connection){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(getAllManagerInformation());
+            result.first();
+            ArrayList<manager> managers = new ArrayList<manager>();
+            int rows = 0;
+            while (result.next()) {
+                ++rows;
+            }
+            if (rows == 0) {
+                //handle this case later
+                System.out.println("No records found");
+            }
+            result.first();
+            for(int i = 0; i < rows + 1; i++){
+                managers.add(new manager(result.getString("Name")));
+                result.next();
+            }
 
+            return managers;
+
+        } catch (SQLException e){
+            System.out.println(e);
+            return null;
+        }
+
+    }
 
 
 
@@ -282,6 +307,11 @@ public class database {
         return stmt;
     }
 
+
+    private String getAllManagerInformation(){
+        String stmt = new String("SELECT * FROM managementapplication.manager");
+        return stmt;
+    }
 
     private String updatePlayerName(String name){
         String stmt = new String("UPDATE managementapplication.player SET Name='" + name + "' " + "WHERE SquadNumber=" + userSqNum);
