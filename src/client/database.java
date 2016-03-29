@@ -260,9 +260,83 @@ public class database {
     }
 
 
+    public ResultSet searchAdvancePlayer(Connection connection, String position, int price, String name, int age, int salary, String nationality, int squadNumber, int availability, int rating){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchPlayer(position, price, name, age, salary, nationality, squadNumber, availability, rating));
+            result.first();
+            System.out.println(result.getString("name"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
+    public ResultSet searchAdvanceContract(Connection connection, int lenRemain, int duration, int loanOption, int squadNumber){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchContract(lenRemain, duration, loanOption, squadNumber));
+            result.first();
+            System.out.println(result.getString("squadNumber"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
+    public ResultSet searchAdvanceManager(Connection connection, String name, int JobSecurity){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchManager(name, JobSecurity));
+            result.first();
+            System.out.println(result.getString("name"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
+    public ResultSet searchAdvanceGBody(Connection connection, String name, String president, String HQ){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchGBody(name, president, HQ));
+            result.first();
+            System.out.println(result.getString("name"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public ResultSet searchAdvanceLeague(Connection connection, int numberofTeams, String country, String sponsor, String name){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchLeague(numberofTeams, country, sponsor, name));
+            result.first();
+            System.out.println(result.getString("name"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public ResultSet searchAdvanceTeam(Connection connection, int teamId, String slogan, String name){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchTeam(teamId, slogan, name));
+            result.first();
+            System.out.println(result.getString("name"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
     /*
     SQL queries
