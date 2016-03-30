@@ -308,12 +308,10 @@ public class advancedSearch {
         rootScroll.setContent(account);
 
 
-
-
-        //Body
         return rootScroll;
     }
     public ScrollPane handleManagerSearch(){
+
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(10, 5, 5, 5));
 

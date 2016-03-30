@@ -264,6 +264,7 @@ public class database {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(AdvancedSearchPlayer(position, price, name, age, salary, nationality, squadNumber, availability, rating));
             result.first();
+
             return result;
         } catch (SQLException e) {
             System.out.println(e);
@@ -271,8 +272,70 @@ public class database {
         }
     }
 
+    public ResultSet searchAdvanceContract(Connection connection, int lenRemain, int duration, int loanOption, int squadNumber){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchContract(lenRemain, duration, loanOption, squadNumber));
+            result.first();
+            System.out.println(result.getString("squadNumber"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
+    public ResultSet searchAdvanceManager(Connection connection, String name, int JobSecurity){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchManager(name, JobSecurity));
+            result.first();
+            System.out.println(result.getString("name"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
+    public ResultSet searchAdvanceGBody(Connection connection, String name, String president, String HQ){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchGBody(name, president, HQ));
+            result.first();
+            System.out.println(result.getString("name"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public ResultSet searchAdvanceLeague(Connection connection, int numberofTeams, String country, String sponsor, String name){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchLeague(numberofTeams, country, sponsor, name));
+            result.first();
+            System.out.println(result.getString("name"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public ResultSet searchAdvanceTeam(Connection connection, int teamId, String slogan, String name){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedSearchTeam(teamId, slogan, name));
+            result.first();
+            System.out.println(result.getString("name"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
     /*
     SQL queries
@@ -463,9 +526,10 @@ public class database {
 
         String stmt = new String(SQLContractSearch);
         System.out.println(stmt);
+
         return stmt;
     }
-
+    
 
     public String AdvancedSearchManager(String name, int JobSecurity){
 
@@ -595,8 +659,8 @@ public class database {
 
 
     public String AdvancedPlayerContractJoin(String position, int price, String playername, int age, int salary, String nationality,
-                                             int playersquadNumber, int availability, int rating, int lenRemain, int duration,
-                                             int loanOption, int contractsquadNumber) {
+                                        int playersquadNumber, int availability, int rating, int lenRemain, int duration,
+                                        int loanOption, int contractsquadNumber) {
 
         int and = 0;
         String addAnd = "";
@@ -699,6 +763,7 @@ public class database {
         System.out.println(stmt);
         return stmt;
     }
+
 
 
     public String AdvancedManagerTeamJoin(String managerName, int JobSecurity, int managerTeamId, int teamId, String TMSlogan, String teamName){
