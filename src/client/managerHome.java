@@ -447,7 +447,7 @@ public class managerHome {
     }
 
     public void advancedSearchAction(){
-        advancedSearch advanSearch = new advancedSearch();
+        advancedSearch advanSearch = new advancedSearch(db, dbConnect);
         BorderPane shell = advanSearch.createAdvanShell();
 
         root.setCenter(shell);

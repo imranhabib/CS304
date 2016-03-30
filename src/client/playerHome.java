@@ -71,7 +71,7 @@ public class playerHome {
     Connection dbConnect;
      Scene mainScene;
     Stage playerStage;
-    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
 
 
     public playerHome(){
@@ -199,7 +199,7 @@ public class playerHome {
         GridPane layout = new GridPane();
         layout.setHgap(10);
         layout.setVgap(10);
-        layout.setPadding(new Insets(20, 10, 0, 10));
+        layout.setPadding(new Insets(20, 10, 0, 9));
 
 
         ColumnConstraints leftColumn = new ColumnConstraints();
@@ -227,7 +227,7 @@ public class playerHome {
         ArrayList<TitledPane> menuList = new ArrayList<TitledPane>();
         for(int i = 0; i < menuItems.length; i++){
             menuList.add(createTPane(menuItems[i]));
-            leftSide.setMargin(menuList.get(i), new Insets(0, 0, 0, 8));
+            leftSide.setMargin(menuList.get(i), new Insets(0, 0, 0, 7));
             leftSide.getChildren().add(menuList.get(i));
         }
 
@@ -246,7 +246,7 @@ public class playerHome {
         ArrayList<TitledPane> searchList = new ArrayList<TitledPane>();
         for(int i = 0; i < searchItems.length; i++){
             searchList.add(createSearchPane(searchItems[i]));
-            leftSide.setMargin(searchList.get(i), new Insets(0, 0, 0, 8));
+            leftSide.setMargin(searchList.get(i), new Insets(0, 0, 0, 7));
             leftSide.getChildren().add(searchList.get(i));
         }
 
@@ -317,7 +317,7 @@ public class playerHome {
     public TitledPane createSearchPane(String title){
         VBox root = new VBox();
         root.setSpacing(10);
-        root.setPadding(new Insets(10));
+        root.setPadding(new Insets(9));
 
 
 
@@ -466,8 +466,14 @@ public class playerHome {
         root.setCenter(createUserContract(userContract));
     }
     public void advancedSearchAction(){
-        advancedSearch advanSearch = new advancedSearch();
+        advancedSearch advanSearch = new advancedSearch(db, dbConnect);
         BorderPane shell = advanSearch.createAdvanShell();
+
+
+
+
+
+
 
 
         root.setCenter(shell);
@@ -568,6 +574,7 @@ public class playerHome {
         form.setPadding(new Insets(20, 0, 20, 20));
         form.setHgap(7);
         form.setVgap(7);
+
 
         Label userName = new Label("Account Holder: ");
         form.setHalignment(userName, HPos.RIGHT);
@@ -747,13 +754,12 @@ public class playerHome {
 
     public BorderPane createLeaguePages(final ArrayList<league> l){
         BorderPane account = new BorderPane();
-        account.setPadding(new Insets(20, 10, 0, 10));
+        account.setPadding(new Insets(20, 10, 0, 9));
         page = new Pagination(numberOfLeagues);
         page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
         page.setPageFactory(new Callback<Integer, Node>() {
             @Override
             public Node call(Integer index) {
-                System.out.println(index);
                return leagueInfoPage(l, index);
             }
         });
@@ -766,7 +772,7 @@ public class playerHome {
     public BorderPane leagueInfoPage(ArrayList<league> l, int index){
 
         BorderPane account = new BorderPane();
-        account.setPadding(new Insets(20, 10, 0, 10));
+        account.setPadding(new Insets(20, 10, 0, 9));
 
         //Title
         TextField title = new TextField("League Information");
@@ -784,7 +790,6 @@ public class playerHome {
         Label leagueName = new Label("Name: ");
         form.setHalignment(leagueName, HPos.RIGHT);
         TextField lname = new TextField(l.get(index).getName());
-        System.out.println("this is name " + l.get(index).getName());
         lname.setEditable(false);
 
 
@@ -819,7 +824,7 @@ public class playerHome {
 
     public BorderPane createTeamPages(final ArrayList<team> t){
         BorderPane account = new BorderPane();
-        account.setPadding(new Insets(20, 10, 0, 10));
+        account.setPadding(new Insets(20, 10, 0, 9));
         page = new Pagination(numberOfTeams);
         page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
         page.setPageFactory(new Callback<Integer, Node>() {
@@ -838,7 +843,7 @@ public class playerHome {
     public BorderPane teamInfoPage(ArrayList<team> t, int index){
 
         BorderPane account = new BorderPane();
-        account.setPadding(new Insets(20, 10, 0, 10));
+        account.setPadding(new Insets(20, 10, 0, 9));
 
         //Title
         TextField title = new TextField("Team Information");
@@ -885,7 +890,7 @@ public class playerHome {
 
     public BorderPane createGbodyPages(final ArrayList<GBody> g){
         BorderPane account = new BorderPane();
-        account.setPadding(new Insets(20, 10, 0, 10));
+        account.setPadding(new Insets(20, 10, 0, 9));
         page = new Pagination(numberOfGBodies);
         page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
         page.setPageFactory(new Callback<Integer, Node>() {
@@ -907,7 +912,7 @@ public class playerHome {
     public BorderPane gbodyInfoPage(ArrayList<GBody> g, int index){
 
         BorderPane account = new BorderPane();
-        account.setPadding(new Insets(20, 10, 0, 10));
+        account.setPadding(new Insets(20, 10, 0, 9));
 
         //Title
         TextField title = new TextField("Governing Body Information");
