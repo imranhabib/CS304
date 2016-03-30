@@ -338,12 +338,12 @@ public class database {
     }
 
     public ResultSet searchAdvancePlayerContractJoin(Connection connection, String position, int price, String playername, int age, int salary, String nationality,
-                                                      int playersquadNumber, int availability, int rating, int lenRemain, int duration,
-                                                      int loanOption, int contractSquadNumber){
+                                                     int playersquadNumber, int availability, int rating, int lenRemain, int duration,
+                                                     int loanOption, int contractSquadNumber){
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(AdvancedPlayerContractJoin(position, price, playername, age, salary, nationality, playersquadNumber,
-                                                                            availability, rating, lenRemain, duration, loanOption, contractSquadNumber));
+                    availability, rating, lenRemain, duration, loanOption, contractSquadNumber));
             result.first();
             System.out.println(result.getString("contractsquadNumber"));
             return result;
@@ -559,7 +559,7 @@ public class database {
 
         return stmt;
     }
-    
+
 
     public String AdvancedSearchManager(String name, int JobSecurity){
 
@@ -689,8 +689,8 @@ public class database {
 
 
     public String AdvancedPlayerContractJoin(String position, int price, String playername, int age, int salary, String nationality,
-                                        int playersquadNumber, int availability, int rating, int lenRemain, int duration,
-                                        int loanOption, int contractsquadNumber) {
+                                             int playersquadNumber, int availability, int rating, int lenRemain, int duration,
+                                             int loanOption, int contractsquadNumber) {
 
         int and = 0;
         String addAnd = "";
@@ -840,36 +840,21 @@ public class database {
 
     }
 
-    public String AdvancedBestPlayerPerTeamAggregation(String name, int squadNumber, int rating, String team) {
+    public String AdvancedBestPlayerPerTeamAggregation(int rating, String team) {
 
         int and = 0;
         String addAnd = "";
 
-        String SQLBestPlayerAgg = "";
+        String SQLBestPlayerAgg = "SELECT * FROM managementapplication.player WHERE player.rating = ((SELECT max(player.qty) FROM managementapplication.player WHERE player.team =";
 
-        if(name != ""){
-            SQLBestPlayerAgg = SQLBestPlayerAgg + " Name = " + "'" + name + "'";
-            and = 1;
+        if(team != ""){
+            SQLBestPlayerAgg = SQLBestPlayerAgg + team;
         }
-        if(and == 1){
-            addAnd = " AND ";
+        else {
+            System.out.println("Team was no entered");
         }
-        if(squadNumber != 0){
-            SQLBestPlayerAgg = SQLBestPlayerAgg + " SquadNumber = " + "'" + squadNumber + "'";
-            and = 1;
-        }
-        if(and == 1){
-            addAnd = " AND ";
-        }
-        if(rating != 0){
-            SQLBestPlayerAgg = SQLBestPlayerAgg + " Rating = " + "'" + rating + "'";
-            and = 1;
-        }
-        if(and == 1){
-            addAnd = " AND ";
-        }
-        return null;
+        String stmt = new String(SQLBestPlayerAgg);
+        System.out.println(stmt);
+        return stmt;
     }
-
-
 }

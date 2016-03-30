@@ -36,7 +36,6 @@ public class searchResultPage {
     public void createBorderPane(BorderPane layout){
         root.setCenter(layout);
 
-
     }
 
 

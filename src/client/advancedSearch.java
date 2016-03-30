@@ -365,6 +365,7 @@ public class advancedSearch {
             public void handle(ActionEvent event) {
                 int jobInputInt;
                 String mnameInputString;
+
                 String mnameInput = (String) mname.getValue();
                 String jobInput = (String) job.getValue();
 
@@ -385,6 +386,7 @@ public class advancedSearch {
                 try {
                     manager m = new manager(result.getString("manName"), 0,result.getInt("jobSecurity"));
 
+                    
 //                    searchResultPage search = new searchResultPage();
 //                    search.createBorderPane(setManagerFields(m));
 
