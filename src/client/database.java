@@ -337,6 +337,36 @@ public class database {
         }
     }
 
+    public ResultSet searchAdvancePlayerContractJoin(Connection connection, String position, int price, String playername, int age, int salary, String nationality,
+                                                      int playersquadNumber, int availability, int rating, int lenRemain, int duration,
+                                                      int loanOption, int contractSquadNumber){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedPlayerContractJoin(position, price, playername, age, salary, nationality, playersquadNumber,
+                                                                            availability, rating, lenRemain, duration, loanOption, contractSquadNumber));
+            result.first();
+            System.out.println(result.getString("contractsquadNumber"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public ResultSet searchAdvanceManagerTeamJoin(Connection connection, String managerName, int JobSecurity, int managerTeamId, int teamId, String TMSlogan, String teamName){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedManagerTeamJoin(managerName, JobSecurity, managerTeamId, teamId, TMSlogan, teamName));
+            result.first();
+            System.out.println(result.getString("teamName"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+
     /*
     SQL queries
      */
@@ -810,7 +840,36 @@ public class database {
 
     }
 
+    public String AdvancedBestPlayerPerTeamAggregation(String name, int squadNumber, int rating, String team) {
 
+        int and = 0;
+        String addAnd = "";
+
+        String SQLBestPlayerAgg = "";
+
+        if(name != ""){
+            SQLBestPlayerAgg = SQLBestPlayerAgg + " Name = " + "'" + name + "'";
+            and = 1;
+        }
+        if(and == 1){
+            addAnd = " AND ";
+        }
+        if(squadNumber != 0){
+            SQLBestPlayerAgg = SQLBestPlayerAgg + " SquadNumber = " + "'" + squadNumber + "'";
+            and = 1;
+        }
+        if(and == 1){
+            addAnd = " AND ";
+        }
+        if(rating != 0){
+            SQLBestPlayerAgg = SQLBestPlayerAgg + " Rating = " + "'" + rating + "'";
+            and = 1;
+        }
+        if(and == 1){
+            addAnd = " AND ";
+        }
+        return null;
+    }
 
 
 }

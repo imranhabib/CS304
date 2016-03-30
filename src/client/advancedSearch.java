@@ -363,12 +363,39 @@ public class advancedSearch {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String identifier = "manager";
+                int jobInputInt;
+                String mnameInputString;
+                String mnameInput = (String) mname.getValue();
+                String jobInput = (String) job.getValue();
+
+                if(mnameInput == null){
+                    mnameInputString = "";
+                }
+                else{
+                    mnameInputString = (String) mname.getValue();
+                }
+                if(jobInput == null){
+                    jobInputInt = 0;
+                }
+                else{
+                    jobInputInt = Integer.parseInt((String) job.getValue());
+                }
+                result = db.searchAdvanceManager(connection, mnameInputString, jobInputInt);
+
+                try {
+                    manager m = new manager(result.getString("manName"), 0,result.getInt("jobSecurity"));
+
+//                    searchResultPage search = new searchResultPage();
+//                    search.createBorderPane(setManagerFields(m));
 
 
 
-            }
-        });
+                } catch (SQLException e) {
+                }
+
+            }});
+
+
 
 
         ScrollPane rootScroll = new ScrollPane();
@@ -749,7 +776,7 @@ public class advancedSearch {
                 price, salary, availability, rating);
 
         final ObservableList<player> data = FXCollections.observableArrayList(
-             p
+                p
         );
 
         name.setCellValueFactory(
