@@ -10,6 +10,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -265,15 +266,83 @@ public class advancedSearch {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                int availablePlayer;
-                if ((avail.getValue()).equals("Yes")) {
-                    availablePlayer = 1;
-                } else {
-                    availablePlayer = 0;
+
+                int ageInputInt;
+                int salaryInputInt;
+                int squadNumberInputInt;
+                int ratingInputInt;
+                int priceInputInt;
+
+                String positionInput = (String) (pos.getValue());
+                String priceInput = (playerP.getText());
+                String nameInput = name.getText();
+                String ageInput = (String) plyAge.getValue();
+                String salaryInput = sal.getText();
+                String nationalityInput = nation.getText();
+                String squadNumberInput = sqNo.getText();
+                String ratingInput = (String) plyRate.getValue();
+                int availabilityInput;
+
+                if(avail.getValue() == null){
+                    availabilityInput = 2;
                 }
-                result = db.searchAdvancePlayer(connection, "Forward", Integer.parseInt(playerP.getText()), name.getText(), Integer.parseInt((String) plyAge.getValue()),
-                        Integer.parseInt(sal.getText()), nation.getText(), Integer.parseInt(sqNo.getText()),
-                        availablePlayer, Integer.parseInt((String) plyRate.getValue()));
+                else if ((avail.getValue()).equals("Yes")) {
+                    availabilityInput = 1;
+                } else {
+                    availabilityInput = 0;
+                }
+
+
+                if(ageInput == null){
+                    ageInputInt = 0;
+                }
+                else{
+                    ageInputInt = Integer.parseInt((String) plyAge.getValue());
+                }
+
+                if(salaryInput.isEmpty()){
+                    salaryInputInt = 0;
+                }
+                else{
+                    salaryInputInt = Integer.parseInt(sal.getText());
+                }
+                if(ratingInput == null){
+                    ratingInputInt = 0;
+                }
+                else{
+                    ratingInputInt = Integer.parseInt((String) plyRate.getValue());
+                }
+                if(squadNumberInput.isEmpty()){
+                    squadNumberInputInt = 0;
+                }
+                else{
+                    squadNumberInputInt = Integer.parseInt(sqNo.getText());
+                }
+                if(positionInput == null){
+                    positionInput = "";
+                }
+                else {
+                    positionInput = (String) (pos.getValue());
+                }
+                if(priceInput.isEmpty()){
+                    priceInputInt = 0;
+                }
+                else{
+                    priceInputInt = Integer.parseInt(playerP.getText());
+                }
+                if(nameInput.isEmpty() == true){
+                    nameInput = "";
+                }
+                else{
+                    nameInput = name.getText();
+                }
+                if(nationalityInput.isEmpty()){
+                    nationalityInput = "";
+                }
+                else {
+                    nationalityInput = nation.getText();
+                }
+                result = db.searchAdvancePlayer(connection, positionInput, priceInputInt, nameInput, ageInputInt, salaryInputInt, nationalityInput, squadNumberInputInt, availabilityInput, ratingInputInt);
 
                 boolean a;
                 try {
@@ -310,6 +379,9 @@ public class advancedSearch {
 
         return rootScroll;
     }
+
+
+
     public ScrollPane handleManagerSearch(){
 
         BorderPane account = new BorderPane();
@@ -386,7 +458,7 @@ public class advancedSearch {
                 try {
                     manager m = new manager(result.getString("manName"), 0,result.getInt("jobSecurity"));
 
-                    
+
 //                    searchResultPage search = new searchResultPage();
 //                    search.createBorderPane(setManagerFields(m));
 
@@ -412,15 +484,6 @@ public class advancedSearch {
         //Body
         return rootScroll;
     }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -492,8 +555,47 @@ public class advancedSearch {
             public void handle(ActionEvent event) {
                 String identifier = "league";
 
-            }
-        });
+                int numberOfTeamsInputInt;
+                String leagueNameInput = (String) (l.getValue());
+                String countryInput = leagueC.getText();
+                String sponsorInput = (String) (spon.getValue());
+                String numberOfTeamsInput = (String) teamNo.getValue();
+
+
+                if(leagueNameInput == null){
+                    leagueNameInput = "";
+                }
+                else{
+                    leagueNameInput = (String) l.getValue();
+                }
+                if(countryInput.isEmpty()){
+                    countryInput = "";
+                }
+                else{
+                    countryInput = leagueC.getText();
+                }
+                if(sponsorInput == null){
+                    sponsorInput = "";
+                }
+                else{
+                    sponsorInput = (String) spon.getValue();
+                }
+                if(numberOfTeamsInput == null){
+                    numberOfTeamsInputInt = 0;
+                }
+                else{
+                    numberOfTeamsInputInt = Integer.parseInt((String) teamNo.getValue());
+                }
+
+                result = db.searchAdvanceLeague(connection, numberOfTeamsInputInt, countryInput, sponsorInput, leagueNameInput);
+
+                try {
+                    league l = new league(result.getInt("noOfTeams"), result.getString("leagueCountry"), result.getString("leagueSponsor"), result.getString("leagueName"));
+                }
+                catch (SQLException e) {
+                }
+
+            }});
 
 
 
@@ -526,8 +628,7 @@ public class advancedSearch {
         form.setHgap(7);
         form.setVgap(7);
 
-
-        Label lenRemain = new Label("Length Remaining(Yrs): ");
+        Label lenRemain = new Label("Length Remaining (Yrs): ");
         form.setHalignment(lenRemain, HPos.RIGHT);
         ObservableList<String> len = FXCollections.observableArrayList();
         for(int z = 0; z < 6; z++){
@@ -544,11 +645,11 @@ public class advancedSearch {
         final ComboBox avail = new ComboBox(a);
 
 
-        Label dur = new Label("Length Remaining(Yrs): ");
+        Label dur = new Label("Total Contract Length (Yrs): ");
         form.setHalignment(dur, HPos.RIGHT);
         ObservableList<String> duration = FXCollections.observableArrayList();
         for(int j = 0; j < 6; j++){
-            len.add(Integer.toString(j));
+            duration.add(Integer.toString(j));
         }
         final ComboBox d = new ComboBox(duration);
 
@@ -572,6 +673,51 @@ public class advancedSearch {
             @Override
             public void handle(ActionEvent event) {
                 String identifier = "contract";
+
+                int lengthInputInt;
+                int durationInputInt;
+                int loanOptionInputInt = 0;
+                int squadNumberInputInt = 0;
+
+                String lengthInput = (String) remain.getValue();
+                String loanOptionInput = (String) avail.getValue();
+                String durationInput = (String) d.getValue();
+
+
+                if(lengthInput == null){
+                    lengthInputInt = 0;
+                }
+                else{
+                    lengthInputInt = Integer.parseInt(lengthInput);
+                }
+                if(loanOptionInput == "Yes"){
+                    loanOptionInputInt = 1;
+
+                }
+                if(durationInput == null){
+                    durationInputInt = 0;
+                }
+                else{
+                    durationInputInt = Integer.parseInt(durationInput);
+                }
+
+
+                result = db.searchAdvanceContract(connection, lengthInputInt,durationInputInt,loanOptionInputInt,squadNumberInputInt);
+
+                boolean a;
+                try {
+                    if (result.getInt("availability") == 1) {
+                        a = true;
+                    } else {
+                        a = false;
+                    }
+
+                    contract c = new contract(result.getInt("lenRemain"),result.getInt("dur"),a,0,0);
+
+                }
+                catch (SQLException e) {
+
+                }
 
             }
         });
@@ -644,6 +790,33 @@ public class advancedSearch {
             public void handle(ActionEvent event) {
                 String identifier = "team";
 
+
+                String nameInput = (String) (t.getValue());
+                String tmSlogan = (String) (s.getValue());
+
+                if(nameInput == null){
+                    nameInput = "";
+                }
+                else{
+                    nameInput = (String) (t.getValue());
+                }
+                if(tmSlogan == null){
+                    tmSlogan = "";
+                }
+                else{
+                    tmSlogan = (String) (s.getValue());
+                }
+
+                result = db.searchAdvanceTeam(connection,0,tmSlogan,nameInput);
+
+                try {
+
+                    team t = new team(0, result.getString("teamSlogan"), 0, result.getString("teamName"));
+
+                }
+                catch (SQLException e) {
+
+                }
 
             }
         });
@@ -729,6 +902,35 @@ public class advancedSearch {
             public void handle(ActionEvent event) {
                 String identifier = "governingbody";
 
+                String nameInput = (String) g.getValue();
+                String hqInput = (String) HQ.getValue();
+                String presidentInput = (String) P.getValue();
+
+                if (nameInput == null) {
+                    nameInput = "";
+                } else {
+                    nameInput = (String) (g.getValue());
+                }
+                if (hqInput == null) {
+                    hqInput = "";
+                } else {
+                    hqInput = (String) (HQ.getValue());
+                }
+                if (presidentInput == null) {
+                    presidentInput = "";
+                } else {
+                    presidentInput = (String) (P.getValue());
+                }
+
+                result = db.searchAdvanceGBody(connection, nameInput, presidentInput, hqInput);
+
+                try {
+
+                    GBody g = new GBody(0, result.getString("gName"), result.getString("govPres"), result.getString("govHQ"));
+
+                } catch (SQLException e) {
+
+                }
             }
         });
 

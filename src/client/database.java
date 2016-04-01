@@ -366,6 +366,32 @@ public class database {
         }
     }
 
+    public ResultSet searchAdvancedBestPlayerPerTeam(int teamId){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(AdvancedBestPlayerPerTeamAggregation(teamId));
+            result.first();
+            System.out.println(result.getString("teamId"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public ResultSet searchHighestSomethingByLowestSomething(int age, int salary, int team){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(somethingAndHigestRatedPlayer(age,salary,team));
+            result.first();
+            System.out.println(result.getString("Age"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
 
     /*
     SQL queries
@@ -695,7 +721,7 @@ public class database {
         int and = 0;
         String addAnd = "";
 
-        String SQLPlayerContractJoin = "SELECT * FROM managementapplication.player JOIN managementapplication.contract ON contract.SquadNumber = player.SquadNumber WHERE ";
+        String SQLPlayerContractJoin = "SELECT * FROM managementapplication.player INNER JOIN managementapplication.contract ON contract.SquadNumber = player.SquadNumber WHERE ";
 
 
         if (position != "") {
@@ -801,7 +827,7 @@ public class database {
         int and = 0;
         String addAnd = "";
 
-        String SQLManagerTeamJoin = "SELECT * FROM managementapplication.manager JOIN managementapplication.team ON manager.managerTeamId = team.teamId WHERE ";
+        String SQLManagerTeamJoin = "SELECT * FROM managementapplication.manager INNER JOIN managementapplication.team ON manager.managerTeamId = team.teamId WHERE ";
 
         if(managerName != ""){
             SQLManagerTeamJoin = SQLManagerTeamJoin + " Name = " + "'" + managerName + "'";
@@ -840,15 +866,13 @@ public class database {
 
     }
 
-    public String AdvancedBestPlayerPerTeamAggregation(int rating, String team) {
+    public String AdvancedBestPlayerPerTeamAggregation(int team) {
 
-        int and = 0;
-        String addAnd = "";
+        String SQLBestPlayerAgg = "SELECT * FROM managementapplication.player WHERE player.Rating = ((SELECT max(player.Rating) FROM managementapplication.player WHERE player.teamID ="
+        ;
 
-        String SQLBestPlayerAgg = "SELECT * FROM managementapplication.player WHERE player.rating = ((SELECT max(player.qty) FROM managementapplication.player WHERE player.team =";
-
-        if(team != ""){
-            SQLBestPlayerAgg = SQLBestPlayerAgg + team;
+        if(team != 0){
+            SQLBestPlayerAgg = SQLBestPlayerAgg + team + "))";
         }
         else {
             System.out.println("Team was no entered");
@@ -857,4 +881,31 @@ public class database {
         System.out.println(stmt);
         return stmt;
     }
+
+    public String somethingAndHigestRatedPlayer(int age, int salary, int team) {
+
+        String criteria = "";
+
+        String SQLsomethingHighestRatedPLayer = "SELECT Name, Age, Price FROM managementapplication.player C WHERE C.Rating= (SELECT MAX(C2.Rating) FROM player C2 WHERE C.";
+
+        if(age != 0){
+            criteria = "AGE";
+        }
+        if(salary != 0){
+            criteria = "Salary";
+
+        }
+        if(team != 0){
+            criteria = "teamId";
+        }
+
+        SQLsomethingHighestRatedPLayer = SQLsomethingHighestRatedPLayer + criteria + " = (SELECT MIN(C3." + criteria + ") FROM player C3))";
+
+
+        String stmt = new String(SQLsomethingHighestRatedPLayer);
+        System.out.println(stmt);
+        return stmt;
+    }
+
+
 }
