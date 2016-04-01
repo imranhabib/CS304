@@ -267,20 +267,7 @@ public class advancedSearch {
             @Override
             public void handle(ActionEvent event) {
 
-                int ageInputInt;
-                int salaryInputInt;
-                int squadNumberInputInt;
-                int ratingInputInt;
-                int priceInputInt;
 
-                String positionInput = (String) (pos.getValue());
-                String priceInput = (playerP.getText());
-                String nameInput = name.getText();
-                String ageInput = (String) plyAge.getValue();
-                String salaryInput = sal.getText();
-                String nationalityInput = nation.getText();
-                String squadNumberInput = sqNo.getText();
-                String ratingInput = (String) plyRate.getValue();
                 int availabilityInput;
 
                 if(avail.getValue() == null){
@@ -293,7 +280,7 @@ public class advancedSearch {
                 }
                 result = db.searchAdvancePlayer(connection, (String)pos.getValue(), Integer.parseInt(playerP.getText()), name.getText(), Integer.parseInt((String) plyAge.getValue()),
                         Integer.parseInt(sal.getText()), nation.getText(), Integer.parseInt(sqNo.getText()),
-                        availablePlayer, Integer.parseInt((String) plyRate.getValue()));
+                        availabilityInput, Integer.parseInt((String) plyRate.getValue()));
 
                 boolean a;
                 setNumberOfRows(result);
@@ -704,7 +691,7 @@ public class advancedSearch {
                 }
 
 
-                result = db.searchAdvanceContract(connection, lengthInputInt,durationInputInt,loanOptionInputInt,squadNumberInputInt);
+                result = db.searchAdvanceContract(connection, lengthInputInt,durationInputInt,loanOptionInputInt);
 
                 setNumberOfRows(result);
                 try {
@@ -784,7 +771,7 @@ public class advancedSearch {
         ObservableList<String> sName = FXCollections.observableArrayList();
         ArrayList<team> slogansInDB = db.getAllTeams(connection);
         for(int a = 0; a < slogansInDB.size(); a++){
-            tName.add(slogansInDB.get(a).getTMSlogan());
+            sName.add(slogansInDB.get(a).getTMSlogan());
         }
         final ComboBox s = new ComboBox(sName);
 
@@ -824,7 +811,7 @@ public class advancedSearch {
                     tmSlogan = (String) (s.getValue());
                 }
 
-                result = db.searchAdvanceTeam(connection,0,tmSlogan,nameInput);
+                result = db.searchAdvanceTeam(connection,tmSlogan,nameInput);
 
                 setNumberOfRows(result);
                 try {

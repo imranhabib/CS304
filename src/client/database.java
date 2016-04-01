@@ -366,7 +366,7 @@ public class database {
         }
     }
 
-    public ResultSet searchAdvancedBestPlayerPerTeam(int teamId){
+    public ResultSet searchAdvancedBestPlayerPerTeam(Connection connection, int teamId){
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(AdvancedBestPlayerPerTeamAggregation(teamId));
@@ -379,7 +379,7 @@ public class database {
         }
     }
 
-    public ResultSet searchHighestSomethingByLowestSomething(int age, int salary, int team){
+    public ResultSet searchHighestSomethingByLowestSomething(Connection connection, int age, int salary, int team){
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(somethingAndHigestRatedPlayer(age,salary,team));
