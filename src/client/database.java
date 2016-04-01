@@ -342,8 +342,7 @@ public class database {
                                                      int loanOption, int contractSquadNumber){
         try {
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(AdvancedPlayerContractJoin(position, price, playername, age, salary, nationality, playersquadNumber,
-                    availability, rating, lenRemain, duration, loanOption, contractSquadNumber));
+            ResultSet result = stmt.executeQuery(AdvancedPlayerContractJoin(lenRemain, duration, loanOption, contractSquadNumber));
             result.first();
             System.out.println(result.getString("contractsquadNumber"));
             return result;
