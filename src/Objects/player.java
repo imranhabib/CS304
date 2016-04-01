@@ -51,6 +51,12 @@ public class player {
 
     }
 
+    public player(String position){
+        this.position = position;
+
+
+    }
+
     public player formatPlayerDetails() throws SQLException{
         ResultSet information = details;
         information.first();

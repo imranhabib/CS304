@@ -34,6 +34,13 @@ public class manager {
 
     }
 
+    public manager(String name, int JobSecurity){
+        this.name = name;
+        this.JobSecurity = JobSecurity;
+
+    }
+
+
     public manager(String name){
         this.name = name;
 

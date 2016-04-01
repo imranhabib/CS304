@@ -18,6 +18,13 @@ public class GBody {
 
     }
 
+    public GBody(String name, String president, String HQ){
+        this.name = name;
+        this.president = president;
+        this.HQ = HQ;
+
+    }
+
 
     public int getRevenue() {
         return revenue;

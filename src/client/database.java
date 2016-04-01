@@ -14,7 +14,7 @@ public class database {
     Connection dbConnect;
     database connection;
     String username = "root";
-    String password = "whatsername";
+    String password = "Alpha051214.";
     int userSqNum;
     int userSIN;
 
@@ -133,7 +133,7 @@ public class database {
             }
             result.first();
             for (int i = 0; i < rows + 1; i++) {
-                teams.add(new team(result.getInt("Team ID"), result.getString("TM Slogan"), result.getInt("Budget"),
+                teams.add(new team(result.getInt("TeamID"), result.getString("TM Slogan"), result.getInt("Budget"),
                         result.getString("Name")));
                 result.next();
             }
@@ -272,10 +272,10 @@ public class database {
         }
     }
 
-    public ResultSet searchAdvanceContract(Connection connection, int lenRemain, int duration, int loanOption, int squadNumber){
+    public ResultSet searchAdvanceContract(Connection connection, int lenRemain, int duration, int loanOption){
         try {
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(AdvancedSearchContract(lenRemain, duration, loanOption, squadNumber));
+            ResultSet result = stmt.executeQuery(AdvancedSearchContract(lenRemain, duration, loanOption));
             result.first();
             System.out.println(result.getString("squadNumber"));
             return result;
@@ -324,10 +324,10 @@ public class database {
         }
     }
 
-    public ResultSet searchAdvanceTeam(Connection connection, int teamId, String slogan, String name){
+    public ResultSet searchAdvanceTeam(Connection connection, String slogan, String name){
         try {
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(AdvancedSearchTeam(teamId, slogan, name));
+            ResultSet result = stmt.executeQuery(AdvancedSearchTeam(slogan, name));
             result.first();
             System.out.println(result.getString("name"));
             return result;
@@ -522,7 +522,7 @@ public class database {
     }
 
 
-    public String AdvancedSearchContract(int lenRemain, int duration, int loanOption, int squadNumber) {
+    public String AdvancedSearchContract(int lenRemain, int duration, int loanOption) {
 
         int and = 0;
         String addAnd = "";
@@ -549,9 +549,6 @@ public class database {
         }
         if (and == 1) {
             addAnd = " AND ";
-        }
-        if (squadNumber != 0) {
-            SQLContractSearch = SQLContractSearch + addAnd + " SquadNumber = " + squadNumber;
         }
 
         String stmt = new String(SQLContractSearch);
@@ -656,7 +653,7 @@ public class database {
     }
 
 
-    public String AdvancedSearchTeam(int teamId, String TMSlogan, String name){
+    public String AdvancedSearchTeam(String TMSlogan, String name){
 
         int and = 0;
         String addAnd = "";
@@ -664,10 +661,7 @@ public class database {
         String SQLTeamSearch = "SELECT * FROM managementapplication.team WHERE ";
 
 
-        if(teamId != 0){
-            SQLTeamSearch = SQLTeamSearch + " TeamID = " + teamId;
-            and = 1;
-        }
+
         if(and == 1 ){
             addAnd = " AND ";
         }

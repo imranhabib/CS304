@@ -43,6 +43,7 @@ public class advancedSearch {
     private GridPane form = new GridPane();
     private TableView table = new TableView();
     private int numberOfResults;
+    boolean resultWindow = true;
 
 
 
@@ -271,11 +272,12 @@ public class advancedSearch {
                 } else {
                     availablePlayer = 0;
                 }
-                result = db.searchAdvancePlayer(connection, "Forward", Integer.parseInt(playerP.getText()), name.getText(), Integer.parseInt((String) plyAge.getValue()),
+                result = db.searchAdvancePlayer(connection, (String)pos.getValue(), Integer.parseInt(playerP.getText()), name.getText(), Integer.parseInt((String) plyAge.getValue()),
                         Integer.parseInt(sal.getText()), nation.getText(), Integer.parseInt(sqNo.getText()),
                         availablePlayer, Integer.parseInt((String) plyRate.getValue()));
 
                 boolean a;
+                setNumberOfRows(result);
                 try {
                     if (result.getInt("Availability") == 1) {
                         a = true;
@@ -283,20 +285,29 @@ public class advancedSearch {
                         a = false;
                     }
 
-                    player p = new player(result.getString("Position"), result.getInt("Price"), result.getString("Name"),
-                            result.getInt("Age"), result.getInt("Salary"), result.getString("Nationality"),
-                            result.getInt("SquadNumber"), a, result.getInt("Rating"));
-
+                    ArrayList<player> p = new ArrayList<>();
+                    int rows = 0;
+                    while (result.next()) {
+                        ++rows;
+                    }
+                    if (rows == 0) {
+                        //handle this case later
+                        System.out.println("No records found in the advan");
+                    }
+                    result.first();
+                    for (int i = 0; i < rows + 1; i++) {
+                        p.add(new player(result.getString("Position"), result.getInt("Price"), result.getString("Name"),
+                                result.getInt("Age"), result.getInt("Salary"), result.getString("Nationality"),
+                                result.getInt("SquadNumber"), a, result.getInt("Rating")));
+                        System.out.println(p.get(i).getSquadNumber() + " da SQNO" );
+                        result.next();
+                    }
 
                     searchResultPage search = new searchResultPage();
                     search.createBorderPane(setPlayerFields(p));
-
-
-
                 } catch (SQLException e) {
 
                 }
-
             }});
 
 
@@ -383,18 +394,31 @@ public class advancedSearch {
                 }
                 result = db.searchAdvanceManager(connection, mnameInputString, jobInputInt);
 
+                boolean a;
+                setNumberOfRows(result);
                 try {
-                    manager m = new manager(result.getString("manName"), 0,result.getInt("jobSecurity"));
-
-                    
-//                    searchResultPage search = new searchResultPage();
-//                    search.createBorderPane(setManagerFields(m));
 
 
+                    ArrayList<manager> m = new ArrayList<>();
+                    int rows = 0;
+                    while (result.next()) {
+                        ++rows;
+                    }
+                    if (rows == 0) {
+                        //handle this case later
+                        System.out.println("No records found in the advan");
+                    }
+                    result.first();
+                    for (int i = 0; i < rows + 1; i++) {
+                        m.add(new manager(result.getString("Name"), result.getInt("JobSecurity")));
+                        result.next();
+                    }
 
+                    searchResultPage search = new searchResultPage();
+                    search.createBorderPane(setManagerFields(m));
                 } catch (SQLException e) {
-                }
 
+                }
             }});
 
 
@@ -490,10 +514,41 @@ public class advancedSearch {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String identifier = "league";
 
-            }
-        });
+                int noOfTeams = (int) teamNo.getValue();
+                String countryInput = leagueC.getText();
+                String sponInput = (String) spon.getValue();
+                String nameInput = (String) l.getValue();
+
+                result = db.searchAdvanceLeague(connection, noOfTeams, countryInput, sponInput, nameInput);
+
+                setNumberOfRows(result);
+                try {
+
+
+                    ArrayList<league> l = new ArrayList<>();
+                    int rows = 0;
+                    while (result.next()) {
+                        ++rows;
+                    }
+                    if (rows == 0) {
+                        //handle this case later
+                        System.out.println("No records found in the advan");
+                    }
+                    result.first();
+                    for (int i = 0; i < rows + 1; i++) {
+                        l.add(new league(result.getInt("Teams"), result.getString("Country"), result.getString("Sponsor"), result.getString("Name")));
+                        result.next();
+                    }
+
+                    searchResultPage search = new searchResultPage();
+                    search.createBorderPane(setLeagueFields(l));
+                } catch (SQLException e) {
+
+                }
+            }});
+
+
 
 
 
@@ -527,7 +582,7 @@ public class advancedSearch {
         form.setVgap(7);
 
 
-        Label lenRemain = new Label("Length Remaining(Yrs): ");
+        Label lenRemain = new Label("Length Remaining (Yrs): ");
         form.setHalignment(lenRemain, HPos.RIGHT);
         ObservableList<String> len = FXCollections.observableArrayList();
         for(int z = 0; z < 6; z++){
@@ -544,11 +599,11 @@ public class advancedSearch {
         final ComboBox avail = new ComboBox(a);
 
 
-        Label dur = new Label("Length Remaining(Yrs): ");
+        Label dur = new Label("Duration (Yrs): ");
         form.setHalignment(dur, HPos.RIGHT);
         ObservableList<String> duration = FXCollections.observableArrayList();
         for(int j = 0; j < 6; j++){
-            len.add(Integer.toString(j));
+            duration.add(Integer.toString(j));
         }
         final ComboBox d = new ComboBox(duration);
 
@@ -571,10 +626,51 @@ public class advancedSearch {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String identifier = "contract";
+                int loanOptionInt;
+                if ((avail.getValue()).equals("Yes")) {
+                    loanOptionInt = 1;
+                } else {
+                    loanOptionInt = 0;
+                }
 
-            }
-        });
+                int remainInput = (int) remain.getValue();
+                int loanOptionInput = loanOptionInt;
+                int durationInput = (int) d.getValue();
+
+
+                result = db.searchAdvanceContract(connection, remainInput, durationInput, loanOptionInput);
+                setNumberOfRows(result);
+                try {
+
+
+                    ArrayList<contract> c = new ArrayList<>();
+                    int rows = 0;
+                    while (result.next()) {
+                        ++rows;
+                    }
+                    if (rows == 0) {
+                        //handle this case later
+                        System.out.println("No records found in the advan");
+                    }
+                    result.first();
+                    for (int i = 0; i < rows + 1; i++) {
+                        boolean truth;
+                        if(result.getInt("LoanOption") == 1) {
+                            truth = true;
+                        } else {
+                            truth = false;
+                        }
+                        c.add(new contract(result.getInt("LengthRemaining"), result.getInt("Duration"), truth));
+                        result.next();
+                    }
+
+                    searchResultPage search = new searchResultPage();
+                    search.createBorderPane(setContractFields(c));
+                } catch (SQLException e) {
+
+                }
+            }});
+
 
 
         ScrollPane rootScroll = new ScrollPane();
@@ -642,11 +738,39 @@ public class advancedSearch {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String identifier = "team";
 
 
-            }
-        });
+                String name = (String) t.getValue();
+                String slogan = (String) s.getValue();
+
+                result = db.searchAdvanceTeam(connection, name, slogan);
+
+
+                setNumberOfRows(result);
+                try {
+                    ArrayList<team> t = new ArrayList<>();
+                    int rows = 0;
+                    while (result.next()) {
+                        ++rows;
+                    }
+                    if (rows == 0) {
+                        //handle this case later
+                        System.out.println("No records found in the advan");
+                    }
+                    result.first();
+                    for (int i = 0; i < rows + 1; i++) {
+                        t.add(new team(result.getString("Name"), result.getString("TM Slogan")));
+                        result.next();
+                    }
+
+                    searchResultPage search = new searchResultPage();
+                    search.createBorderPane(setTeamFields(t));
+                } catch (SQLException e) {
+
+                }
+            }});
+
+
 
 
         ScrollPane rootScroll = new ScrollPane();
@@ -727,10 +851,39 @@ public class advancedSearch {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String identifier = "governingbody";
 
-            }
-        });
+
+                String gbodyName = (String) g.getValue();
+                String presName = (String) P.getValue();
+                String hqname = (String) HQ.getValue();
+
+
+                result = db.searchAdvanceGBody(connection, gbodyName, presName, hqname);
+                setNumberOfRows(result);
+                try {
+
+                    ArrayList<GBody> gb = new ArrayList<>();
+                    int rows = 0;
+                    while (result.next()) {
+                        ++rows;
+                    }
+                    if (rows == 0) {
+                        //handle this case later
+                        System.out.println("No records found in the advan");
+                    }
+                    result.first();
+                    for (int i = 0; i < rows + 1; i++) {
+                        gb.add(new GBody(result.getString("Name"), result.getString("President"), result.getString("HQ")));
+                        result.next();
+                    }
+
+                    searchResultPage search = new searchResultPage();
+                    search.createBorderPane(setGBodyFields(gb));
+                } catch (SQLException e) {
+
+                }
+            }});
+
 
 
         ScrollPane rootScroll = new ScrollPane();
@@ -747,7 +900,228 @@ public class advancedSearch {
     }
 
 
-    public BorderPane setPlayerFields(player p){
+    public BorderPane setTeamFields(ArrayList<team> t){
+        BorderPane resultView = new BorderPane();
+        resultView.setPadding(new Insets(10, 5, 5, 5));
+
+        //Title
+        TextField title = new TextField("Search Results");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        resultView.setTop(title);
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        TableView<team> table = new TableView<team>();
+        TableColumn name = new TableColumn("Name");
+        TableColumn tmSlogan = new TableColumn("TM Slogan");
+
+
+
+        table.getColumns().addAll(name, tmSlogan);
+
+        final ObservableList<team> data = FXCollections.observableArrayList(
+                t
+        );
+
+        name.setCellValueFactory(
+                new PropertyValueFactory<team,String>("Name")
+        );
+        tmSlogan.setCellValueFactory(
+                new PropertyValueFactory<team,Integer>("TMSlogan"));
+
+
+
+        name.prefWidthProperty().bind(table.widthProperty().divide(2));
+        tmSlogan.prefWidthProperty().bind(table.widthProperty().divide(2));
+
+
+
+        table.setItems(data);
+        resultView.setCenter(table);
+
+
+        return resultView;
+    }
+
+
+
+    public BorderPane setManagerFields(ArrayList<manager> m){
+        BorderPane resultView = new BorderPane();
+        resultView.setPadding(new Insets(10, 5, 5, 5));
+
+        //Title
+        TextField title = new TextField("Search Results");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        resultView.setTop(title);
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        TableView<manager> table = new TableView<manager>();
+        TableColumn name = new TableColumn("Name");
+        TableColumn jobSecurity = new TableColumn("Job Security");
+
+
+
+        table.getColumns().addAll(name, jobSecurity);
+
+        final ObservableList<manager> data = FXCollections.observableArrayList(
+                m
+        );
+
+        name.setCellValueFactory(
+                new PropertyValueFactory<manager,String>("Name")
+        );
+        jobSecurity.setCellValueFactory(
+                new PropertyValueFactory<manager,Integer>("JobSecurity"));
+
+
+
+        name.prefWidthProperty().bind(table.widthProperty().divide(2));
+        jobSecurity.prefWidthProperty().bind(table.widthProperty().divide(2));
+
+
+
+        table.setItems(data);
+        resultView.setCenter(table);
+
+
+        return resultView;
+    }
+
+
+    public BorderPane setContractFields(ArrayList<contract> c){
+        BorderPane resultView = new BorderPane();
+        resultView.setPadding(new Insets(10, 5, 5, 5));
+
+        //Title
+        TextField title = new TextField("Search Results");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        resultView.setTop(title);
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        TableView<contract> table = new TableView<contract>();
+        TableColumn lenRemain = new TableColumn("Length Remaining (Yrs)");
+        TableColumn loanOption = new TableColumn("Loan Option");
+        TableColumn duration = new TableColumn("Duration (Yrs)");
+
+
+
+        table.getColumns().addAll(lenRemain, loanOption, duration);
+
+        final ObservableList<contract> data = FXCollections.observableArrayList(
+                c
+        );
+
+        lenRemain.setCellValueFactory(
+                new PropertyValueFactory<contract,String>("lenRemain")
+        );
+        loanOption.setCellValueFactory(
+                new PropertyValueFactory<contract,Integer>("loanOption")
+        );
+        duration.setCellValueFactory(
+                new PropertyValueFactory<contract,Integer>("duration")
+        );
+
+        lenRemain.prefWidthProperty().bind(table.widthProperty().divide(3));
+        loanOption.prefWidthProperty().bind(table.widthProperty().divide(3));
+        duration.prefWidthProperty().bind(table.widthProperty().divide(3));
+
+        table.setItems(data);
+        resultView.setCenter(table);
+
+
+        return resultView;
+    }
+    public BorderPane setLeagueFields(ArrayList<league> l){
+        BorderPane resultView = new BorderPane();
+        resultView.setPadding(new Insets(10, 5, 5, 5));
+
+        //Title
+        TextField title = new TextField("Search Results");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        resultView.setTop(title);
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        TableView<league> table = new TableView<league>();
+        TableColumn name = new TableColumn("Name");
+        TableColumn country = new TableColumn("Country");
+        TableColumn sponsor = new TableColumn("Sponsor");
+        TableColumn noOfTeams = new TableColumn("Number of Teams");
+
+        table.getColumns().addAll(name, country, sponsor, noOfTeams);
+
+        final ObservableList<league> data = FXCollections.observableArrayList(
+                l
+        );
+
+        name.setCellValueFactory(
+                new PropertyValueFactory<league,String>("name")
+        );
+        country.setCellValueFactory(
+                new PropertyValueFactory<league,Integer>("country")
+        );
+        sponsor.setCellValueFactory(
+                new PropertyValueFactory<league,Integer>("sponsor")
+        );
+        noOfTeams.setCellValueFactory(
+                new PropertyValueFactory<league,String>("numberOfTeams")
+        );
+
+
+
+        name.prefWidthProperty().bind(table.widthProperty().divide(4));
+        country.prefWidthProperty().bind(table.widthProperty().divide(4));
+        sponsor.prefWidthProperty().bind(table.widthProperty().divide(4));
+        noOfTeams.prefWidthProperty().bind(table.widthProperty().divide(4));
+
+
+
+        table.setItems(data);
+        resultView.setCenter(table);
+
+
+//        CheckBox keepResultOpen = new CheckBox();
+//
+//        keepResultOpen.setText("Keep Result Window Open?");
+//        keepResultOpen.setSelected(true);
+//
+//
+//        keepResultOpen.setStyle(
+//                "-fx-border-color: maroon; "
+//                        + "-fx-font-size: 15;"
+//                        + "-fx-border-insets: 5, 0, 5, 5; "
+//                        + "-fx-border-radius: 5;"
+//                        + "-fx-border-style: dashed;"
+//                        + "-fx-border-width: 5;"
+//        );
+//
+//
+//
+//        resultView.setBottom(keepResultOpen);
+//
+        return resultView;
+    }
+
+
+    public BorderPane setPlayerFields(ArrayList<player> p){
         BorderPane resultView = new BorderPane();
         resultView.setPadding(new Insets(10, 5, 5, 5));
 
@@ -785,7 +1159,7 @@ public class advancedSearch {
                 new PropertyValueFactory<player,String>("Name")
         );
         squadNumber.setCellValueFactory(
-                new PropertyValueFactory<player,Integer>("Squad Number")
+                new PropertyValueFactory<player,Integer>("SquadNumber")
         );
         age.setCellValueFactory(
                 new PropertyValueFactory<player,Integer>("Age")
@@ -826,23 +1200,141 @@ public class advancedSearch {
         resultView.setCenter(table);
 
 
+//        CheckBox keepResultOpen = new CheckBox();
+//
+//        keepResultOpen.setText("Keep Result Window Open?");
+//        keepResultOpen.setSelected(true);
+//
+//
+//        keepResultOpen.setStyle(
+//                "-fx-border-color: maroon; "
+//                        + "-fx-font-size: 15;"
+//                        + "-fx-border-insets: 5, 0, 5, 5; "
+//                        + "-fx-border-radius: 5;"
+//                        + "-fx-border-style: dashed;"
+//                        + "-fx-border-width: 5;"
+//        );
+//
+//
+//
+//        resultView.setBottom(keepResultOpen);
+//
         return resultView;
+    }
+    public BorderPane setGBodyFields(ArrayList<GBody> gb){
+        BorderPane resultView = new BorderPane();
+        resultView.setPadding(new Insets(10, 5, 5, 5));
+
+        //Title
+        TextField title = new TextField("Search Results");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        resultView.setTop(title);
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        TableView<GBody> table = new TableView<GBody>();
+        TableColumn name = new TableColumn("Name");
+        TableColumn president = new TableColumn("President");
+        TableColumn hq = new TableColumn("HQ");
 
 
 
+        table.getColumns().addAll(name, president, hq);
+
+        final ObservableList<GBody> data = FXCollections.observableArrayList(
+                gb
+        );
+
+        name.setCellValueFactory(
+                new PropertyValueFactory<GBody,String>("Name")
+        );
+        president.setCellValueFactory(
+                new PropertyValueFactory<GBody,Integer>("President")
+        );
+        hq.setCellValueFactory(
+                new PropertyValueFactory<GBody,Integer>("HQ")
+        );
+
+        name.prefWidthProperty().bind(table.widthProperty().divide(3));
+        president.prefWidthProperty().bind(table.widthProperty().divide(3));
+        hq.prefWidthProperty().bind(table.widthProperty().divide(3));
+
+
+        table.setItems(data);
+        resultView.setCenter(table);
+
+
+//        CheckBox keepResultOpen = new CheckBox();
+//
+//        keepResultOpen.setText("Keep Result Window Open?");
+//        keepResultOpen.setSelected(true);
+//
+//
+//        keepResultOpen.setStyle(
+//                "-fx-border-color: maroon; "
+//                        + "-fx-font-size: 15;"
+//                        + "-fx-border-insets: 5, 0, 5, 5; "
+//                        + "-fx-border-radius: 5;"
+//                        + "-fx-border-style: dashed;"
+//                        + "-fx-border-width: 5;"
+//        );
+//
+//
+//
+//        resultView.setBottom(keepResultOpen);
+//
+        return resultView;
     }
 
 
-//
-//    public void setNumberOfRows(ResultSet result){
-//        try {
-//            result.last();
-//            numberOfResults = result.getRow();
-//            result.first();
-//        } catch (SQLException e){
-//        }
-//    }
-//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public int getNumberOfRows(){
+        return numberOfResults;
+    }
+
+
+    public void setNumberOfRows(ResultSet result){
+        try {
+            result.last();
+            numberOfResults = result.getRow();
+            result.first();
+        } catch (SQLException e){
+        }
+    }
+
 
 //    public BorderPane createPlayerPage(player p, int index){
 //            BorderPane account = new BorderPane();
