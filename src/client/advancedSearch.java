@@ -267,7 +267,20 @@ public class advancedSearch {
             @Override
             public void handle(ActionEvent event) {
 
+                int ageInputInt;
+                int salaryInputInt;
+                int squadNumberInputInt;
+                int ratingInputInt;
+                int priceInputInt;
 
+                String positionInput = (String) (pos.getValue());
+                String priceInput = (playerP.getText());
+                String nameInput = name.getText();
+                String ageInput = (String) plyAge.getValue();
+                String salaryInput = sal.getText();
+                String nationalityInput = nation.getText();
+                String squadNumberInput = sqNo.getText();
+                String ratingInput = (String) plyRate.getValue();
                 int availabilityInput;
 
                 if(avail.getValue() == null){
@@ -278,9 +291,58 @@ public class advancedSearch {
                 } else {
                     availabilityInput = 0;
                 }
-                result = db.searchAdvancePlayer(connection, (String)pos.getValue(), Integer.parseInt(playerP.getText()), name.getText(), Integer.parseInt((String) plyAge.getValue()),
-                        Integer.parseInt(sal.getText()), nation.getText(), Integer.parseInt(sqNo.getText()),
-                        availabilityInput, Integer.parseInt((String) plyRate.getValue()));
+
+
+                if(ageInput == null){
+                    ageInputInt = 0;
+                }
+                else{
+                    ageInputInt = Integer.parseInt((String) plyAge.getValue());
+                }
+
+                if(salaryInput.isEmpty()){
+                    salaryInputInt = 0;
+                }
+                else{
+                    salaryInputInt = Integer.parseInt(sal.getText());
+                }
+                if(ratingInput == null){
+                    ratingInputInt = 0;
+                }
+                else{
+                    ratingInputInt = Integer.parseInt((String) plyRate.getValue());
+                }
+                if(squadNumberInput.isEmpty()){
+                    squadNumberInputInt = 0;
+                }
+                else{
+                    squadNumberInputInt = Integer.parseInt(sqNo.getText());
+                }
+                if(positionInput == null){
+                    positionInput = "";
+                }
+                else {
+                    positionInput = (String) (pos.getValue());
+                }
+                if(priceInput.isEmpty()){
+                    priceInputInt = 0;
+                }
+                else{
+                    priceInputInt = Integer.parseInt(playerP.getText());
+                }
+                if(nameInput.isEmpty() == true){
+                    nameInput = "";
+                }
+                else{
+                    nameInput = name.getText();
+                }
+                if(nationalityInput.isEmpty()){
+                    nationalityInput = "";
+                }
+                else {
+                    nationalityInput = nation.getText();
+                }
+                result = db.searchAdvancePlayer(connection, positionInput, priceInputInt, nameInput, ageInputInt, salaryInputInt, nationalityInput, squadNumberInputInt, availabilityInput, ratingInputInt);
 
                 boolean a;
                 setNumberOfRows(result);
