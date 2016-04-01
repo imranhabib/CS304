@@ -27,6 +27,13 @@ public class contract {
         this.squadNumber = squadNumber;
     }
 
+    public contract(int lenRemain, int duration, boolean loanOption){
+        this.lenRemain = lenRemain;
+        this.duration = duration;
+        this.loanOption = loanOption;
+
+    }
+
     public contract (ResultSet result){
         this.details = result;
     }

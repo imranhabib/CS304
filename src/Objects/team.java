@@ -20,6 +20,12 @@ public class team {
 
     }
 
+    public team (String TMSlogan, String name){
+        this.TMSlogan = TMSlogan;
+        this.name = name;
+
+    }
+
 
     public int getTeamId() {
         return teamId;
