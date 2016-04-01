@@ -14,7 +14,7 @@ public class database {
     Connection dbConnect;
     database connection;
     String username = "root";
-    String password = "Alpha051214.";
+    String password = "whatsername";
     int userSqNum;
     int userSIN;
 
