@@ -337,9 +337,7 @@ public class database {
         }
     }
 
-    public ResultSet searchAdvancePlayerContractJoin(Connection connection, String position, int price, String playername, int age, int salary, String nationality,
-                                                     int playersquadNumber, int availability, int rating, int lenRemain, int duration,
-                                                     int loanOption, int contractSquadNumber){
+    public ResultSet searchAdvancePlayerContractJoin(Connection connection, int lenRemain, int duration, int loanOption, int contractSquadNumber){
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(AdvancedPlayerContractJoin(lenRemain, duration, loanOption, contractSquadNumber));
