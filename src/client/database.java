@@ -340,7 +340,7 @@ public class database {
     public ResultSet searchAdvancePlayerContractJoin(Connection connection, int lenRemain, int duration, int loanOption, int contractSquadNumber){
         try {
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(AdvancedPlayerContractJoin(lenRemain, duration, loanOption, contractSquadNumber));
+            ResultSet result = stmt.executeQuery(AdvancedPlayerContractJoin(lenRemain, duration, loanOption));
             result.first();
             System.out.println(result.getString("contractsquadNumber"));
             return result;
@@ -705,7 +705,7 @@ public class database {
     }
 
 
-    public String AdvancedPlayerContractJoin(int lenRemain, int duration, int loanOption, int contractsquadNumber) {
+    public String AdvancedPlayerContractJoin(int lenRemain, int duration, int loanOption) {
 
         int and = 0;
         String addAnd = "";
@@ -733,9 +733,6 @@ public class database {
         }
         if (and == 1) {
             addAnd = " AND ";
-        }
-        if (contractsquadNumber != 0) {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " contract.SquadNumber = " + contractsquadNumber;
         }
 
         String stmt = new String (SQLPlayerContractJoin);
