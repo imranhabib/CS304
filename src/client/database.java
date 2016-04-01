@@ -708,81 +708,13 @@ public class database {
     }
 
 
-    public String AdvancedPlayerContractJoin(String position, int price, String playername, int age, int salary, String nationality,
-                                             int playersquadNumber, int availability, int rating, int lenRemain, int duration,
-                                             int loanOption, int contractsquadNumber) {
+    public String AdvancedPlayerContractJoin(int lenRemain, int duration, int loanOption, int contractsquadNumber) {
 
         int and = 0;
         String addAnd = "";
 
         String SQLPlayerContractJoin = "SELECT * FROM managementapplication.player INNER JOIN managementapplication.contract ON contract.SquadNumber = player.SquadNumber WHERE ";
 
-
-        if (position != "") {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + "player.position = " + "'" + position + "'";
-            and = 1;
-        }
-        if (and == 1) {
-            addAnd = " AND ";
-        }
-        if (price != 0) {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.price = " + price;
-            and = 1;
-        }
-        if (and == 1) {
-            addAnd = " AND ";
-        }
-        if (playername != "") {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.name = " + "'" + playername + "'";
-            and = 1;
-        }
-        if (and == 1) {
-            addAnd = " AND ";
-        }
-        if (age != 0) {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.age = " + age;
-            and = 1;
-
-        }
-        if (and == 1) {
-            addAnd = " AND ";
-        }
-        if (salary != 0) {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.salary = " + salary;
-            and = 1;
-
-        }
-        if (and == 1) {
-            addAnd = " AND ";
-        }
-        if (nationality != "") {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.nationality = " + "'" + nationality + "'";
-            and = 1;
-
-        }
-        if (and == 1) {
-            addAnd = " AND ";
-        }
-        if (playersquadNumber != 0) {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.squadNumber = " + playersquadNumber;
-            and = 1;
-
-        }
-        if (and == 1) {
-            addAnd = " AND ";
-        }
-        if (availability != 2) {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.availability = " + availability;
-            and = 1;
-
-        }
-        if (and == 1) {
-            addAnd = " AND ";
-        }
-        if (rating != 0) {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " player.rating = " + rating;
-            and = 1;
-        }
 
         if (lenRemain != 0) {
             SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " contract.LengthRemaining = " + lenRemain;
