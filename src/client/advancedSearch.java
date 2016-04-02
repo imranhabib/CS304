@@ -10,15 +10,22 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Callback;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,7 +50,17 @@ public class advancedSearch {
     private GridPane form = new GridPane();
     private TableView table = new TableView();
     private int numberOfResults;
-    boolean resultWindow = true;
+    private boolean noElementExists = false;
+    private boolean didNotSearchForAnything = false;
+    private boolean integerTypeFail = false;
+    private Label errorLabel;
+    private String style =   "-fx-border-color: red; "
+            + "-fx-font-size: 15;"
+            + "-fx-border-insets: 5, 0, 5, 5; "
+            + "-fx-border-radius: 5;"
+            + "-fx-border-style: dashed;"
+            + "-fx-border-width: 5;";
+
 
 
 
@@ -161,7 +178,8 @@ public class advancedSearch {
 
 
     public ScrollPane handlePlayerSearch(){
-
+        noElementExists = false;
+        didNotSearchForAnything = false;
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(10, 5, 5, 5));
 
@@ -192,16 +210,10 @@ public class advancedSearch {
         TextField playerP = new TextField();
         playerP.setEditable(true);
 
-        Label playerName = new Label("First Name: ");
+        Label playerName = new Label("Name: ");
         form.setHalignment(playerName, HPos.RIGHT);
         TextField name = new TextField();
         name.setEditable(true);
-
-        Label playerLastName = new Label("Last Name: ");
-        form.setHalignment(playerLastName, HPos.RIGHT);
-        TextField lname = new TextField();
-        lname.setEditable(true);
-
 
         Label playerAge = new Label("Age: ");
         form.setHalignment(playerAge, HPos.RIGHT);
@@ -247,7 +259,6 @@ public class advancedSearch {
         form.add(playerPos, 0, 0); form.add(pos, 1, 0);
         form.add(playerPrice, 0, 1); form.add(playerP, 1, 1);
         form.add(playerName, 0, 2); form.add(name, 1, 2);
-        form.add(playerLastName, 0, 3); form.add(lname, 1, 3);
         form.add(playerAge, 0, 4); form.add(plyAge, 1, 4);
         form.add(playerSal, 0, 5); form.add(sal, 1, 5);
         form.add(playerNationality, 0, 6); form.add(nation, 1, 6);
@@ -258,20 +269,34 @@ public class advancedSearch {
 
         account.setCenter(form);
 
+
+
+
         Button submit = new Button("Search");
         submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
 
-        account.setBottom(submit);
+        errorLabel = new Label("");
+
+
+        VBox stackBox = new VBox();
+        stackBox.setSpacing(5);
+        stackBox.setPadding(new Insets(50, 10, 10, 10));
+
+        stackBox.getChildren().addAll(errorLabel, submit);
+
+
+
+        account.setBottom(stackBox);
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                int ageInputInt;
-                int salaryInputInt;
-                int squadNumberInputInt;
-                int ratingInputInt;
-                int priceInputInt;
+                int ageInputInt = 0 ;
+                int salaryInputInt = 0;
+                int squadNumberInputInt = 0;
+                int ratingInputInt = 0;
+                int priceInputInt = 0;
 
                 String positionInput = (String) (pos.getValue());
                 String priceInput = (playerP.getText());
@@ -281,9 +306,16 @@ public class advancedSearch {
                 String nationalityInput = nation.getText();
                 String squadNumberInput = sqNo.getText();
                 String ratingInput = (String) plyRate.getValue();
+
                 int availabilityInput;
 
+                int errorCheck = 0;
+                int errorCheckTotal = 9;
+
+
+
                 if(avail.getValue() == null){
+                    errorCheck ++;
                     availabilityInput = 2;
                 }
                 else if ((avail.getValue()).equals("Yes")) {
@@ -294,6 +326,7 @@ public class advancedSearch {
 
 
                 if(ageInput == null){
+                    errorCheck ++;
                     ageInputInt = 0;
                 }
                 else{
@@ -301,49 +334,109 @@ public class advancedSearch {
                 }
 
                 if(salaryInput.isEmpty()){
+                    errorCheck ++;
                     salaryInputInt = 0;
                 }
                 else{
-                    salaryInputInt = Integer.parseInt(sal.getText());
+                    try {
+                        integerTypeFail = false;
+                        salaryInputInt = Integer.parseInt(sal.getText());
+                    } catch (NumberFormatException nf){
+                        sal.setStyle(style);
+                        integerTypeFail = true;
+                        setErrorLabelForTypeChecking(errorLabel);
+                    }
                 }
                 if(ratingInput == null){
+                    errorCheck ++;
                     ratingInputInt = 0;
                 }
                 else{
                     ratingInputInt = Integer.parseInt((String) plyRate.getValue());
                 }
                 if(squadNumberInput.isEmpty()){
+                    errorCheck ++;
                     squadNumberInputInt = 0;
                 }
                 else{
-                    squadNumberInputInt = Integer.parseInt(sqNo.getText());
+                    try {
+                        integerTypeFail = false;
+                        squadNumberInputInt = Integer.parseInt(sqNo.getText());
+                    } catch (NumberFormatException nf){
+                        sqNo.setStyle(style);
+                        integerTypeFail = true;
+                        setErrorLabelForTypeChecking(errorLabel);
+                    }
                 }
                 if(positionInput == null){
+                    errorCheck ++;
                     positionInput = "";
                 }
                 else {
                     positionInput = (String) (pos.getValue());
                 }
                 if(priceInput.isEmpty()){
+                    errorCheck ++;
                     priceInputInt = 0;
                 }
                 else{
-                    priceInputInt = Integer.parseInt(playerP.getText());
+                    try {
+                        integerTypeFail = false;
+                        priceInputInt = Integer.parseInt(playerP.getText());
+                    } catch (NumberFormatException nf){
+                        playerP.setStyle(style);
+                        integerTypeFail = true;
+                        setErrorLabelForTypeChecking(errorLabel);
+                    }
                 }
                 if(nameInput.isEmpty() == true){
+                    errorCheck ++;
                     nameInput = "";
                 }
                 else{
                     nameInput = name.getText();
+                    if(nameChangeIsValid(nameInput)){
+                    } else {
+                        name.setStyle(style);
+                        integerTypeFail = true;
+                        setErrorLabelForTypeChecking(errorLabel);
+                    }
                 }
+
                 if(nationalityInput.isEmpty()){
+                    errorCheck ++;
                     nationalityInput = "";
                 }
                 else {
                     nationalityInput = nation.getText();
+                    if(nameChangeIsValid(nationalityInput)){
+                    } else {
+                        nation.setStyle(style);
+                        integerTypeFail = true;
+                        setErrorLabelForTypeChecking(errorLabel);
+                    }
                 }
-                result = db.searchAdvancePlayer(connection, positionInput, priceInputInt, nameInput, ageInputInt, salaryInputInt, nationalityInput, squadNumberInputInt, availabilityInput, ratingInputInt);
+                if(integerTypeFail){
+                    return;
+                } else {
+                    integerTypeFail = false;
+                    playerP.setStyle("");
+                    sqNo.setStyle("");
+                    sal.setStyle("");
+                    name.setStyle("");
+                    nation.setStyle("");
 
+                }
+
+                if(errorCheck == errorCheckTotal){
+                    didNotSearchForAnything = true;
+                    setErrorLabel(errorLabel);
+                    return;
+                } else {
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    result = db.searchAdvancePlayer(connection, positionInput, priceInputInt, nameInput, ageInputInt, salaryInputInt, nationalityInput, squadNumberInputInt, availabilityInput, ratingInputInt);
+                }
                 boolean a;
                 setNumberOfRows(result);
                 try {
@@ -363,17 +456,25 @@ public class advancedSearch {
                         System.out.println("No records found in the advan");
                     }
                     result.first();
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
                     for (int i = 0; i < rows + 1; i++) {
                         p.add(new player(result.getString("Position"), result.getInt("Price"), result.getString("Name"),
                                 result.getInt("Age"), result.getInt("Salary"), result.getString("Nationality"),
-                                result.getInt("SquadNumber"), a, result.getInt("Rating")));
-                        System.out.println(p.get(i).getSquadNumber() + " da SQNO" );
+                                result.getInt("SquadNumber"), a, result.getInt("Rating"), result.getInt("TeamID")));
                         result.next();
                     }
 
                     searchResultPage search = new searchResultPage();
                     search.createBorderPane(setPlayerFields(p));
                 } catch (SQLException e) {
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(e);
+                } catch (NullPointerException n){
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(n);
 
                 }
             }});
@@ -393,7 +494,8 @@ public class advancedSearch {
 
 
     public ScrollPane handleManagerSearch(){
-
+        noElementExists = false;
+        didNotSearchForAnything = false;
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(10, 5, 5, 5));
 
@@ -440,7 +542,17 @@ public class advancedSearch {
         Button submit = new Button("Search");
         submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
 
-        account.setBottom(submit);
+        errorLabel = new Label("");
+
+
+        VBox stackBox = new VBox();
+        stackBox.setSpacing(5);
+        stackBox.setPadding(new Insets(50, 10, 10, 10));
+
+        stackBox.getChildren().addAll(errorLabel, submit);
+
+
+        account.setBottom(stackBox);
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -451,21 +563,35 @@ public class advancedSearch {
                 String mnameInput = (String) mname.getValue();
                 String jobInput = (String) job.getValue();
 
+
+                int errorCheck = 0;
+                int errorCheckTotal = 2;
+
                 if(mnameInput == null){
+                    errorCheck++;
                     mnameInputString = "";
                 }
                 else{
                     mnameInputString = (String) mname.getValue();
                 }
                 if(jobInput == null){
+                    errorCheck++;
                     jobInputInt = 0;
                 }
                 else{
                     jobInputInt = Integer.parseInt((String) job.getValue());
                 }
-                result = db.searchAdvanceManager(connection, mnameInputString, jobInputInt);
 
-                boolean a;
+                if(errorCheck == errorCheckTotal){
+                    didNotSearchForAnything = true;
+                    setErrorLabel(errorLabel);
+                    return;
+                } else {
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    result = db.searchAdvanceManager(connection, mnameInputString, jobInputInt);
+                }
+
                 setNumberOfRows(result);
                 try {
 
@@ -480,6 +606,8 @@ public class advancedSearch {
                         System.out.println("No records found in the advan");
                     }
                     result.first();
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
                     for (int i = 0; i < rows + 1; i++) {
                         m.add(new manager(result.getString("Name"), result.getInt("JobSecurity")));
                         result.next();
@@ -488,6 +616,13 @@ public class advancedSearch {
                     searchResultPage search = new searchResultPage();
                     search.createBorderPane(setManagerFields(m));
                 } catch (SQLException e) {
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(e);
+                } catch (NullPointerException n){
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(n);
 
                 }
             }});
@@ -521,6 +656,8 @@ public class advancedSearch {
 
 
     public ScrollPane handleLeagueSearch(){
+        noElementExists = false;
+        didNotSearchForAnything = false;
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(10, 5, 5, 5));
 
@@ -580,7 +717,17 @@ public class advancedSearch {
         Button submit = new Button("Search");
         submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
 
-        account.setBottom(submit);
+        errorLabel = new Label("");
+
+
+        VBox stackBox = new VBox();
+        stackBox.setSpacing(5);
+        stackBox.setPadding(new Insets(50, 10, 10, 10));
+
+        stackBox.getChildren().addAll(errorLabel, submit);
+
+
+        account.setBottom(stackBox);
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -593,32 +740,48 @@ public class advancedSearch {
                 String numberOfTeamsInput = (String) teamNo.getValue();
 
 
+                int errorCheck = 0;
+                int errorCheckTotal = 4;
+
                 if(leagueNameInput == null){
+                    errorCheck++;
                     leagueNameInput = "";
                 }
                 else{
                     leagueNameInput = (String) l.getValue();
                 }
                 if(countryInput.isEmpty()){
+                    errorCheck++;
                     countryInput = "";
                 }
                 else{
                     countryInput = leagueC.getText();
                 }
                 if(sponsorInput == null){
+                    errorCheck++;
                     sponsorInput = "";
                 }
                 else{
                     sponsorInput = (String) spon.getValue();
                 }
                 if(numberOfTeamsInput == null){
+                    errorCheck++;
                     numberOfTeamsInputInt = 0;
                 }
                 else{
                     numberOfTeamsInputInt = Integer.parseInt((String) teamNo.getValue());
                 }
 
-                result = db.searchAdvanceLeague(connection, numberOfTeamsInputInt, countryInput, sponsorInput, leagueNameInput);
+
+                if(errorCheck == errorCheckTotal){
+                    didNotSearchForAnything = true;
+                    setErrorLabel(errorLabel);
+                    return;
+                } else {
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    result = db.searchAdvanceLeague(connection, numberOfTeamsInputInt, countryInput, sponsorInput, leagueNameInput);
+                }
 
                 setNumberOfRows(result);
                 try {
@@ -642,6 +805,13 @@ public class advancedSearch {
                     searchResultPage search = new searchResultPage();
                     search.createBorderPane(setLeagueFields(l));
                 } catch (SQLException e) {
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(e);
+                } catch (NullPointerException n){
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(n);
 
                 }
             }});
@@ -662,6 +832,8 @@ public class advancedSearch {
         return rootScroll;
     }
     public ScrollPane handleContractSearch(){
+        noElementExists = false;
+        didNotSearchForAnything = false;
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(10, 5, 5, 5));
 
@@ -718,7 +890,17 @@ public class advancedSearch {
         Button submit = new Button("Search");
         submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
 
-        account.setBottom(submit);
+        errorLabel = new Label("");
+
+
+        VBox stackBox = new VBox();
+        stackBox.setSpacing(5);
+        stackBox.setPadding(new Insets(50, 10, 10, 10));
+
+        stackBox.getChildren().addAll(errorLabel, submit);
+
+
+        account.setBottom(stackBox);
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -735,30 +917,47 @@ public class advancedSearch {
                 String durationInput = (String) d.getValue();
 
 
+                int errorCheck = 0;
+                int errorCheckTotal = 3;
+
+
                 if(lengthInput == null){
+                    errorCheck++;
                     lengthInputInt = 0;
                 }
                 else{
                     lengthInputInt = Integer.parseInt(lengthInput);
+                }
+
+                if(loanOptionInput == null){
+                    errorCheck++;
                 }
                 if(loanOptionInput == "Yes"){
                     loanOptionInputInt = 1;
 
                 }
                 if(durationInput == null){
+                    errorCheck++;
                     durationInputInt = 0;
                 }
                 else{
                     durationInputInt = Integer.parseInt(durationInput);
                 }
 
+                System.out.println("highlight " + errorCheck + " " + errorCheckTotal );
 
-                result = db.searchAdvanceContract(connection, lengthInputInt,durationInputInt,loanOptionInputInt);
+                if(errorCheck == errorCheckTotal){
+                    didNotSearchForAnything = true;
+                    setErrorLabel(errorLabel);
+                    return;
+                } else {
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    result = db.searchAdvanceContract(connection, lengthInputInt, durationInputInt, loanOptionInputInt);
+                }
 
                 setNumberOfRows(result);
                 try {
-
-
                     ArrayList<contract> c = new ArrayList<>();
                     int rows = 0;
                     while (result.next()) {
@@ -769,6 +968,8 @@ public class advancedSearch {
                         System.out.println("No records found in the advan");
                     }
                     result.first();
+                    noElementExists = false;
+                    setErrorLabel(errorLabel);
                     for (int i = 0; i < rows + 1; i++) {
                         boolean truth;
                         if(result.getInt("LoanOption") == 1) {
@@ -783,6 +984,14 @@ public class advancedSearch {
                     searchResultPage search = new searchResultPage();
                     search.createBorderPane(setContractFields(c));
                 } catch (SQLException e) {
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(e);
+
+                } catch (NullPointerException n){
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(n);
 
                 }
             }});
@@ -802,6 +1011,8 @@ public class advancedSearch {
         return rootScroll;
     }
     public ScrollPane handleTeamSearch(){
+        noElementExists = false;
+        didNotSearchForAnything = false;
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(10, 5, 5, 5));
 
@@ -849,7 +1060,17 @@ public class advancedSearch {
         Button submit = new Button("Search");
         submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
 
-        account.setBottom(submit);
+        errorLabel = new Label("");
+
+
+        VBox stackBox = new VBox();
+        stackBox.setSpacing(5);
+        stackBox.setPadding(new Insets(50, 10, 10, 10));
+
+        stackBox.getChildren().addAll(errorLabel, submit);
+
+
+        account.setBottom(stackBox);
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -860,20 +1081,37 @@ public class advancedSearch {
                 String nameInput = (String) (t.getValue());
                 String tmSlogan = (String) (s.getValue());
 
+
+                int errorCheck = 0;
+                int errorCheckTotal = 2;
+
+
                 if(nameInput == null){
+                    errorCheck++;
                     nameInput = "";
                 }
                 else{
                     nameInput = (String) (t.getValue());
                 }
                 if(tmSlogan == null){
+                    errorCheck++;
                     tmSlogan = "";
                 }
                 else{
                     tmSlogan = (String) (s.getValue());
                 }
 
-                result = db.searchAdvanceTeam(connection,tmSlogan,nameInput);
+
+
+                if(errorCheck == errorCheckTotal){
+                    didNotSearchForAnything = true;
+                    setErrorLabel(errorLabel);
+                    return;
+                } else {
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    result = db.searchAdvanceTeam(connection, tmSlogan, nameInput);
+                }
 
                 setNumberOfRows(result);
                 try {
@@ -887,14 +1125,23 @@ public class advancedSearch {
                         System.out.println("No records found in the advan");
                     }
                     result.first();
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
                     for (int i = 0; i < rows + 1; i++) {
-                        t.add(new team(result.getString("Name"), result.getString("TM Slogan")));
+                        t.add(new team(result.getString("Name"), result.getString("TMSlogan")));
                         result.next();
                     }
 
                     searchResultPage search = new searchResultPage();
                     search.createBorderPane(setTeamFields(t));
                 } catch (SQLException e) {
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(e);
+                } catch (NullPointerException n){
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(n);
 
                 }
             }});
@@ -916,6 +1163,8 @@ public class advancedSearch {
 
 
     public ScrollPane handleGBodySearch(){
+        noElementExists = false;
+        didNotSearchForAnything = false;
         BorderPane account = new BorderPane();
         account.setPadding(new Insets(10, 5, 5, 5));
 
@@ -973,7 +1222,17 @@ public class advancedSearch {
         Button submit = new Button("Search");
         submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
 
-        account.setBottom(submit);
+        errorLabel = new Label("");
+
+
+        VBox stackBox = new VBox();
+        stackBox.setSpacing(5);
+        stackBox.setPadding(new Insets(50, 10, 10, 10));
+
+        stackBox.getChildren().addAll(errorLabel, submit);
+
+
+        account.setBottom(stackBox);
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -984,23 +1243,40 @@ public class advancedSearch {
                 String hqInput = (String) HQ.getValue();
                 String presidentInput = (String) P.getValue();
 
+
+
+                int errorCheck = 0;
+                int errorCheckTotal = 3;
+
                 if (nameInput == null) {
+                    errorCheck++;
                     nameInput = "";
                 } else {
                     nameInput = (String) (g.getValue());
                 }
                 if (hqInput == null) {
+                    errorCheck++;
                     hqInput = "";
                 } else {
                     hqInput = (String) (HQ.getValue());
                 }
                 if (presidentInput == null) {
+                    errorCheck++;
                     presidentInput = "";
                 } else {
                     presidentInput = (String) (P.getValue());
                 }
 
-                result = db.searchAdvanceGBody(connection, nameInput, presidentInput, hqInput);
+
+                if(errorCheck == errorCheckTotal){
+                    didNotSearchForAnything = true;
+                    setErrorLabel(errorLabel);
+                    return;
+                } else {
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    result = db.searchAdvanceGBody(connection, nameInput, presidentInput, hqInput);
+                }
                 setNumberOfRows(result);
                 try {
 
@@ -1014,6 +1290,8 @@ public class advancedSearch {
                         System.out.println("No records found in the advan");
                     }
                     result.first();
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
                     for (int i = 0; i < rows + 1; i++) {
                         gb.add(new GBody(result.getString("Name"), result.getString("President"), result.getString("HQ")));
                         result.next();
@@ -1022,6 +1300,13 @@ public class advancedSearch {
                     searchResultPage search = new searchResultPage();
                     search.createBorderPane(setGBodyFields(gb));
                 } catch (SQLException e) {
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(e);
+                } catch (NullPointerException n){
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(n);
 
                 }
             }});
@@ -1341,26 +1626,6 @@ public class advancedSearch {
         table.setItems(data);
         resultView.setCenter(table);
 
-
-//        CheckBox keepResultOpen = new CheckBox();
-//
-//        keepResultOpen.setText("Keep Result Window Open?");
-//        keepResultOpen.setSelected(true);
-//
-//
-//        keepResultOpen.setStyle(
-//                "-fx-border-color: maroon; "
-//                        + "-fx-font-size: 15;"
-//                        + "-fx-border-insets: 5, 0, 5, 5; "
-//                        + "-fx-border-radius: 5;"
-//                        + "-fx-border-style: dashed;"
-//                        + "-fx-border-width: 5;"
-//        );
-//
-//
-//
-//        resultView.setBottom(keepResultOpen);
-//
         return resultView;
     }
     public BorderPane setGBodyFields(ArrayList<GBody> gb){
@@ -1410,28 +1675,10 @@ public class advancedSearch {
         resultView.setCenter(table);
 
 
-//        CheckBox keepResultOpen = new CheckBox();
-//
-//        keepResultOpen.setText("Keep Result Window Open?");
-//        keepResultOpen.setSelected(true);
-//
-//
-//        keepResultOpen.setStyle(
-//                "-fx-border-color: maroon; "
-//                        + "-fx-font-size: 15;"
-//                        + "-fx-border-insets: 5, 0, 5, 5; "
-//                        + "-fx-border-radius: 5;"
-//                        + "-fx-border-style: dashed;"
-//                        + "-fx-border-width: 5;"
-//        );
-//
-//
-//
-//        resultView.setBottom(keepResultOpen);
-//
+
+
         return resultView;
     }
-
 
 
 
@@ -1470,117 +1717,69 @@ public class advancedSearch {
 
     public void setNumberOfRows(ResultSet result){
         try {
+            noElementExists = false;
             result.last();
             numberOfResults = result.getRow();
+            if(numberOfResults == 0){
+                noElementExists = true;
+            } else {
+                noElementExists = false;
+            }
             result.first();
-        } catch (SQLException e){
+        } catch (SQLException e) {
+            noElementExists = true;
+        } catch (NullPointerException n){
+
         }
     }
 
 
-//    public BorderPane createPlayerPage(player p, int index){
-//            BorderPane account = new BorderPane();
-//            account.setPadding(new Insets(20, 10, 0, 9));
-//
-//            //Title
-//            TextField title = new TextField("Search Result");
-//            title.setEditable(false);
-//            title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
-//
-//            account.setTop(title);
-//            //Body
-//
-//        GridPane form = new GridPane();
-//        form.setPadding(new Insets(20, 0, 20, 20));
-//        form.setHgap(7);
-//        form.setVgap(7);
-//
-//
-//        Label userName = new Label("Account Holder: ");
-//        form.setHalignment(userName, HPos.RIGHT);
-//        TextField name = new TextField(p.getName());
-//        name.setEditable(false);
-//
-//        Label userSqNum = new Label("Squad Number: ");
-//        form.setHalignment(userSqNum, HPos.RIGHT);
-//        TextField sqNum = new TextField(Integer.toString(p.getSquadNumber()));
-//        sqNum.setEditable(false);
-//
-//        Label userAge = new Label("Age: ");
-//        form.setHalignment(userAge, HPos.RIGHT);
-//        TextField age = new TextField(Integer.toString(p.getAge()) + " Yrs");
-//        age.setEditable(false);
-//
-//        Label userPos = new Label("Position: ");
-//        form.setHalignment(userPos, HPos.RIGHT);
-//        TextField pos = new TextField(p.getPosition());
-//        pos.setEditable(false);
-//
-//        Label userPrice = new Label("Price: ");
-//        form.setHalignment(userPrice, HPos.RIGHT);
-//        TextField price = new TextField(Integer.toString(p.getPrice()) + " $");
-//        price.setEditable(false);
-//
-//        Label userSalary = new Label("Salary: " );
-//        form.setHalignment(userSalary, HPos.RIGHT);
-//        TextField sal = new TextField(Integer.toString(p.getSalary()) + " $/Yr");
-//        sal.setEditable(false);
-//
-//        Label userNationality = new Label("Nationality: ");
-//        form.setHalignment(userNationality, HPos.RIGHT);
-//        TextField nation = new TextField(p.getNationality());
-//        nation.setEditable(false);
-//
-//
-//        Label userAvailability = new Label("Available: ");
-//        form.setHalignment(userAvailability, HPos.RIGHT);
-//        TextField avail = new TextField();
-//        if(p.isAvailability()){
-//            avail.setText("Yes!");
-//        } else {
-//            avail.setText("No");
-//        }
-//
-//
-//        avail.setEditable(false);
-//
-//        Label userRating = new Label("Rating: ");
-//        form.setHalignment(userRating, HPos.RIGHT);
-//        TextField rate = new TextField(Integer.toString(p.getRating()) + " Pts");
-//        rate.setEditable(false);
-//
-//
-//        form.add(userName, 0, 0);
-//            form.add(name, 1, 0);
-//            form.add(userSqNum, 3, 0);
-//            form.add(sqNum, 4, 0);
-//            form.add(userAge, 0, 2);
-//            form.add(age, 1, 2);
-//            form.add(userPos, 3, 2);
-//            form.add(pos, 4, 2);
-//            form.add(userPrice, 0, 4);
-//            form.add(price, 1, 4);
-//            form.add(userSalary, 3, 4);
-//            form.add(sal, 4, 4);
-//            form.add(userNationality, 0, 6);
-//            form.add(nation, 1, 6);
-//            form.add(userAvailability, 3, 6);
-//            form.add(avail, 4, 6);
-//            form.add(userRating, 0, 8);
-//            form.add(rate, 1, 8);
-//            return account;
-//
-//    }
-//
-//
+    public Label getErrorLabel() {
+        return errorLabel;
+    }
+
+    public void setErrorLabel(Label errorLabel) {
+        this.errorLabel = errorLabel;
+        errorLabel.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        errorLabel.setTextFill(javafx.scene.paint.Color.web("red"));
+        if(noElementExists && !didNotSearchForAnything){
+            errorLabel.setText("Value doesn't exist, please search again!");
+            return;
+        } else {
+            errorLabel.setText("");
+        }
+        if(didNotSearchForAnything && !noElementExists){
+            errorLabel.setText("Search empty, please search again!");
+            return;
+        } else {
+            errorLabel.setText("");
+        }
+
+    }
 
 
+    public void setErrorLabelForTypeChecking(Label errorLabel){
+        this.errorLabel = errorLabel;
+        errorLabel.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        errorLabel.setTextFill(javafx.scene.paint.Color.web("red"));
+
+        if(integerTypeFail){
+            errorLabel.setText("Please correct highlighted value(s)");
+        } else {
+            errorLabel.setText("");
+        }
+
+    }
 
 
-
-
-
-
+    public boolean nameChangeIsValid(String input){
+        try {
+            Integer.parseInt(input);
+            return false;
+        } catch (NumberFormatException e){
+            return true;
+        }
+    }
 
 
 

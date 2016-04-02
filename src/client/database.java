@@ -2,7 +2,6 @@ package client;
 
 
 import java.sql.*;
-import java.time.Duration;
 import java.util.ArrayList;
 
 
@@ -34,15 +33,6 @@ public class database {
             System.out.println(e);
             System.out.println("error in the DB Connection");
             return null;
-        }
-    }
-
-    public void insert(Connection connection, String firstName, String lastName) {
-        try {
-            Statement stmt = connection.createStatement();
-            stmt.executeUpdate("INSERT into names " + "VALUES(firstName, lastName)");
-        } catch (SQLException e) {
-            System.out.println(e);
         }
     }
 
@@ -85,6 +75,50 @@ public class database {
         }
 
     }
+
+
+
+    public ArrayList<player> getAllPlayers(Connection connection) {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(getAllPlayerInformation());
+            result.first();
+            ArrayList<player> players = new ArrayList<>();
+            int rows = 0;
+            while (result.next()) {
+                ++rows;
+            }
+            if (rows == 0) {
+                //handle this case later
+                System.out.println("No records found");
+            }
+            result.first();
+            for (int i = 0; i < rows + 1; i++) {
+                boolean a;
+                if (result.getInt("Availability") == 1) {
+                    a = true;
+                } else {
+                    a = false;
+                }
+                players.add(new player(result.getString("Position"), result.getInt("Price"), result.getString("Name"),
+                        result.getInt("Age"), result.getInt("Salary"), result.getString("Nationality"),
+                        result.getInt("SquadNumber"), a, result.getInt("Rating"), result.getInt("TeamID")));
+                result.next();
+            }
+
+            return players;
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+
+    }
+
+
+
+
+
 
     public ArrayList<league> getAllLeagues(Connection connection) {
         try {
@@ -133,7 +167,7 @@ public class database {
             }
             result.first();
             for (int i = 0; i < rows + 1; i++) {
-                teams.add(new team(result.getInt("TeamID"), result.getString("TM Slogan"), result.getInt("Budget"),
+                teams.add(new team(result.getInt("TeamID"), result.getString("TMSlogan"), result.getInt("Budget"),
                         result.getString("Name")));
                 result.next();
             }
@@ -420,6 +454,12 @@ public class database {
 
     private String getAllLeagueInformation() {
         String stmt = new String("SELECT * FROM managementapplication.league");
+        return stmt;
+    }
+
+
+    private String getAllPlayerInformation() {
+        String stmt = new String("SELECT * FROM managementapplication.player");
         return stmt;
     }
 
