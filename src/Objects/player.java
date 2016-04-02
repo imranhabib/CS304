@@ -20,6 +20,7 @@ public class player {
     private int squadNumber;
     private boolean availability;
     private int rating;
+    private int teamID;
     private ResultSet details;
 
 
@@ -37,7 +38,7 @@ public class player {
 
 
     public player(String position, int price, String name, int age, int salary, String nationality,
-                  int squadNumber, boolean availability, int rating){
+                  int squadNumber, boolean availability, int rating, int teamID){
         this.position = position;
         this.price = price;
         this.name = name;
@@ -47,6 +48,7 @@ public class player {
         this.squadNumber = squadNumber;
         this.availability = availability;
         this.rating = rating;
+        this.teamID = teamID;
 
 
     }
@@ -57,14 +59,19 @@ public class player {
 
     }
 
+    public int getTeamID() {
+        return teamID;
+    }
+
     public player formatPlayerDetails() throws SQLException{
         ResultSet information = details;
+
         information.first();
 
         player formattedUser = new player(information.getString("Position"), information.getInt("price"),
                 information.getString("name"), information.getInt("age"), information.getInt("salary"),
                 information.getString("Nationality"), information.getInt("SquadNumber"), information.getBoolean("Availability"),
-                information.getInt("rating"));
+                information.getInt("rating"), information.getInt("TeamID"));
 
 
             return formattedUser;

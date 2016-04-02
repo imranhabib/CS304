@@ -27,6 +27,12 @@ public class team {
     }
 
 
+    public team (){
+
+
+    }
+
+
     public int getTeamId() {
         return teamId;
     }
