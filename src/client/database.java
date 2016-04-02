@@ -2,7 +2,6 @@ package client;
 
 
 import java.sql.*;
-import java.time.Duration;
 import java.util.ArrayList;
 
 
@@ -133,7 +132,7 @@ public class database {
             }
             result.first();
             for (int i = 0; i < rows + 1; i++) {
-                teams.add(new team(result.getInt("TeamID"), result.getString("TM Slogan"), result.getInt("Budget"),
+                teams.add(new team(result.getInt("TeamID"), result.getString("TMSlogan"), result.getInt("Budget"),
                         result.getString("Name")));
                 result.next();
             }
@@ -363,10 +362,10 @@ public class database {
         }
     }
 
-    public ResultSet searchAdvancedBestPlayerPerTeam(Connection connection, int teamId){
+    public ResultSet searchAdvancedBestPlayerPerTeam(Connection connection, int teamId, String criteria){
         try {
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(AdvancedBestPlayerPerTeamAggregation(teamId));
+            ResultSet result = stmt.executeQuery(AdvancedBestSomethingPerTeamAggregation(teamId, criteria));
             result.first();
             System.out.println(result.getString("teamId"));
             return result;
@@ -382,6 +381,45 @@ public class database {
             ResultSet result = stmt.executeQuery(somethingAndHigestRatedPlayer(age,salary,team));
             result.first();
             System.out.println(result.getString("Age"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public ResultSet deleteContract(Connection connection, int contractNUmber){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(deleteContract(contractNUmber));
+            result.first();
+            System.out.println(result.getString("contractNUmber"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public ResultSet deletePlayer(Connection connection, int SquadNumber){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(deletePlayerCascadeContract(SquadNumber));
+            result.first();
+            System.out.println(result.getString("SquadNumber"));
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public ResultSet selectAvailablePlayerNotInTeams(Connection connection, int teamId1, int teamId2){
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(selectAvailablePlayersNotInTeams(teamId1, teamId2));
+            result.first();
+            System.out.println(result.getString("SquadNumber"));
             return result;
         } catch (SQLException e) {
             System.out.println(e);
@@ -786,17 +824,10 @@ public class database {
 
     }
 
-    public String AdvancedBestPlayerPerTeamAggregation(int team) {
+    public String AdvancedBestSomethingPerTeamAggregation(int team, String criteria) {
 
-        String SQLBestPlayerAgg = "SELECT * FROM managementapplication.player WHERE player.Rating = ((SELECT max(player.Rating) FROM managementapplication.player WHERE player.teamID ="
-        ;
+        String SQLBestPlayerAgg = "SELECT * FROM managementapplication.player WHERE player." + criteria + " = ((SELECT max(player." + criteria + ") FROM managementapplication.player WHERE player.teamID =" + team + "))";
 
-        if(team != 0){
-            SQLBestPlayerAgg = SQLBestPlayerAgg + team + "))";
-        }
-        else {
-            System.out.println("Team was no entered");
-        }
         String stmt = new String(SQLBestPlayerAgg);
         System.out.println(stmt);
         return stmt;
@@ -827,5 +858,44 @@ public class database {
         return stmt;
     }
 
+    public String deleteContract(int contractNumber){
+
+
+        String SQLDeleteContract = "DELETE FROM managementapplication.contract WHERE ContractNumber = " + contractNumber;
+
+        String stmt = new String(SQLDeleteContract);
+        System.out.println(stmt);
+        return stmt;
+    }
+
+
+    public String deletePlayerCascadeContract(int SquadNumber){
+
+
+        String SQLDeletePlayer = "DELETE FROM managementapplication.player WHERE SquadNumber = " + SquadNumber;
+
+        String stmt = new String(SQLDeletePlayer);
+        System.out.println(stmt);
+        return stmt;
+    }
+
+
+    public String selectAvailablePlayersNotInTeams(int teamId1, int teamId2){
+
+        String SQLAvailableNotInTeams = "SELECT * FROM managementapplication.player WHERE Availability = 1 AND TeamID NOT IN (SELECT TeamID FROM player WHERE TeamId = ";
+
+        if(teamId1 != 0) {
+            SQLAvailableNotInTeams = SQLAvailableNotInTeams + teamId1;
+        }
+        if(teamId2 != 0) {
+            SQLAvailableNotInTeams = SQLAvailableNotInTeams + " OR " + teamId2;
+        }
+
+        SQLAvailableNotInTeams = SQLAvailableNotInTeams + ")";
+
+        String stmt = new String(SQLAvailableNotInTeams);
+        System.out.println(stmt);
+        return stmt;
+    }
 
 }
