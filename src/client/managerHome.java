@@ -463,55 +463,9 @@ public class managerHome {
             }
         }
 
-        root.setCenter(createUserTeamPage(userTeam));
-
-        GridPane form = new GridPane();
-        form.setPadding(new Insets(20, 0, 20, 20));
-        form.setHgap(7);
-        form.setVgap(7);
+        root.setCenter(createUserTeamPage(userTeam, userTeamID));
 
 
-        TextField title1 = new TextField("Select Player To Delete");
-        title1.setEditable(false);
-        title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
-
-        Label delPlayerLabel = new Label("Select Player To Delete: ");
-        form.setHalignment(delPlayerLabel, HPos.RIGHT);
-        ObservableList<Integer> myPlayers = FXCollections.observableArrayList();
-        ArrayList<player> myPlayersInDB = db.myTeamPlayers(dbConnect, userTeamID);
-        for(int z = 0; z < myPlayersInDB.size(); z++) {
-            myPlayers.add(myPlayersInDB.get(z).getSquadNumber());
-        }
-        final ComboBox myPlayersBox = new ComboBox(myPlayers);
-
-        Button submit = new Button("Terminate");
-        submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
-
-
-        form.add(title1, 0,30,30,1);
-        form.add(delPlayerLabel,0,31); form.add(myPlayersBox,1,31);
-        form.add(submit,0,32);
-
-
-        root.setCenter(form);
-
-        submit.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String identifier = "contract";
-
-                int playerNumber = (int) myPlayersBox.getValue();
-
-                if(playerNumber == 0){
-                    playerNumber = 0;
-                }
-                try {
-                    db.deletePlayer(dbConnect, playerNumber);
-                }
-                catch (NullPointerException n){
-                    System.out.println(n);
-                }
-            }});
     }
 
     public void allTeamsAction(){
@@ -784,7 +738,7 @@ public class managerHome {
 
     }
 
-    public BorderPane createUserTeamPage(team t){
+    public BorderPane createUserTeamPage(team t, int userTeamID){
         BorderPane userTeamPage = new BorderPane();
         userTeamPage.setPadding(new Insets(20, 10, 0, 10));
 
@@ -823,9 +777,46 @@ public class managerHome {
         form.add(teamSloganer, 0,1); form.add(sloganName, 1, 1);
         form.add(teamBudget, 0, 3); form.add(budName, 1, 3);
 
+
+        TextField title1 = new TextField("Select Player To Delete");
+        title1.setEditable(false);
+        title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+
+        Label delPlayerLabel = new Label("Select Player To Delete: ");
+        form.setHalignment(delPlayerLabel, HPos.RIGHT);
+        ObservableList<Integer> myPlayers = FXCollections.observableArrayList();
+        ArrayList<player> myPlayersInDB = db.myTeamPlayers(dbConnect, userTeamID);
+        for(int z = 0; z < myPlayersInDB.size(); z++) {
+            myPlayers.add(myPlayersInDB.get(z).getSquadNumber());
+        }
+        final ComboBox myPlayersBox = new ComboBox(myPlayers);
+
+        Button submit = new Button("Terminate");
+        submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
+
+
+        form.add(title1, 0,30,30,1);
+        form.add(delPlayerLabel,0,31); form.add(myPlayersBox,1,31);
+        form.add(submit,0,32);
         userTeamPage.setCenter(form);
 
+        submit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String identifier = "contract";
 
+                int playerNumber = (int) myPlayersBox.getValue();
+
+                if(playerNumber == 0){
+                    playerNumber = 0;
+                }
+                try {
+                    db.deletePlayer(dbConnect, playerNumber);
+                }
+                catch (NullPointerException n){
+                    System.out.println(n);
+                }
+            }});
 
         return userTeamPage;
 
