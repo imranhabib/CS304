@@ -256,6 +256,33 @@ public class advancedSearch {
                 );
         final ComboBox avail = new ComboBox(a);
 
+        Button submit = new Button("Search");
+               submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
+        Label something = new Label("Select Your Criteria: ");
+               form.setHalignment(something, HPos.RIGHT);
+              ObservableList<String> b =
+                   FXCollections.observableArrayList(
+                               "Rating", "Age", "Salary", "Price"
+                         );
+                final ComboBox criteria = new ComboBox(b);
+
+                Label teamLabel = new Label("Select The Team To Search: ");
+                form.setHalignment(teamLabel, HPos.RIGHT);
+                ObservableList<String> teamSelect = FXCollections.observableArrayList();
+                ArrayList<team> teamsInDB = db.getAllTeams(connection);
+             for(int z = 0; z < teamsInDB.size(); z++) {
+            teamSelect.add(teamsInDB.get(z).getName());
+                  }
+        final ComboBox teamBox = new ComboBox(teamSelect);
+       Button submit1 = new Button("Search Highest * Per Team ");
+              submit1.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
+                TextField title1 = new TextField("Find The Highest Something Per Team");
+                title1.setEditable(false);
+                title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+
+
+
+
         form.add(playerPos, 0, 0); form.add(pos, 1, 0);
         form.add(playerPrice, 0, 1); form.add(playerP, 1, 1);
         form.add(playerName, 0, 2); form.add(name, 1, 2);
@@ -265,15 +292,15 @@ public class advancedSearch {
         form.add(playerSquadNo, 0, 7); form.add(sqNo, 1, 7);
         form.add(userRating, 0, 8); form.add(plyRate, 1, 8);
         form.add(availability, 0, 9); form.add(avail, 1, 9);
-
+        form.add(submit,0,10);
+        form.add(title1,0,17,30,1);
+        form.add(something, 0, 20); form.add(criteria, 1, 20);
+        form.add(teamLabel,0,22); form.add(teamBox,1,22);
+        form.add(submit1,0,24);
 
         account.setCenter(form);
 
 
-
-
-        Button submit = new Button("Search");
-        submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
 
         errorLabel = new Label("");
 
