@@ -1115,10 +1115,14 @@ public class advancedSearch {
         title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
         account.setTop(title);
 
+
         Label contNo = new Label("Contract Number : " );
         form.setHalignment(contNo, HPos.RIGHT);
         TextField contBox = new TextField();
         contBox.setEditable(true);
+
+        Button submit1 = new Button("Terminate");
+        submit1.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
 
 
         form.add(lenRemain, 0, 0); form.add(remain, 1, 0);
@@ -1126,7 +1130,9 @@ public class advancedSearch {
         form.add(dur, 0, 2); form.add(d, 1, 2);
         form.add(title1, 0,5,30,1);
         form.add(contNo,0,7); form.add(contBox,1,7);
-        
+        form.add(submit1,0,8);
+
+
         account.setCenter(form);
 
 
@@ -1144,6 +1150,42 @@ public class advancedSearch {
 
 
         account.setBottom(stackBox);
+
+        submit1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String identifier = "contract";
+
+
+                int contractNumberInt = Integer.parseInt(contBox.getText());
+
+                int errorCheck = 0;
+                int errorCheckTotal = 1;
+
+                if(contractNumberInt == 0){
+                    errorCheck++;
+                }
+
+                if(errorCheck == errorCheckTotal){
+                    didNotSearchForAnything = true;
+                    setErrorLabel(errorLabel);
+                    return;
+                } else {
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    try {
+                    db.deleteContract(connection, contractNumberInt);
+                } catch (NullPointerException n){
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(n);
+
+                }
+            }}});
+
+
+
+
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override

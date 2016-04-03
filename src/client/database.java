@@ -76,7 +76,40 @@ public class database {
 
     }
 
+    public ArrayList<player> myTeamPlayers(Connection connection, int teamID) {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery(getMyPlayers(teamID));
+            result.first();
+            ArrayList<player> myPlayers = new ArrayList<>();
+            int rows = 0;
+            while (result.next()) {
+                ++rows;
+            }
+            if (rows == 0) {
+                //handle this case later
+                System.out.println("No records found in Players");
+            }
+            result.first();
+            for (int i = 0; i < rows + 1; i++) {
+                boolean a;
+                if (result.getInt("Availability") == 1) {
+                    a = true;
+                } else {
+                    a = false;
+                }
+                myPlayers.add(new player(result.getString("Position"), result.getInt("Price"), result.getString("Name"),
+                        result.getInt("Age"), result.getInt("Salary"), result.getString("Nationality"),
+                        result.getInt("SquadNumber"), a, result.getInt("Rating"), result.getInt("TeamID")));
+                result.next();
+            }
+            return myPlayers;
 
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 
     public ArrayList<player> getAllPlayers(Connection connection) {
         try {
@@ -385,12 +418,12 @@ public class database {
         }
     }
 
-    public ResultSet searchAdvanceManagerTeamJoin(Connection connection, String managerName, int JobSecurity, int managerTeamId, int teamId, String TMSlogan, String teamName){
+    public ResultSet searchAdvanceManagerTeamJoin(Connection connection, String TMSlogan, String teamName){
         try {
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(AdvancedManagerTeamJoin(managerName, JobSecurity, managerTeamId, teamId, TMSlogan, teamName));
+            ResultSet result = stmt.executeQuery(AdvancedManagerTeamJoin(TMSlogan, teamName));
             result.first();
-            System.out.println(result.getString("teamName"));
+            System.out.println(result.getString("Name"));
             return result;
         } catch (SQLException e) {
             System.out.println(e);
@@ -424,29 +457,25 @@ public class database {
         }
     }
 
-    public ResultSet deleteContract(Connection connection, int contractNUmber){
+    public int deleteContract(Connection connection, int contractNumber){
         try {
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(deleteContract(contractNUmber));
-            result.first();
-            System.out.println(result.getString("contractNUmber"));
-            return result;
+            stmt.execute(deleteContractSQL(contractNumber));
+            return 1;
         } catch (SQLException e) {
             System.out.println(e);
-            return null;
+            return 0;
         }
     }
 
-    public ResultSet deletePlayer(Connection connection, int SquadNumber){
+    public int deletePlayer(Connection connection, int SquadNumber){
         try {
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(deletePlayerCascadeContract(SquadNumber));
-            result.first();
-            System.out.println(result.getString("SquadNumber"));
-            return result;
+            stmt.execute(deletePlayerCascadeContract(SquadNumber));
+            return 1;
         } catch (SQLException e) {
             System.out.println(e);
-            return null;
+            return 0;
         }
     }
 
@@ -539,6 +568,11 @@ public class database {
 
     private String getManagerInformation(int SIN) {
         String stmt = new String("SELECT * FROM managementapplication.manager WHERE SIN=" + SIN);
+        return stmt;
+    }
+
+    private String getMyPlayers(int teamID) {
+        String stmt = new String("SELECT * FROM managementapplication.player WHERE TeamID=" + teamID);
         return stmt;
     }
 
@@ -822,34 +856,13 @@ public class database {
 
 
 
-    public String AdvancedManagerTeamJoin(String managerName, int JobSecurity, int managerTeamId, int teamId, String TMSlogan, String teamName){
+    public String AdvancedManagerTeamJoin(String TMSlogan, String teamName){
 
         int and = 0;
         String addAnd = "";
 
         String SQLManagerTeamJoin = "SELECT * FROM managementapplication.manager INNER JOIN managementapplication.team ON manager.managerTeamId = team.teamId WHERE ";
 
-        if(managerName != ""){
-            SQLManagerTeamJoin = SQLManagerTeamJoin + " Name = " + "'" + managerName + "'";
-            and = 1;
-        }
-        if(and == 1){
-            addAnd = " AND ";
-        }
-        if(JobSecurity != 0){
-            SQLManagerTeamJoin = SQLManagerTeamJoin + addAnd + " JobSecurity = " + JobSecurity;
-        }
-
-        if (and == 1) {
-            addAnd = " AND ";
-        }
-        if(teamId != 0){
-            SQLManagerTeamJoin = SQLManagerTeamJoin + addAnd + " TeamID = " + teamId;
-            and = 1;
-        }
-        if(and == 1 ){
-            addAnd = " AND ";
-        }
         if(TMSlogan != ""){
             SQLManagerTeamJoin = SQLManagerTeamJoin + addAnd + " TMSlogan = " + "'" + TMSlogan + "'";
             and = 1;
@@ -887,7 +900,7 @@ public class database {
         return stmt;
     }
 
-    public String deleteContract(int contractNumber){
+    public String deleteContractSQL(int contractNumber){
 
 
         String SQLDeleteContract = "DELETE FROM managementapplication.contract WHERE ContractNumber = " + contractNumber;
