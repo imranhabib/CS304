@@ -312,6 +312,14 @@ public class advancedSearch {
                 int errorCheck = 0;
                 int errorCheckTotal = 9;
 
+                boolean input1 = false;
+                boolean input2 = false;
+                boolean input3 = false;
+                boolean input4 = false;
+                boolean input5 = false;
+
+
+
 
 
                 if(avail.getValue() == null){
@@ -339,9 +347,11 @@ public class advancedSearch {
                 }
                 else{
                     try {
+                        input3 = false;
                         integerTypeFail = false;
                         salaryInputInt = Integer.parseInt(sal.getText());
                     } catch (NumberFormatException nf){
+                        input3 = true;
                         sal.setStyle(style);
                         integerTypeFail = true;
                         setErrorLabelForTypeChecking(errorLabel);
@@ -360,9 +370,11 @@ public class advancedSearch {
                 }
                 else{
                     try {
+                        input2 = false;
                         integerTypeFail = false;
                         squadNumberInputInt = Integer.parseInt(sqNo.getText());
                     } catch (NumberFormatException nf){
+                        input2 = true;
                         sqNo.setStyle(style);
                         integerTypeFail = true;
                         setErrorLabelForTypeChecking(errorLabel);
@@ -381,9 +393,11 @@ public class advancedSearch {
                 }
                 else{
                     try {
+                        input1 = false;
                         integerTypeFail = false;
                         priceInputInt = Integer.parseInt(playerP.getText());
                     } catch (NumberFormatException nf){
+                        input1 = true;
                         playerP.setStyle(style);
                         integerTypeFail = true;
                         setErrorLabelForTypeChecking(errorLabel);
@@ -394,9 +408,11 @@ public class advancedSearch {
                     nameInput = "";
                 }
                 else{
+                    input4 = false;
                     nameInput = name.getText();
                     if(nameChangeIsValid(nameInput)){
                     } else {
+                        input4 = true;
                         name.setStyle(style);
                         integerTypeFail = true;
                         setErrorLabelForTypeChecking(errorLabel);
@@ -408,22 +424,40 @@ public class advancedSearch {
                     nationalityInput = "";
                 }
                 else {
+                    input5 = false;
                     nationalityInput = nation.getText();
                     if(nameChangeIsValid(nationalityInput)){
                     } else {
+                        input5 = true;
                         nation.setStyle(style);
                         integerTypeFail = true;
                         setErrorLabelForTypeChecking(errorLabel);
                     }
                 }
                 if(integerTypeFail){
+                    if(!input1)
+                        playerP.setStyle("");
+                    if(!input2)
+                        sqNo.setStyle("");
+                    if(!input3)
+                        sal.setStyle("");
+                    if(!input4)
+                        name.setStyle("");
+                    if(!input5)
+                        nation.setStyle("");
                     return;
                 } else {
                     integerTypeFail = false;
+
+                    if(!input1)
                     playerP.setStyle("");
+                    if(!input2)
                     sqNo.setStyle("");
+                    if(!input3)
                     sal.setStyle("");
+                    if(!input4)
                     name.setStyle("");
+                    if(!input5)
                     nation.setStyle("");
 
                 }
@@ -743,6 +777,8 @@ public class advancedSearch {
                 int errorCheck = 0;
                 int errorCheckTotal = 4;
 
+                boolean input1 = false;
+
                 if(leagueNameInput == null){
                     errorCheck++;
                     leagueNameInput = "";
@@ -755,7 +791,16 @@ public class advancedSearch {
                     countryInput = "";
                 }
                 else{
+                    input1 = false;
                     countryInput = leagueC.getText();
+                    if(nameChangeIsValid(countryInput)){
+                        integerTypeFail = false;
+                    } else {
+                        input1 = true;
+                        leagueC.setStyle(style);
+                        integerTypeFail = true;
+                        setErrorLabelForTypeChecking(errorLabel);
+                    }
                 }
                 if(sponsorInput == null){
                     errorCheck++;
@@ -773,7 +818,18 @@ public class advancedSearch {
                 }
 
 
+                if(integerTypeFail){
+                    if(!input1)
+                        leagueC.setStyle("");
+                    return;
+                } else {
+                    integerTypeFail = false;
+                    if(!input1)
+                        leagueC.setStyle("");
+                }
+
                 if(errorCheck == errorCheckTotal){
+
                     didNotSearchForAnything = true;
                     setErrorLabel(errorLabel);
                     return;
@@ -782,11 +838,8 @@ public class advancedSearch {
                     setErrorLabel(errorLabel);
                     result = db.searchAdvanceLeague(connection, numberOfTeamsInputInt, countryInput, sponsorInput, leagueNameInput);
                 }
-
                 setNumberOfRows(result);
                 try {
-
-
                     ArrayList<league> l = new ArrayList<>();
                     int rows = 0;
                     while (result.next()) {
@@ -801,7 +854,6 @@ public class advancedSearch {
                         l.add(new league(result.getInt("Teams"), result.getString("Country"), result.getString("Sponsor"), result.getString("Name")));
                         result.next();
                     }
-
                     searchResultPage search = new searchResultPage();
                     search.createBorderPane(setLeagueFields(l));
                 } catch (SQLException e) {
