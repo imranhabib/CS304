@@ -8,7 +8,6 @@ public class manager {
 
     manager user;
 
-    //Player attributes
     private String name;
     private int SIN;
     private int JobSecurity;

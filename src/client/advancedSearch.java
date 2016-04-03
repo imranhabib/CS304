@@ -1111,8 +1111,8 @@ public class advancedSearch {
 
 
         TextField title1 = new TextField("Enter Contract Number To Terminate");
-        title.setEditable(false);
-        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        title1.setEditable(false);
+        title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
         account.setTop(title);
 
         Label contNo = new Label("Contract Number : " );
@@ -1199,7 +1199,13 @@ public class advancedSearch {
 
                 setNumberOfRows(result);
                 try {
-                    ArrayList<contract> c = new ArrayList<>();
+                    ArrayList<contractPlayer> cp = new ArrayList<>();
+                    boolean a;
+                    if (result.getInt("Availability") == 1) {
+                        a = true;
+                    } else {
+                        a = false;
+                    }
 
                     int rows = 0;
                     while (result.next()) {
@@ -1219,13 +1225,16 @@ public class advancedSearch {
                         } else {
                             truth = false;
                         }
-                        c.add(new contract(result.getInt("LengthRemaining"), result.getInt("Duration"), truth));
-
+                        cp.add(new contractPlayer(result.getInt("LengthRemaining"), result.getInt("Duration"), truth,
+                                result.getString("Position"), result.getInt("Price"), result.getString("Name"),
+                                result.getInt("Age"), result.getInt("Salary"), result.getString("Nationality"),
+                                a, result.getInt("Rating"), result.getInt("TeamID"), result.getInt("SquadNumber")));
+                        System.out.println("here " + cp.get(i).getName() );
                         result.next();
                     }
 
                     searchResultPage search = new searchResultPage();
-                    search.createBorderPane(setContractFields(c));
+                    search.createBorderPane(setContractFields(cp));
                 } catch (SQLException e) {
                     noElementExists = true;
                     setErrorLabel(errorLabel);
@@ -1463,12 +1472,12 @@ public class advancedSearch {
                 } else {
                     didNotSearchForAnything = false;
                     setErrorLabel(errorLabel);
-                    result = db.searchAdvanceTeam(connection, tmSlogan, nameInput);
+              //      result = db.searchAdvanceManagerTeamJoin(connection, tmSlogan, nameInput);
                 }
 
                 setNumberOfRows(result);
                 try {
-                    ArrayList<team> t = new ArrayList<>();
+                    ArrayList<managerTeam> mt = new ArrayList<>();
                     int rows = 0;
                     while (result.next()) {
                         ++rows;
@@ -1481,12 +1490,13 @@ public class advancedSearch {
                     didNotSearchForAnything = false;
                     setErrorLabel(errorLabel);
                     for (int i = 0; i < rows + 1; i++) {
-                        t.add(new team(result.getString("Name"), result.getString("TMSlogan")));
+                        mt.add(new managerTeam(result.getString("Name"), result.getInt("JobSecurity"),
+                                result.getInt("TeamID"), result.getString("TMSlogan"), result.getString("Name")));
                         result.next();
                     }
 
                     searchResultPage search = new searchResultPage();
-                    search.createBorderPane(setTeamFields(t));
+                    search.createBorderPane(setTeamFields(mt));
                 } catch (SQLException e) {
                     noElementExists = true;
                     setErrorLabel(errorLabel);
@@ -1680,7 +1690,7 @@ public class advancedSearch {
     }
 
 
-    public BorderPane setTeamFields(ArrayList<team> t){
+    public BorderPane setTeamFields(ArrayList<managerTeam> mt){
         BorderPane resultView = new BorderPane();
         resultView.setPadding(new Insets(10, 5, 5, 5));
 
@@ -1695,28 +1705,38 @@ public class advancedSearch {
         form.setHgap(7);
         form.setVgap(7);
 
-        TableView<team> table = new TableView<team>();
-        TableColumn name = new TableColumn("Name");
+        TableView<managerTeam> table = new TableView<>();
+        TableColumn teamName = new TableColumn("Name");
         TableColumn tmSlogan = new TableColumn("TM Slogan");
+        TableColumn name = new TableColumn("Name");
+        TableColumn jobSecurity = new TableColumn("Job Security");
+
 
 
 
         table.getColumns().addAll(name, tmSlogan);
 
-        final ObservableList<team> data = FXCollections.observableArrayList(
-                t
+        final ObservableList<managerTeam> data = FXCollections.observableArrayList(
+                mt
         );
 
-        name.setCellValueFactory(
-                new PropertyValueFactory<team,String>("Name")
+        teamName.setCellValueFactory(
+                new PropertyValueFactory<managerTeam,String>("teamName")
         );
         tmSlogan.setCellValueFactory(
-                new PropertyValueFactory<team,Integer>("TMSlogan"));
+                new PropertyValueFactory<managerTeam,Integer>("TMSlogan"));
+
+        name.setCellValueFactory(
+                new PropertyValueFactory<managerTeam,String>("Name")
+        );
+        jobSecurity.setCellValueFactory(
+                new PropertyValueFactory<managerTeam,Integer>("JobSecurity"));
 
 
-
-        name.prefWidthProperty().bind(table.widthProperty().divide(2));
-        tmSlogan.prefWidthProperty().bind(table.widthProperty().divide(2));
+        name.prefWidthProperty().bind(table.widthProperty().divide(4));
+        tmSlogan.prefWidthProperty().bind(table.widthProperty().divide(4));
+        teamName.prefWidthProperty().bind(table.widthProperty().divide(4));
+        jobSecurity.prefWidthProperty().bind(table.widthProperty().divide(4));
 
 
 
@@ -1777,7 +1797,7 @@ public class advancedSearch {
     }
 
 
-    public BorderPane setContractFields(ArrayList<contract> c){
+    public BorderPane setContractFields(ArrayList<contractPlayer> cp){
         BorderPane resultView = new BorderPane();
         resultView.setPadding(new Insets(10, 5, 5, 5));
 
@@ -1792,32 +1812,82 @@ public class advancedSearch {
         form.setHgap(7);
         form.setVgap(7);
 
-        TableView<contract> table = new TableView<contract>();
+        TableView<contractPlayer> table = new TableView<>();
         TableColumn lenRemain = new TableColumn("Length Remaining (Yrs)");
         TableColumn loanOption = new TableColumn("Loan Option");
         TableColumn duration = new TableColumn("Duration (Yrs)");
+        TableColumn name = new TableColumn("Name");
+        TableColumn squadNumber = new TableColumn("Squad Number");
+        TableColumn age = new TableColumn("Age");
+        TableColumn nationality = new TableColumn("Nationality");
+        TableColumn position = new TableColumn("Position");
+        TableColumn price = new TableColumn("Price");
+        TableColumn salary = new TableColumn("Salary");
+        TableColumn availability = new TableColumn("Availability");
+        TableColumn rating = new TableColumn("Rating");
 
 
 
-        table.getColumns().addAll(lenRemain, loanOption, duration);
+        table.getColumns().addAll(lenRemain, loanOption, duration, name, squadNumber, age,
+                nationality, position, price, salary, availability, rating);
 
-        final ObservableList<contract> data = FXCollections.observableArrayList(
-                c
+        final ObservableList<contractPlayer> data = FXCollections.observableArrayList(
+                cp
         );
 
         lenRemain.setCellValueFactory(
-                new PropertyValueFactory<contract,String>("lenRemain")
+                new PropertyValueFactory<contractPlayer,String>("lenRemain")
         );
         loanOption.setCellValueFactory(
-                new PropertyValueFactory<contract,Integer>("loanOption")
+                new PropertyValueFactory<contractPlayer,Integer>("loanOption")
         );
         duration.setCellValueFactory(
-                new PropertyValueFactory<contract,Integer>("duration")
+                new PropertyValueFactory<contractPlayer,Integer>("duration")
+        );
+        name.setCellValueFactory(
+                new PropertyValueFactory<contractPlayer,String>("Name")
+        );
+        squadNumber.setCellValueFactory(
+                new PropertyValueFactory<contractPlayer,Integer>("SquadNumber")
+        );
+        age.setCellValueFactory(
+                new PropertyValueFactory<contractPlayer,Integer>("Age")
+        );
+        nationality.setCellValueFactory(
+                new PropertyValueFactory<contractPlayer,String>("Nationality")
+        );
+        position.setCellValueFactory(
+                new PropertyValueFactory<contractPlayer,String>("Position")
+        );
+        price.setCellValueFactory(
+                new PropertyValueFactory<contractPlayer,Integer>("Price")
         );
 
-        lenRemain.prefWidthProperty().bind(table.widthProperty().divide(3));
-        loanOption.prefWidthProperty().bind(table.widthProperty().divide(3));
-        duration.prefWidthProperty().bind(table.widthProperty().divide(3));
+        availability.setCellValueFactory(
+                new PropertyValueFactory<contractPlayer,String>("Availability")
+        );
+        salary.setCellValueFactory(
+                new PropertyValueFactory<contractPlayer,Integer>("Salary")
+        );
+        rating.setCellValueFactory(
+                new PropertyValueFactory<contractPlayer,Integer>("Rating")
+        );
+
+
+
+        lenRemain.prefWidthProperty().bind(table.widthProperty().divide(12));
+        loanOption.prefWidthProperty().bind(table.widthProperty().divide(12));
+        duration.prefWidthProperty().bind(table.widthProperty().divide(12));
+        name.prefWidthProperty().bind(table.widthProperty().divide(12));
+        squadNumber.prefWidthProperty().bind(table.widthProperty().divide(12));
+        age.prefWidthProperty().bind(table.widthProperty().divide(12));
+        nationality.prefWidthProperty().bind(table.widthProperty().divide(12));
+        position.prefWidthProperty().bind(table.widthProperty().divide(12));
+        price.prefWidthProperty().bind(table.widthProperty().divide(12));
+        availability.prefWidthProperty().bind(table.widthProperty().divide(12));
+        salary.prefWidthProperty().bind(table.widthProperty().divide(12));
+        rating.prefWidthProperty().bind(table.widthProperty().divide(12));
+
 
         table.setItems(data);
         resultView.setCenter(table);
@@ -1825,6 +1895,63 @@ public class advancedSearch {
 
         return resultView;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public BorderPane setLeagueFields(ArrayList<league> l){
         BorderPane resultView = new BorderPane();
         resultView.setPadding(new Insets(10, 5, 5, 5));

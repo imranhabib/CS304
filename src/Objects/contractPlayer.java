@@ -32,14 +32,12 @@ public class contractPlayer {
 
 
 
-    public contractPlayer(int lenRemain, int duration, boolean loanOption, int contractNum, int squadNumber,
+    public contractPlayer(int lenRemain, int duration, boolean loanOption,
                           String position, int price, String name, int age, int salary, String nationality,
-                          boolean availability, int rating, int teamID){
+                          boolean availability, int rating, int teamID, int squadNumber){
         this.lenRemain = lenRemain;
         this.duration = duration;
         this.loanOption = loanOption;
-        this.contractNum = contractNum;
-        this.squadNumber = squadNumber;
 
         this.position = position;
         this.price = price;
@@ -47,10 +45,10 @@ public class contractPlayer {
         this.age = age;
         this.salary = salary;
         this.nationality = nationality;
-        this.squadNumber = squadNumber;
         this.availability = availability;
         this.rating = rating;
         this.teamID = teamID;
+        this.squadNumber = squadNumber;
 
     }
 

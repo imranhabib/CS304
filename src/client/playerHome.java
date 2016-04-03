@@ -508,6 +508,8 @@ public class playerHome {
         root.setCenter(createUserTeamPage(userTeam));
 
     }
+
+
     public void allTeamsAction(){
         ArrayList<team> t = db.getAllTeams(dbConnect);
         numberOfTeams = t.size();

@@ -13,7 +13,7 @@ public class database {
     Connection dbConnect;
     database connection;
     String username = "root";
-    String password = "whatsername";
+    String password = "whatername";
     int userSqNum;
     int userSIN;
 
@@ -376,6 +376,7 @@ public class database {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(AdvancedPlayerContractJoin(lenRemain, duration, loanOption));
             result.first();
+            System.out.println(result.getString("Name"));
             System.out.println(result.getString("SquadNumber"));
             return result;
         } catch (SQLException e) {
@@ -806,7 +807,7 @@ public class database {
         if (and == 1) {
             addAnd = " AND ";
         }
-        if (loanOption != 0) {
+        if (loanOption != 2) {
             SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " contract.LoanOption = " + loanOption;
             and = 1;
         }
