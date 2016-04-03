@@ -371,12 +371,12 @@ public class database {
         }
     }
 
-    public ResultSet searchAdvancePlayerContractJoin(Connection connection, int lenRemain, int duration, int loanOption, int contractSquadNumber){
+    public ResultSet searchAdvancePlayerContractJoin(Connection connection, int lenRemain, int duration, int loanOption){
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(AdvancedPlayerContractJoin(lenRemain, duration, loanOption));
             result.first();
-            System.out.println(result.getString("contractsquadNumber"));
+            System.out.println(result.getString("SquadNumber"));
             return result;
         } catch (SQLException e) {
             System.out.println(e);
@@ -410,10 +410,10 @@ public class database {
         }
     }
 
-    public ResultSet searchHighestSomethingByLowestSomething(Connection connection, int age, int salary, int team){
+    public ResultSet searchHighestSomethingByLowestSomething(Connection connection, String highest, String lowest){
         try {
             Statement stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(somethingAndHigestRatedPlayer(age,salary,team));
+            ResultSet result = stmt.executeQuery(somethingAndHigestRatedPlayer(highest,lowest));
             result.first();
             System.out.println(result.getString("Age"));
             return result;
@@ -449,7 +449,7 @@ public class database {
         }
     }
 
-    public ResultSet selectAvailablePlayerNotInTeams(Connection connection, int teamId1, int teamId2){
+    public ResultSet selectAvailablePlayerNotInTeams(Connection connection, String teamId1, String teamId2){
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(selectAvailablePlayersNotInTeams(teamId1, teamId2));
@@ -807,7 +807,7 @@ public class database {
             addAnd = " AND ";
         }
         if (loanOption != 0) {
-            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " contract.LoanOptions = " + loanOption;
+            SQLPlayerContractJoin = SQLPlayerContractJoin + addAnd + " contract.LoanOption = " + loanOption;
             and = 1;
         }
         if (and == 1) {
@@ -874,24 +874,11 @@ public class database {
         return stmt;
     }
 
-    public String somethingAndHigestRatedPlayer(int age, int salary, int team) {
+    public String somethingAndHigestRatedPlayer(String highest, String lowest) {
 
-        String criteria = "";
 
-        String SQLsomethingHighestRatedPLayer = "SELECT Name, Age, Price FROM managementapplication.player C WHERE C.Rating= (SELECT MAX(C2.Rating) FROM player C2 WHERE C.";
 
-        if(age != 0){
-            criteria = "AGE";
-        }
-        if(salary != 0){
-            criteria = "Salary";
-
-        }
-        if(team != 0){
-            criteria = "teamId";
-        }
-
-        SQLsomethingHighestRatedPLayer = SQLsomethingHighestRatedPLayer + criteria + " = (SELECT MIN(C3." + criteria + ") FROM player C3))";
+        String SQLsomethingHighestRatedPLayer = "SELECT * FROM managementapplication.player C WHERE C." + highest + "= (SELECT MAX(C2." + highest + ") FROM managementapplication.player C2 WHERE C." + lowest + "= (SELECT MIN(C3." + lowest + ") FROM managementapplication.player C3))";
 
 
         String stmt = new String(SQLsomethingHighestRatedPLayer);
@@ -921,20 +908,21 @@ public class database {
     }
 
 
-    public String selectAvailablePlayersNotInTeams(int teamId1, int teamId2){
+    public String selectAvailablePlayersNotInTeams(String teamId1, String teamId2){
 
-        String SQLAvailableNotInTeams = "SELECT * FROM managementapplication.player WHERE Availability = 1 AND TeamID NOT IN (SELECT TeamID FROM player WHERE TeamId = ";
+        String SQLAvailableNotInTeams = "SELECT * FROM managementapplication.player WHERE Availability = 1 AND TeamID NOT IN (SELECT TeamID FROM managementapplication.team WHERE Name = ";
 
-        if(teamId1 != 0) {
-            SQLAvailableNotInTeams = SQLAvailableNotInTeams + teamId1;
+        if(teamId1 != "") {
+            SQLAvailableNotInTeams = SQLAvailableNotInTeams + "'" + teamId1 + "'";
         }
-        if(teamId2 != 0) {
-            SQLAvailableNotInTeams = SQLAvailableNotInTeams + " OR " + teamId2;
+        if(teamId2 != "") {
+            SQLAvailableNotInTeams = SQLAvailableNotInTeams + " OR Name = " + "'" + teamId2 + "'";
         }
 
         SQLAvailableNotInTeams = SQLAvailableNotInTeams + ")";
 
         String stmt = new String(SQLAvailableNotInTeams);
+
         System.out.println(stmt);
         return stmt;
     }

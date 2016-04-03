@@ -257,30 +257,53 @@ public class advancedSearch {
         final ComboBox avail = new ComboBox(a);
 
         Button submit = new Button("Search");
-               submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
+        submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
+
         Label something = new Label("Select Your Criteria: ");
-               form.setHalignment(something, HPos.RIGHT);
-              ObservableList<String> b =
-                   FXCollections.observableArrayList(
-                               "Rating", "Age", "Salary", "Price"
-                         );
-                final ComboBox criteria = new ComboBox(b);
+        form.setHalignment(something, HPos.RIGHT);
+        ObservableList<String> b =
+                FXCollections.observableArrayList(
+                        "Rating", "Age", "Salary", "Price"
+                );
+        final ComboBox criteria = new ComboBox(b);
 
-                Label teamLabel = new Label("Select The Team To Search: ");
-                form.setHalignment(teamLabel, HPos.RIGHT);
-                ObservableList<String> teamSelect = FXCollections.observableArrayList();
-                ArrayList<team> teamsInDB = db.getAllTeams(connection);
-             for(int z = 0; z < teamsInDB.size(); z++) {
+        Label teamLabel = new Label("Select The Team To Search: ");
+        form.setHalignment(teamLabel, HPos.RIGHT);
+        ObservableList<String> teamSelect = FXCollections.observableArrayList();
+        ArrayList<team> teamsInDB = db.getAllTeams(connection);
+        for(int z = 0; z < teamsInDB.size(); z++) {
             teamSelect.add(teamsInDB.get(z).getName());
-                  }
+        }
         final ComboBox teamBox = new ComboBox(teamSelect);
-       Button submit1 = new Button("Search Highest * Per Team ");
-              submit1.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
-                TextField title1 = new TextField("Find The Highest Something Per Team");
-                title1.setEditable(false);
-                title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
 
+        Button submit1 = new Button("Search Highest * Per Team ");
+        submit1.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
+        TextField title1 = new TextField("Find The Highest Something Per Team");
+        title1.setEditable(false);
+        title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
 
+        Label highestLabel = new Label("Search For Highest: ");
+        form.setHalignment(highestLabel, HPos.RIGHT);
+        ObservableList<String> k =
+                FXCollections.observableArrayList(
+                        "Rating", "Age", "Salary", "Price"
+                );
+        final ComboBox highestBox = new ComboBox(k);
+
+        Label lowestLabel = new Label("By Lowest: ");
+        form.setHalignment(lowestLabel, HPos.RIGHT);
+        ObservableList<String> l =
+                FXCollections.observableArrayList(
+                        "Rating", "Age", "Salary", "Price"
+                );
+        final ComboBox lowestBox = new ComboBox(l);
+
+        Button submit2 = new Button("Search Highest By Lowest ");
+        submit2.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
+
+        TextField title2 = new TextField("Find The Highest Something By Lowest Something");
+        title2.setEditable(false);
+        title2.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
 
 
         form.add(playerPos, 0, 0); form.add(pos, 1, 0);
@@ -292,11 +315,14 @@ public class advancedSearch {
         form.add(playerSquadNo, 0, 7); form.add(sqNo, 1, 7);
         form.add(userRating, 0, 8); form.add(plyRate, 1, 8);
         form.add(availability, 0, 9); form.add(avail, 1, 9);
-        form.add(submit,0,10);
         form.add(title1,0,17,30,1);
         form.add(something, 0, 20); form.add(criteria, 1, 20);
         form.add(teamLabel,0,22); form.add(teamBox,1,22);
         form.add(submit1,0,24);
+        form.add(title2,0,26,30,1);
+        form.add(highestLabel, 0, 27); form.add(highestBox, 1, 27);
+        form.add(lowestLabel,0,28); form.add(lowestBox,1,28);
+        form.add(submit2,0,29);
 
         account.setCenter(form);
 
@@ -311,9 +337,138 @@ public class advancedSearch {
 
         stackBox.getChildren().addAll(errorLabel, submit);
 
-
-
         account.setBottom(stackBox);
+
+        submit2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                String highestInput = (String) highestBox.getValue();
+                String lowestInput = (String) lowestBox.getValue();
+
+                if(highestInput == null){
+                    highestInput = "";
+                }
+                if(lowestInput == null){
+                    lowestInput = "";
+                }
+
+
+                result = db.searchHighestSomethingByLowestSomething(connection,highestInput,lowestInput);
+
+                boolean a;
+                setNumberOfRows(result);
+                try {
+
+                    if (result.getInt("Availability") == 1) {
+                        a = true;
+                    } else {
+                        a = false;
+                    }
+
+
+                    ArrayList<player> p = new ArrayList<>();
+                    int rows = 0;
+                    while (result.next()) {
+                        ++rows;
+                    }
+                    if (rows == 0) {
+                        //handle this case later
+                        System.out.println("No records found in the advan");
+                    }
+                    result.first();
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    for (int i = 0; i < rows + 1; i++) {
+                        p.add(new player(result.getString("Position"), result.getInt("Price"), result.getString("Name"),
+                                result.getInt("Age"), result.getInt("Salary"), result.getString("Nationality"),
+                                result.getInt("SquadNumber"), a, result.getInt("Rating"), result.getInt("TeamID")));
+                        result.next();
+                    }
+
+                    searchResultPage search = new searchResultPage();
+                    search.createBorderPane(setPlayerFields(p));
+                } catch (SQLException e) {
+
+                }
+
+
+            }
+        });
+
+
+        submit1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                String criteriaInput = (String) criteria.getValue();
+                String teamSelectionInput = (String) teamBox.getValue();
+
+                if(criteriaInput == null){
+                    criteriaInput = "";
+                }
+                else{
+                    criteriaInput = (String) criteria.getValue();
+                }
+                if(teamSelectionInput == null){
+                    teamSelectionInput = "";
+                }
+                else{
+                    teamSelectionInput = (String) teamBox.getValue();
+                }
+
+                ArrayList <team> teamNames = db.getAllTeams(connection);
+
+                int teamId = 0;
+                for(int i=0; i<teamNames.size(); i++){
+                    if(teamSelectionInput.equals(teamNames.get(i).getName())) {
+                        teamId = teamNames.get(i).getTeamId();
+                    }
+                }
+                System.out.println(teamId);
+
+                result = db.searchAdvancedBestPlayerPerTeam(connection,teamId,criteriaInput);
+
+                boolean a;
+                setNumberOfRows(result);
+                try {
+
+                    if (result.getInt("Availability") == 1) {
+                        a = true;
+                    } else {
+                        a = false;
+                    }
+
+
+                    ArrayList<player> p = new ArrayList<>();
+                    int rows = 0;
+                    while (result.next()) {
+                        ++rows;
+                    }
+                    if (rows == 0) {
+                        //handle this case later
+                        System.out.println("No records found in the advan");
+                    }
+                    result.first();
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    for (int i = 0; i < rows + 1; i++) {
+                        p.add(new player(result.getString("Position"), result.getInt("Price"), result.getString("Name"),
+                                result.getInt("Age"), result.getInt("Salary"), result.getString("Nationality"),
+                                result.getInt("SquadNumber"), a, result.getInt("Rating"), result.getInt("TeamID")));
+                        result.next();
+                    }
+
+                    searchResultPage search = new searchResultPage();
+                    search.createBorderPane(setPlayerFields(p));
+                } catch (SQLException e) {
+
+                }
+
+
+            }
+        });
+
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -477,15 +632,15 @@ public class advancedSearch {
                     integerTypeFail = false;
 
                     if(!input1)
-                    playerP.setStyle("");
+                        playerP.setStyle("");
                     if(!input2)
-                    sqNo.setStyle("");
+                        sqNo.setStyle("");
                     if(!input3)
-                    sal.setStyle("");
+                        sal.setStyle("");
                     if(!input4)
-                    name.setStyle("");
+                        name.setStyle("");
                     if(!input5)
-                    nation.setStyle("");
+                        nation.setStyle("");
 
                 }
 
@@ -539,7 +694,6 @@ public class advancedSearch {
 
                 }
             }});
-
 
 
         ScrollPane rootScroll = new ScrollPane();
@@ -956,13 +1110,23 @@ public class advancedSearch {
         final ComboBox d = new ComboBox(duration);
 
 
+        TextField title1 = new TextField("Enter Contract Number To Terminate");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        account.setTop(title);
+
+        Label contNo = new Label("Contract Number : " );
+        form.setHalignment(contNo, HPos.RIGHT);
+        TextField contBox = new TextField();
+        contBox.setEditable(true);
 
 
         form.add(lenRemain, 0, 0); form.add(remain, 1, 0);
         form.add(availability, 0, 1); form.add(avail, 1, 1);
         form.add(dur, 0, 2); form.add(d, 1, 2);
-
-
+        form.add(title1, 0,5,30,1);
+        form.add(contNo,0,7); form.add(contBox,1,7);
+        
         account.setCenter(form);
 
 
@@ -1030,12 +1194,13 @@ public class advancedSearch {
                 } else {
                     didNotSearchForAnything = false;
                     setErrorLabel(errorLabel);
-                    result = db.searchAdvanceContract(connection, lengthInputInt, durationInputInt, loanOptionInputInt);
+                    result = db.searchAdvancePlayerContractJoin(connection, lengthInputInt, durationInputInt, loanOptionInputInt);
                 }
 
                 setNumberOfRows(result);
                 try {
                     ArrayList<contract> c = new ArrayList<>();
+
                     int rows = 0;
                     while (result.next()) {
                         ++rows;
@@ -1055,6 +1220,7 @@ public class advancedSearch {
                             truth = false;
                         }
                         c.add(new contract(result.getInt("LengthRemaining"), result.getInt("Duration"), truth));
+
                         result.next();
                     }
 
@@ -1126,11 +1292,40 @@ public class advancedSearch {
         final ComboBox s = new ComboBox(sName);
 
 
+        TextField title1 = new TextField("Find Available Players Not In");
+        title1.setEditable(false);
+        title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+        account.setTop(title);
+
+        Label teamName1 = new Label("Team 1 : ");
+        form.setHalignment(teamName1, HPos.RIGHT);
+        ObservableList<String> tList1 = FXCollections.observableArrayList();
+        ArrayList<team> teamsInDB1 = db.getAllTeams(connection);
+        for(int z = 0; z < teamsInDB1.size(); z++){
+            tList1.add(teamsInDB1.get(z).getName());
+        }
+        final ComboBox teamNameBox1 = new ComboBox(tList1);
+
+        Label teamName2 = new Label("Team 2 : ");
+        form.setHalignment(teamName2, HPos.RIGHT);
+        ObservableList<String> tList2 = FXCollections.observableArrayList();
+        ArrayList<team> teamsInDB2 = db.getAllTeams(connection);
+        for(int z = 0; z < teamsInDB.size(); z++){
+            tList2.add(teamsInDB.get(z).getName());
+        }
+        final ComboBox teamNameBox2 = new ComboBox(tList2);
+
+        Button submit1 = new Button("Search");
+        submit1.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
+
 
 
         form.add(teamName, 0, 0); form.add(t, 1, 0);
         form.add(teamSlogan, 0, 1); form.add(s, 1, 1);
-
+        form.add(title1,0,5,50,1);
+        form.add(teamName1,0,6); form.add(teamNameBox1,1,6);
+        form.add(teamName2,0,7); form.add(teamNameBox2,1,7);
+        form.add(submit1,0,8);
 
         account.setCenter(form);
 
@@ -1148,6 +1343,87 @@ public class advancedSearch {
 
 
         account.setBottom(stackBox);
+
+        submit1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String identifier = "team";
+
+
+                String team1Input = (String) (teamNameBox1.getValue());
+                String team2Input = (String) (teamNameBox2.getValue());
+
+
+                int errorCheck = 0;
+                int errorCheckTotal = 1;
+
+
+                if(team1Input == null){
+                    errorCheck++;
+                    team1Input = "";
+                }
+                else{
+                    team1Input = (String) (teamNameBox1.getValue());
+                }
+                if(team2Input == null){
+                    team2Input = "";
+                }
+                else{
+                    team2Input = (String) (teamNameBox2.getValue());
+                }
+
+                if(errorCheck == errorCheckTotal){
+                    didNotSearchForAnything = true;
+                    setErrorLabel(errorLabel);
+                    return;
+                } else {
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+
+                    result = db.selectAvailablePlayerNotInTeams(connection, team1Input, team2Input);
+                }
+
+                boolean a;
+                setNumberOfRows(result);
+                try {
+                    if (result.getInt("Availability") == 1) {
+                        a = true;
+                    } else {
+                        a = false;
+                    }
+
+                    ArrayList<player> p = new ArrayList<>();
+                    int rows = 0;
+                    while (result.next()) {
+                        ++rows;
+                    }
+                    if (rows == 0) {
+                        //handle this case later
+                        System.out.println("No records found in the advan");
+                    }
+                    result.first();
+                    didNotSearchForAnything = false;
+                    setErrorLabel(errorLabel);
+                    for (int i = 0; i < rows + 1; i++) {
+                        p.add(new player(result.getString("Position"), result.getInt("Price"), result.getString("Name"),
+                                result.getInt("Age"), result.getInt("Salary"), result.getString("Nationality"),
+                                result.getInt("SquadNumber"), a, result.getInt("Rating"), result.getInt("TeamID")));
+                        result.next();
+                    }
+
+                    searchResultPage search = new searchResultPage();
+                    search.createBorderPane(setPlayerFields(p));
+                } catch (SQLException e) {
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(e);
+                } catch (NullPointerException n){
+                    noElementExists = true;
+                    setErrorLabel(errorLabel);
+                    System.out.println(n);
+
+                }
+            }});
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
