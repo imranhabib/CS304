@@ -12,6 +12,7 @@ public class manager {
     private String name;
     private int SIN;
     private int JobSecurity;
+    private int ManagerTeamID;
     private ResultSet details;
 
     public manager getUser() {
@@ -27,10 +28,11 @@ public class manager {
     }
 
 
-    public manager(String name, int SIN, int JobSecurity){
+    public manager(String name, int SIN, int JobSecurity, int ManagerTeamID){
         this.name = name;
         this.SIN = SIN;
         this.JobSecurity = JobSecurity;
+        this.ManagerTeamID = ManagerTeamID;
 
     }
 
@@ -51,7 +53,7 @@ public class manager {
         ResultSet information = details;
         information.first();
 
-        manager formattedUser = new manager(information.getString("Name"), information.getInt("SIN"), information.getInt("JobSecurity"));
+        manager formattedUser = new manager(information.getString("Name"), information.getInt("SIN"), information.getInt("JobSecurity"), information.getInt("TeamID"));
 
         return formattedUser;
     }
@@ -80,4 +82,5 @@ public class manager {
         this.JobSecurity = JobSecurity;
     }
 
+    public int getManagerTeamID() { return ManagerTeamID; }
 }

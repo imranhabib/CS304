@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import Objects.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -449,7 +451,68 @@ public class managerHome {
         root.setCenter(shell);
 
     }
-    public void myTeamAction(){}
+    public void myTeamAction(){
+
+        int userTeamID = db.selectAllManagerAccountInformation(dbConnect).getManagerTeamID();
+        ArrayList<team> teams = db.getAllTeams(dbConnect);
+        team userTeam = new team();
+        for(int i = 0; i < teams.size(); i++){
+            if(teams.get(i).getTeamId() == userTeamID){
+                userTeam = teams.get(i);
+                break;
+            }
+        }
+
+        root.setCenter(createUserTeamPage(userTeam));
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+
+        TextField title1 = new TextField("Select Player To Delete");
+        title1.setEditable(false);
+        title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
+
+        Label delPlayerLabel = new Label("Select Player To Delete: ");
+        form.setHalignment(delPlayerLabel, HPos.RIGHT);
+        ObservableList<Integer> myPlayers = FXCollections.observableArrayList();
+        ArrayList<player> myPlayersInDB = db.myTeamPlayers(dbConnect, userTeamID);
+        for(int z = 0; z < myPlayersInDB.size(); z++) {
+            myPlayers.add(myPlayersInDB.get(z).getSquadNumber());
+        }
+        final ComboBox myPlayersBox = new ComboBox(myPlayers);
+
+        Button submit = new Button("Terminate");
+        submit.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
+
+
+        form.add(title1, 0,30,30,1);
+        form.add(delPlayerLabel,0,31); form.add(myPlayersBox,1,31);
+        form.add(submit,0,32);
+
+
+        root.setCenter(form);
+
+        submit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String identifier = "contract";
+
+                int playerNumber = (int) myPlayersBox.getValue();
+
+                if(playerNumber == 0){
+                    playerNumber = 0;
+                }
+                try {
+                    db.deletePlayer(dbConnect, playerNumber);
+                }
+                catch (NullPointerException n){
+                    System.out.println(n);
+                }
+            }});
+    }
 
     public void allTeamsAction(){
         ArrayList<team> t = db.getAllTeams(dbConnect);
@@ -721,6 +784,53 @@ public class managerHome {
 
     }
 
+    public BorderPane createUserTeamPage(team t){
+        BorderPane userTeamPage = new BorderPane();
+        userTeamPage.setPadding(new Insets(20, 10, 0, 10));
+
+        //Title
+        TextField title = new TextField("My Team Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+
+        userTeamPage.setTop(title);
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label teamName = new Label("Name: ");
+        form.setHalignment(teamName, HPos.RIGHT);
+        final TextField tname = new TextField(t.getName());
+        tname.setEditable(false);
+
+        Label teamSloganer= new Label("TM Slogan: ");
+        form.setHalignment(teamSloganer, HPos.RIGHT);
+        final TextField sloganName = new TextField(t.getTMSlogan());
+        sloganName.setEditable(false);
+
+        Label teamBudget= new Label("Budget: ");
+        form.setHalignment(teamBudget, HPos.RIGHT);
+        final TextField budName = new TextField(Integer.toString(t.getBudget()));
+        budName.setEditable(false);
+
+
+
+
+        form.add(teamName, 0, 0); form.add(tname, 1, 0);
+        form.add(teamSloganer, 0,1); form.add(sloganName, 1, 1);
+        form.add(teamBudget, 0, 3); form.add(budName, 1, 3);
+
+        userTeamPage.setCenter(form);
+
+
+
+        return userTeamPage;
+
+
+    }
 
 
 
