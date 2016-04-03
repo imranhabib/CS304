@@ -13,7 +13,7 @@ public class database {
     Connection dbConnect;
     database connection;
     String username = "root";
-    String password = "whatername";
+    String password = "whatsername";
     int userSqNum;
     int userSIN;
 
