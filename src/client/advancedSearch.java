@@ -996,8 +996,6 @@ public class advancedSearch {
                     durationInputInt = Integer.parseInt(durationInput);
                 }
 
-                System.out.println("highlight " + errorCheck + " " + errorCheckTotal );
-
                 if(errorCheck == errorCheckTotal){
                     didNotSearchForAnything = true;
                     setErrorLabel(errorLabel);
