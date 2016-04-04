@@ -251,7 +251,7 @@ public class database {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(getAllManagerInformation());
             result.first();
-            ArrayList<manager> managers = new ArrayList<manager>();
+            ArrayList<manager> managers = new ArrayList<>();
             int rows = 0;
             while (result.next()) {
                 ++rows;
@@ -262,7 +262,7 @@ public class database {
             }
             result.first();
             for (int i = 0; i < rows + 1; i++) {
-                managers.add(new manager(result.getString("Name")));
+                managers.add(new manager(result.getInt("TeamID"), result.getString("Name")));
                 result.next();
             }
 

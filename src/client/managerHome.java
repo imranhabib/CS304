@@ -53,6 +53,7 @@ public class managerHome {
     public int numberOfTeams;
     public int numberOfGBodies;
     public int numberOfLeagues;
+    public int numberOfManagers;
 
 
     public int userSIN;
@@ -484,7 +485,13 @@ public class managerHome {
         root.setCenter(createGbodyPages(g));}
 
     public void allPlayersAction(){}
-    public void allManagersAction(){}
+
+
+    public void allManagersAction(){
+        ArrayList<manager> m = db.getAllManagers(dbConnect);
+        numberOfManagers = m.size();
+        root.setCenter(createManagerPages(m));
+    }
 
     public void changesAction(){
         System.out.println("4");
@@ -553,6 +560,65 @@ public class managerHome {
         return account;
 
     }
+
+    public BorderPane createManagerPages(final ArrayList<manager> m){
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+        page = new Pagination(numberOfManagers);
+        page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+        page.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer index) {
+                System.out.println(index);
+                return managerInfoPage(m, index);
+            }
+        });
+
+        account.setCenter(page);
+        return account;
+
+    }
+
+    public BorderPane managerInfoPage(ArrayList<manager> m, int index){
+
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+
+        //Title
+        TextField title = new TextField("Manager Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+        account.setTop(title);
+        //Body
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label managerName = new Label("Name: ");
+        form.setHalignment(managerName, HPos.RIGHT);
+        TextField mname = new TextField(m.get(index).getName());
+        mname.setEditable(false);
+
+        Label managerTeam= new Label("Team ID: ");
+        form.setHalignment(managerTeam, HPos.RIGHT);
+        TextField mTeam = new TextField(Integer.toString(m.get(index).getManagerTeamID()));
+        mTeam.setEditable(false);
+
+
+        form.add(managerName, 0, 0); form.add(mname, 1, 0);
+        form.add(managerTeam, 3, 0); form.add(mTeam, 4, 0);
+
+        account.setCenter(form);
+
+
+        return account;
+
+    }
+
+
 
     public BorderPane leagueInfoPage(ArrayList<league> l, int index){
 
