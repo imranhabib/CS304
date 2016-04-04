@@ -41,7 +41,6 @@ public class manager {
 
     }
 
-
     public manager(String name){
         this.name = name;
 

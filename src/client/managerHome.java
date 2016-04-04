@@ -53,6 +53,7 @@ public class managerHome {
     public int numberOfTeams;
     public int numberOfGBodies;
     public int numberOfLeagues;
+    public int numberOfPlayers;
 
 
     public int userSIN;
@@ -483,7 +484,12 @@ public class managerHome {
         numberOfGBodies = g.size();
         root.setCenter(createGbodyPages(g));}
 
-    public void allPlayersAction(){}
+    public void allPlayersAction(){
+        ArrayList<player> pl = db.getAllPlayers(dbConnect);
+        numberOfPlayers = pl.size();
+        root.setCenter(createPlayerPages(pl));
+
+    }
     public void allManagersAction(){}
 
     public void changesAction(){
@@ -821,6 +827,111 @@ public class managerHome {
         return userTeamPage;
 
 
+    }
+    public BorderPane createPlayerPages(final ArrayList<player> p){
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 9));
+        page = new Pagination(numberOfPlayers);
+        page.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+        page.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer index) {
+                return createPlayer(p, index);
+            }
+        });
+
+        account.setCenter(page);
+        return account;
+
+    }
+
+    public BorderPane createPlayer(ArrayList<player> p, int index){
+        BorderPane account = new BorderPane();
+        account.setPadding(new Insets(20, 10, 0, 10));
+
+        //Title
+        TextField title = new TextField("Player Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+        account.setTop(title);
+        //Body
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+
+        Label userName = new Label("Name: ");
+        form.setHalignment(userName, HPos.RIGHT);
+        TextField name = new TextField(p.get(index).getName());
+        name.setEditable(false);
+
+        Label userSqNum = new Label("Squad Number: ");
+        form.setHalignment(userSqNum, HPos.RIGHT);
+        TextField sqNum = new TextField(Integer.toString(p.get(index).getSquadNumber()));
+        sqNum.setEditable(false);
+
+        Label userAge = new Label("Age: ");
+        form.setHalignment(userAge, HPos.RIGHT);
+        TextField age = new TextField(Integer.toString(p.get(index).getAge()) + " Yrs");
+        age.setEditable(false);
+
+        Label userPos = new Label("Position: ");
+        form.setHalignment(userPos, HPos.RIGHT);
+        TextField pos = new TextField(p.get(index).getPosition());
+        pos.setEditable(false);
+
+        Label userPrice = new Label("Price: ");
+        form.setHalignment(userPrice, HPos.RIGHT);
+        TextField price = new TextField(Integer.toString(p.get(index).getPrice()) + " $");
+        price.setEditable(false);
+
+        Label userSalary = new Label("Salary: " );
+        form.setHalignment(userSalary, HPos.RIGHT);
+        TextField sal = new TextField(Integer.toString(p.get(index).getSalary()) + " $/Yr");
+        sal.setEditable(false);
+
+        Label userNationality = new Label("Nationality: ");
+        form.setHalignment(userNationality, HPos.RIGHT);
+        TextField nation = new TextField(p.get(index).getNationality());
+        nation.setEditable(false);
+
+
+        Label userAvailability = new Label("Available: ");
+        form.setHalignment(userAvailability, HPos.RIGHT);
+        TextField avail = new TextField();
+        if(p.get(index).isAvailability()){
+            avail.setText("Yes!");
+        } else {
+            avail.setText("No");
+        }
+
+
+        avail.setEditable(false);
+
+        Label userRating = new Label("Rating: ");
+        form.setHalignment(userRating, HPos.RIGHT);
+        TextField rate = new TextField(Integer.toString(p.get(index).getRating()) + " Pts");
+        rate.setEditable(false);
+
+        form.add(userName, 0, 0); form.add(name, 1, 0);
+        form.add(userSqNum, 3, 0); form.add(sqNum, 4, 0);
+        form.add(userAge, 0, 2); form.add(age, 1, 2);
+        form.add(userPos, 3, 2); form.add(pos, 4, 2);
+        form.add(userPrice, 0, 4); form.add(price, 1, 4);
+        form.add(userSalary, 3, 4); form.add(sal, 4, 4);
+        form.add(userNationality, 0, 6); form.add(nation, 1, 6);
+        form.add(userAvailability, 3, 6); form.add(avail, 4, 6);
+        form.add(userRating, 0, 8); form.add(rate, 1, 8);
+
+
+
+        account.setCenter(form);
+
+
+        return account;
     }
 
 
