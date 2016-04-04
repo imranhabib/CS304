@@ -267,7 +267,7 @@ public class advancedSearch {
                 );
         final ComboBox criteria = new ComboBox(b);
 
-        Label teamLabel = new Label("Select The Team To Search: ");
+        Label teamLabel = new Label("Select A Team To Search: ");
         form.setHalignment(teamLabel, HPos.RIGHT);
         ObservableList<String> teamSelect = FXCollections.observableArrayList();
         ArrayList<team> teamsInDB = db.getAllTeams(connection);
@@ -276,9 +276,9 @@ public class advancedSearch {
         }
         final ComboBox teamBox = new ComboBox(teamSelect);
 
-        Button submit1 = new Button("Search Highest * Per Team ");
+        Button submit1 = new Button("Search Specific Attribute ");
         submit1.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
-        TextField title1 = new TextField("Find The Highest Something Per Team");
+        TextField title1 = new TextField("Find the Highest Attribute per Team");
         title1.setEditable(false);
         title1.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
 
@@ -301,7 +301,7 @@ public class advancedSearch {
         Button submit2 = new Button("Search Highest By Lowest ");
         submit2.setFont((Font.font("Calibri Light", FontWeight.THIN, 15)));
 
-        TextField title2 = new TextField("Find The Highest Something By Lowest Something");
+        TextField title2 = new TextField("Find Highest Attribute By Lowest Attribute");
         title2.setEditable(false);
         title2.setFont(Font.font("Calibri Light", FontWeight.BOLD, 15));
 
