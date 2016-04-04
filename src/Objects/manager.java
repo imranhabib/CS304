@@ -46,6 +46,12 @@ public class manager {
 
     }
 
+    public manager(int ManagerTeamID, String name){
+        this.name = name;
+        this.ManagerTeamID = ManagerTeamID;
+
+    }
+
 
     public manager formatManagerDetails() throws SQLException{
         ResultSet information = details;
