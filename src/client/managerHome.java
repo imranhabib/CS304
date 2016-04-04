@@ -526,6 +526,22 @@ public class managerHome {
         form.add(userJobSecurity, 0, 2);
         form.add(jobsecurity, 1, 2);
 
+        final Button userInfoChange = new Button("Update Information");
+        userInfoChange.setFont(fontSmall);
+        userInfoChange.setTooltip(new Tooltip("Click to change your personal information"));
+
+        final manager tempMan = user;
+        userInfoChange.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                root.setCenter(launchUserInfoUpdatePage(tempMan));
+            }
+        });
+
+
+        account.setBottom(userInfoChange);
+
+
         account.setCenter(form);
 
         return account;
@@ -708,7 +724,7 @@ public class managerHome {
         TextField tSlo = new TextField(t.get(index).getTMSlogan());
         tSlo.setEditable(false);
 
-        Label teamLeague = new Label("League goes here l8r: ");
+        Label teamLeague = new Label("League Number: ");
         form.setHalignment(teamLeague, HPos.RIGHT);
         TextField tLeague = new TextField(Integer.toString(t.get(index).getTeamId()));
         tLeague.setEditable(false);
@@ -981,6 +997,88 @@ public class managerHome {
         return account;
     }
 
+    public BorderPane launchUserInfoUpdatePage(final manager user){
+        BorderPane updatePage = new BorderPane();
+        updatePage.setPadding(new Insets(20, 10, 0, 10));
+
+        //Title
+        TextField title = new TextField("Update Information");
+        title.setEditable(false);
+        title.setFont(Font.font("Calibri Light", FontWeight.BOLD, 25));
+
+
+        updatePage.setTop(title);
+
+        GridPane form = new GridPane();
+        form.setPadding(new Insets(20, 0, 20, 20));
+        form.setHgap(7);
+        form.setVgap(7);
+
+        Label userName = new Label("Name: ");
+        form.setHalignment(userName, HPos.RIGHT);
+        final TextField uname = new TextField();
+        uname.setEditable(true);
+        Label oldName = new Label("Current Name: " + user.getName());
+
+        VBox bottomBox = new VBox();
+        bottomBox.setSpacing(5);
+        bottomBox.setPadding(new Insets(50, 10, 10, 10));
+
+        final Label errorLabel = new Label("Not a valid input. Please input a name.");
+        errorLabel.setFont(fontSmall);
+        errorLabel.setTextFill(Color.web("red"));
+        errorLabel.setVisible(false);
+
+        Button confirmButton = new Button("Submit Changes");
+        confirmButton.setFont(fontSmall);
+
+
+        bottomBox.getChildren().addAll(errorLabel, confirmButton);
+
+
+        confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                boolean isAvailChanged = false;
+                if(uname.getText().isEmpty()){
+                    uname.setText(user.getName());
+                }
+                if(nameChangeIsValid(uname.getText())) {
+                    errorLabel.setVisible(false);
+                    updateManagerName(uname.getText());
+                    accountAction();
+                } else{
+                    errorLabel.setVisible(true);
+                }
+
+            }
+        });
+
+
+        form.add(userName, 0, 0); form.add(uname, 1, 0);
+        form.add(oldName, 1, 1);
+
+        updatePage.setCenter(form);
+        updatePage.setBottom(bottomBox);
+
+
+        return updatePage;
+
+
+    }
+
+    public void updateManagerName(String name){
+        db.changeManagerName(dbConnect, name);
+    }
+
+    public boolean nameChangeIsValid(String input){
+        try {
+            Integer.parseInt(input);
+            return false;
+        } catch (NumberFormatException e){
+            return true;
+        }
+    }
 
 
 }

@@ -317,6 +317,16 @@ public class database {
     }
 
 
+    public void changeManagerName(Connection connection, String name) {
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(updateManagerName(name));
+        } catch (SQLException e) {
+
+        }
+    }
+
+
     public void changePlayerAvailability(Connection connection, int availability) {
         try {
             Statement stmt = connection.createStatement();
@@ -550,6 +560,11 @@ public class database {
 
     private String updatePlayerName(String name) {
         String stmt = new String("UPDATE managementapplication.player SET Name='" + name + "' " + "WHERE SquadNumber=" + userSqNum);
+        return stmt;
+    }
+
+    private String updateManagerName(String name) {
+        String stmt = new String("UPDATE managementapplication.manager SET Name='" + name + "' " + "WHERE SIN=" + userSIN);
         return stmt;
     }
 
