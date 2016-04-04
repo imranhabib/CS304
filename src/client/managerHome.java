@@ -34,7 +34,7 @@ public class managerHome {
     public String searchInfo = "Select to begin a basic search";
     public String advancedSearchInfo = "Select to begin an advanced search";
     public String accountChangeHistory = "Select to view recent account changes";
-    public String[] menuItems = {"Personal Information", "Search", "Advanced Search", "Account Change History"};
+    public String[] menuItems = {"Personal Information", "Search", "Advanced Search"};
     public String[] searchItems = {"My Team", "All Teams", "All Players", "All Governing Bodies", "All Leagues", "All Managers"};
     public String myTeam = "Select to view your team information";
     public String allTeams = "Select to view all teams information";
@@ -146,7 +146,6 @@ public class managerHome {
                 if(checkButtonInput(input.getText())){
                     errorLabel.setVisible(false);
                     userSIN = Integer.parseInt(input.getText());
-                    System.out.println(userSIN);
                     db = getDatabase(userSIN);
                     boolean valid = checkManagerSINValid(db);
 
@@ -298,13 +297,6 @@ public class managerHome {
             menuButton = createMenuButtons(menuItems[2]);
             root.getChildren().addAll(rootTitle, menuButton);
         }
-
-        if (title.equals(menuItems[3])) {
-            rootTitle.setText(accountChangeHistory);
-            menuButton = createMenuButtons(menuItems[3]);
-            root.getChildren().addAll(rootTitle, menuButton);
-        }
-
         pane.setContent(root);
         pane.setExpanded(false);
         return pane;
@@ -419,10 +411,6 @@ public class managerHome {
                 if (actionTitle.equals(menuItems[2])) {
                     advancedSearchAction();
                 }
-                if (actionTitle.equals(menuItems[3])) {
-                    changesAction();
-                }
-
 
             }
         });
@@ -498,10 +486,6 @@ public class managerHome {
         root.setCenter(createManagerPages(m));
     }
 
-    public void changesAction(){
-        System.out.println("4");
-    }
-
 
     public BorderPane createUserAccount(manager user){
         BorderPane account = new BorderPane();
@@ -574,7 +558,6 @@ public class managerHome {
         page.setPageFactory(new Callback<Integer, Node>() {
             @Override
             public Node call(Integer index) {
-                System.out.println(index);
                 return managerInfoPage(m, index);
             }
         });
@@ -646,7 +629,6 @@ public class managerHome {
         Label leagueName = new Label("Name: ");
         form.setHalignment(leagueName, HPos.RIGHT);
         TextField lname = new TextField(l.get(index).getName());
-        System.out.println("this is name " + l.get(index).getName());
         lname.setEditable(false);
 
 
@@ -753,7 +735,7 @@ public class managerHome {
         page.setPageFactory(new Callback<Integer, Node>() {
             @Override
             public Node call(Integer index) {
-                System.out.println(index);
+
                 return gbodyInfoPage(g, index);
             }
         });

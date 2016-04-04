@@ -52,7 +52,7 @@ public class playerHome {
     public String allGoverningBodies = "Select to view information for all governing bodies";
     public String allLeagues = "Select to view all leagues";
     public String allManagers = "Select to view all managers";
-    public String[] menuItems = {"Personal Information", "Contract Information", "Search","Advanced Search","Account Change History"};
+    public String[] menuItems = {"Personal Information", "Contract Information", "Search","Advanced Search"};
     public String[] searchItems = {"My Team", "All Teams", "All Players", "All Governing Bodies", "All Leagues", "All Managers"};
     private Font fontSmall = Font.font("Calibri Light", FontWeight.THIN, 20);
     private Font fontSuperSmall = Font.font("Calibri Light", FontWeight.THIN, 10);
@@ -302,11 +302,6 @@ public class playerHome {
             root.getChildren().addAll(rootTitle, menuButton);
         }
 
-        if(title.equals(menuItems[4])){
-            rootTitle.setText(accountChangeHistory);
-            menuButton = createMenuButtons(menuItems[4]);
-            root.getChildren().addAll(rootTitle, menuButton);
-        }
 
         pane.setContent(root);
         pane.setExpanded(false);
@@ -436,9 +431,6 @@ public class playerHome {
                 if(actionTitle.equals(menuItems[3])) {
                    advancedSearchAction();
                 }
-                if(actionTitle.equals(menuItems[4])) {
-                    changesAction();
-                }
 
             }
         });
@@ -477,20 +469,6 @@ public class playerHome {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    public void changesAction(){
-        System.out.println("4");
-    }
 
 
 
